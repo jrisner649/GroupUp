@@ -10,22 +10,32 @@ document.querySelector('#btnLogin').addEventListener('click', (event) => {
     const regPassword = /((?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[\W]).{8,64})/g
 
     let blnError = false
+    let strError = ''
 
     // if the email or password do not conform to the constraints, then an error has occurred
     if (!regEmail.test(strEmail)) {
         blnError = true
+        strError += '<p>Invalid email</p>'
     }
     if (!regPassword.test(strPassword)) {
+        strError += '<p>Invalid password</p>'
         blnError = true
     }
 
-    // show an alert to the user indicating the changes they need to make
+    // display the error message if there was an error
     if (blnError) {
-        console.log('You have an error')
+        Swal.fire({
+            title: "Oops...",
+            html: strError,
+            icon: "error"
+          });
     }
-    // else, the credentials are valid and we simulate a successful login
+    // else, the input is valid and we simulate a successful account registration
     else {
-        console.log('No errors')
+        Swal.fire({
+            title: "Login successful!",
+            icon: "success"
+          });
     }
 
 })
@@ -60,36 +70,48 @@ document.querySelector('#btnRegister').addEventListener('click', (event) => {
 
 
     // ensure that the password and confirm password fields match
-    const strConfPassword = document.querySelector('#txtPasswordConfRegister').value
-    if (strPassword != strConfPassword) {
+    const strPasswordConf = document.querySelector('#txtPasswordConfRegister').value
+    if (strPassword != strPasswordConf) {
         blnError = true
-        strError += '<p>The password and confirm password fields do not match</p>'
+        strError += '<p>The password and confirm password fields do not match.</p>'
     }
 
     // If any of the fields are incorrect, add a corresponding error message
     if (!regFirstName.test(strFirstName)) {
         blnError = true
+        strError += '<p>Invalid first name.</p>'
     }
     if (!regLastName.test(strLastName)) {
+        strError += '<p>Invalid last name.</p>'
         blnError = true
     }
     if (!regEmail.test(strEmail)) {
+        strError += '<p>Invalid email.</p>'
         blnError = true
     }
     if (!regPassword.test(strPassword)) {
+        strError += '<p>Invalid password.</p>'
         blnError = true
     }
     if (!regPhoneNumber.test(strPhoneNumber)) {
+        strError += '<p>Invalid phone number.</p>'
         blnError = true
     }
 
     // display the error message if there was an error
     if (blnError) {
-        console.log(strError)
+        Swal.fire({
+            title: "Oops...",
+            html: strError,
+            icon: "error"
+          });
     }
     // else, the input is valid and we simulate a successful account registration
     else {
-        console.log('No errors')
+        Swal.fire({
+            title: "Account registration successful!",
+            icon: "success"
+          });
     }
 
 })
@@ -99,14 +121,5 @@ document.querySelector('#btnToLogin').addEventListener('click', (event) => {
     document.querySelector('#formRegister').style.display = 'none';
     document.querySelector('#formLogin').style.display = 'block';
 })
-
-// check if the confirm password field matches the password field
-function confirmPassword(strPassword) {
-    const strConfPassword = document.querySelector('#txtPasswordConfRegister').value
-    if (strPassword != strConfPassword) {
-        return false
-    }
-    return true
-}
 
     
