@@ -1,0 +1,30 @@
+.bg-light-color {
+    background-color: rgb(186, 222, 208);
+}
+.bg-dark-color {
+    background-color: rgb(55, 63, 70);
+}
+.bg-primary-color {
+    background-color: rgb(219, 136, 48);
+}
+.required-color {
+    color: #bf310a;
+}
+.light-color {
+    color: white;
+}
+.btn-primary {
+    color: black;
+    border: 0;
+    background-color: rgb(219, 136, 48);
+}
+.btn-primary:hover {
+    background-color: rgb(55, 63, 70);
+    color: white;
+}
+.btn-link {
+    color: #479ceb;
+}
+hr {
+    border-top: 2px solid white;
+}
