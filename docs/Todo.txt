@@ -1,0 +1,23 @@
+Must:
+    - Landing Page
+    - Update sign-in and login (contact info)
+    - Dashboard (tab/panel template)
+    - Group List
+        - Group panel
+        - create group page
+    - Project List
+        - Project panel
+        - create project page
+    - Specifc group page    
+        - feedback panel
+        - survey panel
+        - members panel
+    - Specific project page
+        - groups list
+        - surveys
+            - build survey
+            - view survey response
+Could:
+    - Notifications
+    - Settings
+    - Logo & branding

@@ -1,11 +1,20 @@
 .bg-light-color {
-    background-color: rgb(186, 222, 208);
+    background-color: rgb(116, 160, 125);
+}
+.bg-lightgrey-color {
+    background-color: rgb(185, 185, 185);
 }
 .bg-dark-color {
-    background-color: rgb(55, 63, 70);
+    background-color: rgb(34, 39, 43);
+}
+.bg-darkblue-color {
+    background-color: rgb(41, 75, 107);
 }
 .bg-primary-color {
     background-color: rgb(219, 136, 48);
+}
+.bg-white {
+    background-color: rgb(255, 255, 255);
 }
 .required-color {
     color: #bf310a;
@@ -27,4 +36,10 @@
 }
 hr {
     border-top: 2px solid white;
+}
+#divHeaderBar {
+    height: 15vh;
+}
+#divSideBar {
+    height: 100vh
 }
