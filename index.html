@@ -8,6 +8,47 @@
     <link href="style.css" rel="stylesheet">
 </head>
 <body class="bg-light-color">
+
+
+
+    <div id="divLandingPage" class="bg-white" style="display: none;">
+        <div id="divLandingPageHeaderBar" class="d-flex justify-content-space-between align-items-center mb-5 bg-dark-color">
+            <h1 class="group-up-logo mx-4" style="color: lightgreen;">GroupUp (this will be logo)</h1>
+            <button class="sign-up-button">Sign Up</button>
+            <button class="login-button">Login</button>
+        </div>
+        <div id="divLandingPageBody" class="container align-items-center flex-end">
+            <h1>What is GroupUp?</h1>
+            <div class="flex-container">
+                    <p id="paraGroupUp Description">
+                        GroupUp is a revolutionary platform designed to bring people together for collaborative projects, events, and shared interests. Whether you're looking to form a study group, organize a community event, or find teammates for a creative endeavor, GroupUp makes it easy to connect with like-minded individuals. Our platform is built with simplicity and efficiency in mind, ensuring that users can quickly find and join groups that align with their goals and passions.
+                        At its core, GroupUp is about fostering connections and enabling collaboration. With intuitive tools for group management, communication, and event planning, users can focus on what matters most: achieving their objectives and building meaningful relationships. From hobbyists to professionals, GroupUp caters to a diverse audience, offering features that adapt to a wide range of needs.
+                        Signing up is quick and hassle-free. Once you're registered, you can explore a variety of groups based on categories, interests, or location. Each group has its own dedicated space for discussions, file sharing, and event scheduling, making it easier than ever to stay organized and engaged. Our advanced search and recommendation system ensures that you find the perfect match for your interests.
+                        GroupUp also prioritizes user safety and privacy. With robust moderation tools and customizable privacy settings, you can feel confident in your interactions and focus on building connections. Our team is committed to creating a positive and inclusive environment for all users.
+                        Ready to get started? Join GroupUp today and take the first step toward achieving your goals with the power of collaboration. Whether you're starting a new project or joining an existing one, GroupUp is here to help you succeed. Together, we can accomplish more.
+                    </p>
+                <img class="placeholder-img" src="https://preview.redd.it/which-video-is-this-image-from-v0-7rbay8vw175a1.jpg?width=640&crop=smart&auto=webp&s=2c93668b8faeeef64f638dccc7d6d4e42ce04bbd">
+            </div>
+            <hr/>
+            <h1>How does it work?</h1>
+            <div class="flex-container">
+                <img class="placeholder-img" src="https://preview.redd.it/which-video-is-this-image-from-v0-7rbay8vw175a1.jpg?width=640&crop=smart&auto=webp&s=2c93668b8faeeef64f638dccc7d6d4e42ce04bbd">
+                <p>With GroupUp, you can either create a new project or join an existing one. Once part of a project, leaders have the ability to assign groups to participants, ensuring efficient collaboration and task distribution. Project leaders can also issue surveys to gather valuable feedback from group members, enabling insights into individual and team performance. This fosters a culture of accountability and continuous improvement, enhancing the overall quality of teamwork.</p>
+            </div>
+            <hr/>
+            <h1>Get started today!</h1>
+            <button class="mb-5">Sign Up</button>
+        </div>
+        <footer id="ftLandingPageFooter"class="d-flex align-items-center justify-content-center bg-dark-color">
+            <p style="color: lightgreen">Seth Risner and Franklin Doane</p>
+        </footer>
+    </div>
+
+
+
+
+
+
     <div class="d-flex justify-content-center align-items-center mt-5 mb-5 d-none">
         <form id="formLogin" class="card bg-dark col-6" style="display: block;">
             <div class="card-body d-flex flex-column mx-3 mt-2">
@@ -22,7 +63,7 @@
                 <button id="btnToRegister" class="btn btn-link mt-1 col-12" type="button">Need an account? Click to register</button>
             </div>
         </form>
-        <form id="formRegister" class="card bg-dark col-6" style="display:none;">
+        <form id="formRegister" class="card bg-dark col-6" style="display: none;">
             <div class="card-body d-flex flex-column mx-3 mt-2">
                 <h1 class="text-center light-color">Register</h1>
                 <label id="lblFirstNameRegister" for="txtFirstNameRegister" class="form-label mt-3 light-color">First Name *</label>
@@ -48,7 +89,7 @@
             </div>
         </form>
     </div>
-    <div class="d-flex flex-column col-12">
+    <div class="d-flex flex-column col-12" style="display: none;">
         <div id="divHeaderBar" class="d-flex d-row bg-dark-color">
         </div>
         <div class="d-flex flex-row align-items-start col-12 bg-white">
@@ -59,6 +100,13 @@
             </div>
         </div>
     </div>
+
+
+    
+
+
+
+
     <script src="js/app.js"></script>
     <script src="js/login.js"></script>
     <script src="js/dashboard.js"></script>

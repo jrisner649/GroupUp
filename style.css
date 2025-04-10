@@ -34,6 +34,32 @@
 .btn-link {
     color: #479ceb;
 }
+
+
+.container {
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
+    column-gap: 20px;
+}
+.group-up-logo{
+    flex-grow: 4;
+}
+.sign-up-button{
+    flex-grow: 1;
+}
+.login-button{
+    flex-grow: 1;
+}
+.flex-container {
+    display: flex;
+    justify-content: flex-end;
+    gap: 100px
+}
+.placeholder-img {
+    max-width:300px;
+    max-height:300px;
+}
 hr {
     border-top: 2px solid white;
 }
@@ -42,4 +68,10 @@ hr {
 }
 #divSideBar {
     height: 100vh
+}
+#divLandingPageHeaderBar {
+    height: 15vh;
+}
+#ftLandingPageFooter {
+    height: 15vh;
 }
