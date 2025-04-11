@@ -1,0 +1,2 @@
+Prompt: If I create a new element for my html page in a javascript file, then I add an event listener to that element, what happens to the event listener if I empty out part of the html file that contains the element it's assigned to? Do I need to delete it somehow? Does that event listener come back into play if I recreate an element with that same element id?
+Result: I gained knowledge.

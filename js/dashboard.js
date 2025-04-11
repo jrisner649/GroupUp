@@ -5,8 +5,9 @@ var intRowCount = 0;
 var intItemsPerRow = 3;
 
 // populates elements to dashboard
-// data is arr of json objects, each with keys = ("header", "subheader")
-function populateDashboard(arrData) {
+// data is arr of json objects, each with keys = ("header", "subheader", "uid")
+// an on-click method needs to be passed that will accept an arg for a unique id of some sort
+function populateDashboard(arrData, funcOnClick) {
 
     // id and class template for each row
     const strRowIdTemplate = "divDashboardRow";
@@ -21,12 +22,11 @@ function populateDashboard(arrData) {
     .then(response => response.text())
     .then(htmlElementTemplate => {
 
+        // iterate over json elements passed
         arrData.forEach(jsonElement => {
         
             // if need to make a new row
             if (intElementCount % intItemsPerRow == 0) {
-
-                console.log("New row")
 
                 // increment row count
                 intRowCount ++;
@@ -60,12 +60,16 @@ function populateDashboard(arrData) {
             document.querySelector(`#${strNewElementId} h1`).innerHTML = jsonElement.header;
             document.querySelector(`#${strNewElementId} h4`).innerHTML = jsonElement.subheader;
 
+            // create event listener for that element
+            document.querySelector(`#${strNewElementId}`).addEventListener('click', () => {funcOnClick(jsonElement.uid)});
+
         });
 
     });
 
 }
 
+// empties out the dashboard
 function clearDashboard() {
 
     // clear html
@@ -77,11 +81,10 @@ function clearDashboard() {
 
 }
 
-
-populateDashboard([{"header": "CSC 3100", "subheader": "Web Development"}, 
-                   {"header": "CSC 4903", "subheader": "Quantum Computing"},
-                   {"header": "CSC 2220", "subheader": "DSAI for Everyone"},
-                   {"header": "CSC 2400", "subheader": "Design of Algorithms"},
-                   {"header": "CSC 2220", "subheader": "DSAI for Everyone"},
-                   {"header": "CSC 2400", "subheader": "Design of Algorithms"},
-                   {"header": "CSC 2400", "subheader": "Design of Algorithms"}]);
+populateDashboard([{"header": "CSC 3100", "subheader": "Web Development", "uid": "1"}, 
+                   {"header": "CSC 4903", "subheader": "Quantum Computing", "uid": "2"},
+                   {"header": "CSC 2220", "subheader": "DSAI for Everyone", "uid": "3"},
+                   {"header": "CSC 2400", "subheader": "Design of Algorithms", "uid": "4"},
+                   {"header": "CSC 2220", "subheader": "DSAI for Everyone", "uid": "5"},
+                   {"header": "CSC 2400", "subheader": "Design of Algorithms", "uid": "6"},
+                   {"header": "CSC 2400", "subheader": "Design of Algorithms", "uid": "7"}], (strUid) => {console.log(strUid)});
