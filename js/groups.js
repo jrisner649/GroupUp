@@ -1,7 +1,7 @@
 
 // When the groups side bar button is clicked, the dashboard should be populated with the groups the user is in
-document.querySelector('#btnSideBarGroups').addEventListener('click', (event) => {
-    console.log('clicked')
+function onClickBtnSideBarGroups() {
+    console.log('Groups side bar button clicked')
     clearDashboard()
 
     const objGroupsHeader = document.createElement('h1')
@@ -23,7 +23,7 @@ document.querySelector('#btnSideBarGroups').addEventListener('click', (event) =>
         )
     })
     populateDashboard(objDashboardData)
-})
+}
 
 // This function will eventually execute a get request to the API
 // to retrieve the groups the user is in. For now, just fetch dummy data.
