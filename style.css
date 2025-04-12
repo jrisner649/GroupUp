@@ -10,6 +10,20 @@
 .bg-darkblue-color {
     background-color: rgb(41, 75, 107);
 }
+.btn-sidebar {
+    color: rgb(26, 35, 28);
+    font-size: 28px;
+    border-bottom: 3px solid rgb(26, 35, 28);
+}
+.btn-sidebar:focus {
+    color: rgb(23, 12, 138);
+    border: none;
+}
+.btn-sidebar:active {
+
+    color: rgb(255, 0, 0);
+
+}
 .bg-primary-color {
     background-color: rgb(219, 136, 48);
 }
@@ -34,8 +48,6 @@
 .btn-link {
     color: #479ceb;
 }
-
-
 .container {
     display: flex;
     flex-direction: column;
@@ -67,11 +79,15 @@ hr {
     height: 15vh;
 }
 #divSideBar {
-    height: 100vh
+    height: 85vh
 }
 #divLandingPageHeaderBar {
     height: 15vh;
 }
 #ftLandingPageFooter {
     height: 15vh;
+}
+#divDashboard {
+    overflow-y:auto;
+    height: 85vh;
 }
