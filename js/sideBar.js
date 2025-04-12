@@ -1,3 +1,8 @@
+
+// class list for sidebar button
+var strSidebarBtnClassList = "btn btn-sidebar mt-3";
+
+// side bar configs
 const objSideBarConfigs = {
     objHomePageConfig: [
         {
@@ -59,9 +64,10 @@ function populateSideBar(arrButtons) {
     let divSideBar = document.querySelector('#divSideBar')
     
     arrButtons.forEach(button => {
-        let btnSideBarButton = document.createElement('button')
+        let btnSideBarButton = document.createElement('div')
         btnSideBarButton.id = button.id
         btnSideBarButton.innerHTML = button.innerHTML
+        btnSideBarButton.classList = strSidebarBtnClassList
         btnSideBarButton.addEventListener('click', button.onClick)
         document.querySelector('#divSideBar').appendChild(btnSideBarButton)
     });
