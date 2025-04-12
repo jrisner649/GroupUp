@@ -34,7 +34,16 @@
 .btn-link {
     color: #479ceb;
 }
-
+/* Ensure the survey builder exists in a scrollable container */
+.scrollable-container {
+    height: 100%; /* Adjust height as needed */
+    max-height: 80vh; /* Limit the height to 80% of the viewport */
+    overflow-y: auto; /* Enable vertical scrolling */
+    padding: 1rem; /* Add padding for better spacing */
+    background-color: #ffffff; /* Optional: Set a background color */
+    border: 1px solid #ddd; /* Optional: Add a border for separation */
+    border-radius: 8px; /* Optional: Add rounded corners */
+}
 
 .container {
     display: flex;

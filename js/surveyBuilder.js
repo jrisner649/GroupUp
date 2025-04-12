@@ -4,37 +4,59 @@
 
 
 
-// Dynamically load the survey builder HTML
-fetch('components/surveyBuilder.html')
-.then(response => response.text())
-.then(html => {
-    let divSurveyBuilderWrapper = document.createElement('div')
-    divSurveyBuilderWrapper.id = 'divSurveyBuilderWrapper'
-    document.querySelector('#divDashboard').appendChild(divSurveyBuilderWrapper)
-    document.getElementById('divSurveyBuilderWrapper').innerHTML = html;
 
-    // Initialize survey builder functionality
-    document.getElementById('surveyForm').addEventListener('submit', function (e) {
-        e.preventDefault();
-        const surveyData = [];
-        for (let i = 1; i <= questionCount; i++) {
-            const questionElement = document.getElementById(`question-${i}`);
-            if (questionElement) {
-                const questionText = document.getElementById(`questionText-${i}`).value;
-                const questionType = document.getElementById(`questionType-${i}`).value;
-                const options = [];
-                if (questionType === 'multipleChoice') {
-                    const optionElements = document.querySelectorAll(`#options-${i} input`);
-                    optionElements.forEach(option => options.push(option.value));
+function loadSurveyBuilder() {
+    // Dynamically load the survey builder HTML
+    fetch('components/surveyBuilder.html')
+        .then(response => response.text())
+        .then(html => {
+            clearDashboard();
+            let divSurveyBuilderWrapper = document.createElement('div');
+            divSurveyBuilderWrapper.id = 'divSurveyBuilderWrapper';
+            divSurveyBuilderWrapper.className = 'scrollable-container'; // Add a class for styling
+            document.querySelector('#divDashboard').appendChild(divSurveyBuilderWrapper);
+            document.getElementById('divSurveyBuilderWrapper').innerHTML = html;
+
+            // Initialize survey builder functionality
+            document.getElementById('surveyForm').addEventListener('submit', function (e) {
+                e.preventDefault();
+                const surveyData = [];
+                for (let i = 1; i <= questionCount; i++) {
+                    const questionElement = document.getElementById(`question-${i}`);
+                    if (questionElement) {
+                        const questionText = document.getElementById(`questionText-${i}`).value;
+                        const questionType = document.getElementById(`questionType-${i}`).value;
+                        const options = [];
+                        if (questionType === 'multipleChoice') {
+                            const optionElements = document.querySelectorAll(`#options-${i} input`);
+                            optionElements.forEach(option => options.push(option.value));
+                        }
+                        surveyData.push({ questionText, questionType, options });
+                    }
                 }
-                surveyData.push({ questionText, questionType, options });
-            }
-        }
-        console.log('Survey Data:', surveyData);
-        // Send surveyData to the server for storage
-    });
-})
-.catch(error => console.error('Error loading survey builder:', error));
+                console.log('Survey Data:', surveyData);
+                if (surveyData.length == 0) {
+                    Swal.fire({
+                        title: "Oops!",
+                        text: "You must add at least one question before sending a survey.",
+                        icon: "error"
+                    })
+                }
+
+                // Send the survey to all groups in the project
+                else {
+                    Swal.fire({
+                        title: "Success!",
+                        text: "Survey sent to all groups!",
+                        icon: "success"
+                      });
+                }
+                
+            });
+        })
+        .catch(error => console.error('Error loading survey builder:', error));
+}
+
 
 let questionCount = 0;
 
@@ -152,23 +174,3 @@ function previewSurvey() {
     const previewModal = new bootstrap.Modal(document.getElementById('previewModal'));
     previewModal.show();
 }
-
-document.getElementById('surveyForm').addEventListener('submit', function (e) {
-    e.preventDefault();
-    const surveyData = [];
-    for (let i = 1; i <= questionCount; i++) {
-        const questionElement = document.getElementById(`question-${i}`);
-        if (questionElement) {
-            const questionText = document.getElementById(`questionText-${i}`).value;
-            const questionType = document.getElementById(`questionType-${i}`).value;
-            const options = [];
-            if (questionType === 'multipleChoice') {
-                const optionElements = document.querySelectorAll(`#options-${i} input`);
-                optionElements.forEach(option => options.push(option.value));
-            }
-            surveyData.push({ questionText, questionType, options });
-        }
-    }
-    console.log('Survey Data:', surveyData);
-    // Send surveyData to the server for storage
-});

@@ -1,4 +1,3 @@
-
 // When the groups side bar button is clicked, the dashboard should be populated with the groups the user is in
 function onClickBtnSideBarGroups() {
     console.log('Groups side bar button clicked')
@@ -49,7 +48,9 @@ function getUserGroups(){
 
 
 // function accepts a JSON obj from the API that contains information on each group member
-function displayGroupMembers(arrGroupData) {
+function displayGroupMembers() {
+
+    clearDashboard()
 
     // this data will eventually be retrieved from the API, for now just use dummy data
     const testData = [
@@ -71,7 +72,7 @@ function displayGroupMembers(arrGroupData) {
             name: 'Jacob McMurray',
             contactInfo: {
                 discord: '@cooldude2',
-                email: '@jmmcmurray42@tntech.edu'
+                email: '@jtmcmurray42@tntech.edu'
             }
         }
     ]
@@ -91,7 +92,7 @@ function displayGroupMembers(arrGroupData) {
     document.querySelector('#divGroupMembersWrapper').appendChild(objGroupMembersHeader)
 
     // iterate over each group member and add them to the dashboard
-    arrGroupData.forEach(member => {
+    testData.forEach(member => {
         let objMemberNameHeader = document.createElement('h4')
         objMemberNameHeader.innerHTML = member.name
         document.querySelector('#divGroupMembersWrapper').appendChild(objMemberNameHeader)

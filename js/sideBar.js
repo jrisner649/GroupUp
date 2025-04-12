@@ -21,8 +21,8 @@ const objSideBarConfigs = {
         // build survey
         {
             id: 'btnSideBarBuildSurvey',
-            innerHTML: 'Build Survey',
-            onClick: onClickSurvey
+            innerHTML: 'Send Survey',
+            onClick: loadSurveyBuilder
         },
         // view responses
         {

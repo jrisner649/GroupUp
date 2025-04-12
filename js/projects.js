@@ -117,3 +117,9 @@ function loadProject(strProjectID) {
         console.log(`${strUid} group clicked`)
     })
 }
+
+
+
+function onClickBtnSideBarBuildSurvey() {
+    console.log('Build survey button clicked')
+}
