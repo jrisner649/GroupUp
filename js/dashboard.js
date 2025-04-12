@@ -81,6 +81,12 @@ function clearDashboard() {
 
 }
 
+function addHeaderToDashboard(strInnerHTML) {
+    let objHeader = document.createElement('h1')
+    objHeader.innerHTML = strInnerHTML
+    document.querySelector('#divDashboard').appendChild(objHeader)
+}
+
 // populateDashboard([{"header": "CSC 3100", "subheader": "Web Development", "uid": "1"}, 
 //                    {"header": "CSC 4903", "subheader": "Quantum Computing", "uid": "2"},
 //                    {"header": "CSC 2220", "subheader": "DSAI for Everyone", "uid": "3"},

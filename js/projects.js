@@ -70,6 +70,16 @@ function getUserProjects() {
     return objUserProjectData
 }
 
+// Return an array of all the groups in a given project
+function fetchGroups(strProjectID) {
+
+    // We need to find the specific project that was clicked on, so we filter by the uuid of the project
+    const objUserProjectData = getUserProjects()
+    const objProject = objUserProjectData.filter(project => project.projectid == strProjectID)[0]
+    return objProject.groups
+
+}
+
 // This function is called when a project is clicked on the projects page
 function loadProject(strProjectID) {
     console.log(`strProjectID = ${strProjectID}`)
@@ -89,10 +99,7 @@ function loadProject(strProjectID) {
     clearDashboard()
 
     // Place a header at the top of the dashboard, the default tab in the projects page is the groups in the projet
-    const objProjectGroupsHeader = document.createElement('h1')
-    objProjectGroupsHeader.innerHTML = 'Groups in Project'
-    document.querySelector('#divDashboard').appendChild(objProjectGroupsHeader)
-
+    addHeaderToDashboard('Groups in Project')
 
     populateSideBar(objSideBarConfigs.objProjectPageConfig) // The side bar is populated with new buttons to manage the project that was clicked
 
@@ -118,8 +125,28 @@ function loadProject(strProjectID) {
     })
 }
 
+// Adds surveys that have been made to the dashboard so that the user can decide which survey to view data for
+function onClickBtnSideBarViewResponses() {
+    console.log('View responses button clicked')
 
+    clearDashboard()
 
-function onClickBtnSideBarBuildSurvey() {
-    console.log('Build survey button clicked')
+    let objViewResponsesHeader = document.createElement('h1')
+    objViewResponsesHeader.innerHTML = "Select Which Survey's Data to View"
+    document.querySelector('#divDashboard').appendChild(objViewResponsesHeader)
+
+    // Iterate over every survey and add them to the dashboard
+    const arrSurveys = fetchProjectLeaderSurveys() // Make the API call to get the surveys that the user had made
+    let arrDashboardData = []
+    arrSurveys.forEach(survey => {
+        arrDashboardData.push(
+            {
+                header: survey.title,
+                subheader: survey.description,
+                uid: survey.surveyid
+            }
+        )
+    })
+    populateDashboard(arrDashboardData, onClickSurvey)
 }
+

@@ -33,7 +33,19 @@ const objSideBarConfigs = {
         {
             id: 'btnSideBarViewResponses',
             innerHTML: 'View Responses',
-            onClick: null
+            onClick: onClickBtnSideBarViewResponses
+        }
+    ],
+    objViewResponsesConfig: [
+        {
+            id: 'btnSideBarViewProjectData',
+            innerHTML: 'View Project Data',
+            onClick: onClickSurvey
+        },
+        {
+            id: 'btnSideBarViewGroupData',
+            innerHTML: 'View Group Data',
+            onClick: onClickBtnSideBarViewGroupData
         }
     ],
     objGroupPageConfig: [
