@@ -12,8 +12,23 @@ const objSideBarConfigs = {
         }
     ],
     objProjectPageConfig: [
+        // groups in a specific project button
         {
-
+            id: 'btnSideBarProjectGroups',
+            innerHTML: 'Groups',
+            onClick: loadProject
+        },
+        // build survey
+        {
+            id: 'btnSideBarBuildSurvey',
+            innerHTML: 'Build Survey',
+            onClick: onClickSurvey
+        },
+        // view responses
+        {
+            id: 'btnSideBarViewResponses',
+            innerHTML: 'View Responses',
+            onClick: null
         }
     ],
     objGroupPageConfig: [
@@ -21,7 +36,7 @@ const objSideBarConfigs = {
         {
             id: 'btnSideBarMembers',
             innerHTML: 'Members',
-            onClick: onClickBtnSideBarGroups
+            onClick: displayGroupMembers
         },
         // surveys button
         {
@@ -60,4 +75,4 @@ function clearSideBar() {
     divSideBar.innerHTML = ''
 }
 
-populateSideBar(objSideBarConfigs.objGroupPageConfig)
+populateSideBar(objSideBarConfigs.objHomePageConfig)

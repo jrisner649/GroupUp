@@ -81,10 +81,10 @@ function clearDashboard() {
 
 }
 
-populateDashboard([{"header": "CSC 3100", "subheader": "Web Development", "uid": "1"}, 
-                   {"header": "CSC 4903", "subheader": "Quantum Computing", "uid": "2"},
-                   {"header": "CSC 2220", "subheader": "DSAI for Everyone", "uid": "3"},
-                   {"header": "CSC 2400", "subheader": "Design of Algorithms", "uid": "4"},
-                   {"header": "CSC 2220", "subheader": "DSAI for Everyone", "uid": "5"},
-                   {"header": "CSC 2400", "subheader": "Design of Algorithms", "uid": "6"},
-                   {"header": "CSC 2400", "subheader": "Design of Algorithms", "uid": "7"}], (strUid) => {console.log(strUid)});
+// populateDashboard([{"header": "CSC 3100", "subheader": "Web Development", "uid": "1"}, 
+//                    {"header": "CSC 4903", "subheader": "Quantum Computing", "uid": "2"},
+//                    {"header": "CSC 2220", "subheader": "DSAI for Everyone", "uid": "3"},
+//                    {"header": "CSC 2400", "subheader": "Design of Algorithms", "uid": "4"},
+//                    {"header": "CSC 2220", "subheader": "DSAI for Everyone", "uid": "5"},
+//                    {"header": "CSC 2400", "subheader": "Design of Algorithms", "uid": "6"},
+//                    {"header": "CSC 2400", "subheader": "Design of Algorithms", "uid": "7"}], (strUid) => {console.log(strUid)});
