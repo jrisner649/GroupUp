@@ -11,11 +11,11 @@ function populateDashboard(arrData, funcOnClick) {
 
     // id and class template for each row
     const strRowIdTemplate = "divDashboardRow";
-    const strRowClasses = "d-flex flex-row col-12 p-4 mt-3";
+    const strRowClasses = "d-flex flex-md-row flex-column col-12 align-items-center";
 
     // id and class template for each element
     const strElementIdTemplate = "divDashboardElement";
-    const strElementClasses = "card col-3 mx-4 bg-lightgrey-color";
+    const strElementClasses = "card col-md-3 col-9 mx-4 my-3 bg-lightgrey-color";
 
     // fetch element html
     fetch("components/dashboardElement.html")

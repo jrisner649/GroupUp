@@ -1,5 +1,5 @@
 // When the groups side bar button is clicked, the dashboard should be populated with the groups the user is in
-function onClickBtnSideBarGroups() {
+function onClickBtnMenuPanelGroups() {
     console.log('Groups side bar button clicked')
     clearDashboard()
 

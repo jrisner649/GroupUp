@@ -1,6 +1,6 @@
 let strCurrentProjectID = ''
 
-function onClickBtnSideBarProjects() {
+function onClickBtnMenuPanelProjects() {
     console.log('Project side bar button clicked')
     clearDashboard() 
 
