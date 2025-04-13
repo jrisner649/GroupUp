@@ -8,12 +8,12 @@ const objSideBarConfigs = {
         {
             id: 'btnSideBarProjects',
             innerHTML: 'Projects',
-            onClick: onClickBtnSideBarProjects
+            onClick: onClickBtnMenuPanelProjects
         },
         {
             id: 'btnSideBarGroups',
             innerHTML: 'Groups',
-            onClick: onClickBtnSideBarGroups
+            onClick: onClickBtnMenuPanelGroups
         }
     ],
     objProjectPageConfig: [
