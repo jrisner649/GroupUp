@@ -12,6 +12,9 @@ function onClickSurvey(strSurveyID) {
     }
 
     console.log(strCurrentProjectID)
+
+    intCurrentPageId = 3
+
     populateSideBar(objSideBarConfigs.objViewResponsesConfig)
 
     clearDashboard()

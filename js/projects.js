@@ -59,6 +59,8 @@ function loadProject(strProjectID) {
     // Place a header at the top of the dashboard, the default tab in the projects page is the groups in the projet
     addHeaderToDashboard('Groups in Project')
 
+    intCurrentPageId = 2
+
     populateSideBar(objSideBarConfigs.objProjectPageConfig) // The side bar is populated with new buttons to manage the project that was clicked
 
     
