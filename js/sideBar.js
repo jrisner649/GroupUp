@@ -93,4 +93,5 @@ function clearSideBar() {
     divSideBar.innerHTML = ''
 }
 
+// Load the default config as soon as the script is loaded
 populateSideBar(objSideBarConfigs.objHomePageConfig)

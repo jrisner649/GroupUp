@@ -9,7 +9,7 @@ function onClickBtnSideBarProjects() {
     objProjectsHeader.innerHTML = 'Projects'
     document.querySelector('#divDashboard').appendChild(objProjectsHeader)
 
-    const objUserProjectData = getUserProjects() // fetch the projects the user is in from the API
+    const objUserProjectData = fetchUserProjects() // fetch the projects the user is in from the API
     
     // we must convert the projects to the form accepted by the populate dashboard function
     let arrDashboardData = []
@@ -28,53 +28,11 @@ function onClickBtnSideBarProjects() {
     populateDashboard(arrDashboardData, loadProject)
 }
 
-// API call simulation
-function getUserProjects() {
-    const objUserProjectData = [
-        {
-            name: 'Project 1',
-            groups: [
-                {
-                    name: 'Group A',
-                    members: [
-                        {
-                            name: 'User 1'
-                        },
-                        {
-                            name: 'User 2'
-                        }
-                    ],
-                    groupid: 'ABC'
-                },
-                {
-                    name: 'Group B',
-                    members: [
-                        {
-                            name: 'User 3'
-                        },
-                        {
-                            name: 'User 4'
-                        }
-                    ],
-                    groupid: 'DEF'
-                }
-            ],
-            projectid: '123'
-        },
-        {
-            name: 'Project 2',
-            groups: [],
-            projectid: '456'
-        }
-    ]
-    return objUserProjectData
-}
-
 // Return an array of all the groups in a given project
 function fetchGroups(strProjectID) {
 
     // We need to find the specific project that was clicked on, so we filter by the uuid of the project
-    const objUserProjectData = getUserProjects()
+    const objUserProjectData = fetchUserProjects()
     const objProject = objUserProjectData.filter(project => project.projectid == strProjectID)[0]
     return objProject.groups
 
@@ -104,7 +62,7 @@ function loadProject(strProjectID) {
     populateSideBar(objSideBarConfigs.objProjectPageConfig) // The side bar is populated with new buttons to manage the project that was clicked
 
     
-    const objUserProjectData = getUserProjects() // Call the API to retrieve the project data
+    const objUserProjectData = fetchUserProjects() // Call the API to retrieve the project data
 
     // We need to find the specific project that was clicked on, so we filter by the uuid of the project
     const objProject = objUserProjectData.filter(project => project.projectid == strCurrentProjectID)[0]

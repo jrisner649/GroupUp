@@ -7,7 +7,7 @@ function onClickBtnSideBarGroups() {
     objGroupsHeader.innerHTML = 'Groups'
     document.querySelector('#divDashboard').appendChild(objGroupsHeader)
 
-    const objUserGroupData = getUserGroups() // make a call to the API to get all the groups the user is in
+    const objUserGroupData = fetchUserGroups() // make a call to the API to get all the groups the user is in
 
     let objDashboardData = []
     // iterate over each group and add them to a JSON obj in the form that the dashboard accepts
@@ -24,28 +24,6 @@ function onClickBtnSideBarGroups() {
     populateDashboard(objDashboardData)
 }
 
-// This function will eventually execute a get request to the API
-// to retrieve the groups the user is in. For now, just fetch dummy data.
-function getUserGroups(){
-    const objUserGroupData = [
-        {
-            name: 'Group A',
-            projectName: 'Project 1',
-            groupId: '123'
-        },
-        {
-            name: 'Group B',
-            projectName: 'Project 2',
-            groupId: '456'
-        }
-    ]
-    return objUserGroupData
-}
-
-
-
-
-
 
 // function accepts a JSON obj from the API that contains information on each group member
 function displayGroupMembers() {
@@ -53,29 +31,7 @@ function displayGroupMembers() {
     clearDashboard()
 
     // this data will eventually be retrieved from the API, for now just use dummy data
-    const testData = [
-        {
-            name: 'Franklin Doane',
-            contactInfo: {
-                discord: '@cooldude',
-                email: '@fgdoane42@tntech.edu'
-            }
-        },
-        {
-            name: 'Seth Risner',
-            contactInfo: {
-                discord: '@cooldude1',
-                email: '@jsrisner42@tntech.edu'
-            }
-        },
-        {
-            name: 'Jacob McMurray',
-            contactInfo: {
-                discord: '@cooldude2',
-                email: '@jtmcmurray42@tntech.edu'
-            }
-        }
-    ]
+    const objGroupMemberInfo = fetchGroupMemberInfo()
 
 
     // Add a wrapper div for displaying the group members

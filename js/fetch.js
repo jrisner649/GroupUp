@@ -155,3 +155,91 @@ function fetchProjectLeaderSurveys() {
     ];
     return arrSurveys;
 }
+
+
+function fetchUserProjects() {
+    const objUserProjectData = [
+        {
+            name: 'Project 1',
+            groups: [
+                {
+                    name: 'Group A',
+                    members: [
+                        {
+                            name: 'User 1'
+                        },
+                        {
+                            name: 'User 2'
+                        }
+                    ],
+                    groupid: 'ABC'
+                },
+                {
+                    name: 'Group B',
+                    members: [
+                        {
+                            name: 'User 3'
+                        },
+                        {
+                            name: 'User 4'
+                        }
+                    ],
+                    groupid: 'DEF'
+                }
+            ],
+            projectid: '123'
+        },
+        {
+            name: 'Project 2',
+            groups: [],
+            projectid: '456'
+        }
+    ]
+    return objUserProjectData
+}
+
+
+function fetchUserGroups() {
+    const objUserGroupData = [
+        {
+            name: 'Group A',
+            projectName: 'Project 1',
+            groupId: '123'
+        },
+        {
+            name: 'Group B',
+            projectName: 'Project 2',
+            groupId: '456'
+        }
+    ]
+    return objUserGroupData
+
+}
+
+
+function fetchGroupMemberInfo() {
+    const testData = [
+        {
+            name: 'Franklin Doane',
+            contactInfo: {
+                discord: '@cooldude',
+                email: '@fgdoane42@tntech.edu'
+            }
+        },
+        {
+            name: 'Seth Risner',
+            contactInfo: {
+                discord: '@cooldude1',
+                email: '@jsrisner42@tntech.edu'
+            }
+        },
+        {
+            name: 'Jacob McMurray',
+            contactInfo: {
+                discord: '@cooldude2',
+                email: '@jtmcmurray42@tntech.edu'
+            }
+        }
+    ]
+    return testData
+}
