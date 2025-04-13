@@ -37,17 +37,17 @@ function fetchProjectLeaderSurveys() {
                         {
                             memberName: 'Seth Risner',
                             answers: [
-                                { question: 'How satisfied are you with the team collaboration?', answer: 'Strongly Agree', questionid: 'q1' },
-                                { question: 'How often do you communicate with your team?', answer: 'Daily' },
-                                { question: 'What can be improved in team collaboration?', answer: 'More frequent meetings' }
+                                { question: 'How satisfied are you with the team collaboration?', answer: 'Agree', questionid: 'q1' },
+                                { question: 'How often do you communicate with your team?', answer: 'Daily', questionid: 'q2' },
+                                { question: 'What can be improved in team collaboration?', answer: 'More frequent meetings', questionid: 'q3' }
                             ]
                         },
                         {
                             memberName: 'Franklin Doane',
                             answers: [
-                                { question: 'How satisfied are you with the team collaboration?', answer: 'Agree', questionid: 'q1' },
-                                { question: 'How often do you communicate with your team?', answer: 'Weekly' },
-                                { question: 'What can be improved in team collaboration?', answer: 'Better task delegation' }
+                                { question: 'How satisfied are you with the team collaboration?', answer: 'Strongly Agree', questionid: 'q1' },
+                                { question: 'How often do you communicate with your team?', answer: 'Weekly', questionid: 'q2' },
+                                { question: 'What can be improved in team collaboration?', answer: 'Better task delegation', questionid: 'q3' }
                             ]
                         }
                     ]
@@ -62,17 +62,44 @@ function fetchProjectLeaderSurveys() {
                 {
                     questionText: 'How clear are the project goals?',
                     questionType: 'likert',
-                    options: ['Very Unclear', 'Unclear', 'Neutral', 'Clear', 'Very Clear']
+                    options: ['Very Unclear', 'Unclear', 'Neutral', 'Clear', 'Very Clear'],
+                    questionid: 'q1'
                 },
                 {
                     questionText: 'How satisfied are you with the project timeline?',
                     questionType: 'likert',
-                    options: ['Very Dissatisfied', 'Dissatisfied', 'Neutral', 'Satisfied', 'Very Satisfied']
+                    options: ['Very Dissatisfied', 'Dissatisfied', 'Neutral', 'Satisfied', 'Very Satisfied'],
+                    questionid: 'q2'
                 },
                 {
                     questionText: 'What challenges have you faced during the project?',
                     questionType: 'shortAnswer',
-                    options: []
+                    options: [],
+                    questionid: 'q3'
+                }
+            ],
+            groupResponses: [
+                {
+                    groupid: 'DEF',
+                    groupName: 'Group B',
+                    memberResponses: [
+                        {
+                            memberName: 'Alice Johnson',
+                            answers: [
+                                { question: 'How clear are the project goals?', answer: 'Clear', questionid: 'q1' },
+                                { question: 'How satisfied are you with the project timeline?', answer: 'Satisfied', questionid: 'q2' },
+                                { question: 'What challenges have you faced during the project?', answer: 'None', questionid: 'q3' }
+                            ]
+                        },
+                        {
+                            memberName: 'Bob Smith',
+                            answers: [
+                                { question: 'How clear are the project goals?', answer: 'Very Clear', questionid: 'q1' },
+                                { question: 'How satisfied are you with the project timeline?', answer: 'Very Satisfied', questionid: 'q2' },
+                                { question: 'What challenges have you faced during the project?', answer: 'Tight deadlines', questionid: 'q3' }
+                            ]
+                        }
+                    ]
                 }
             ]
         },
@@ -84,17 +111,44 @@ function fetchProjectLeaderSurveys() {
                 {
                     questionText: 'How satisfied are you with your group members?',
                     questionType: 'likert',
-                    options: ['Very Dissatisfied', 'Dissatisfied', 'Neutral', 'Satisfied', 'Very Satisfied']
+                    options: ['Very Dissatisfied', 'Dissatisfied', 'Neutral', 'Satisfied', 'Very Satisfied'],
+                    questionid: 'q1'
                 },
                 {
                     questionText: 'How engaged are you in group activities?',
-                    questionType: 'multipleChoice',
-                    options: ['Not Engaged', 'Somewhat Engaged', 'Engaged', 'Highly Engaged']
+                    questionType: 'likert',
+                    options: ['Not Engaged', 'Somewhat Engaged', 'Engaged', 'Highly Engaged'],
+                    questionid: 'q2'
                 },
                 {
                     questionText: 'What suggestions do you have for improving group satisfaction?',
                     questionType: 'shortAnswer',
-                    options: []
+                    options: [],
+                    questionid: 'q3'
+                }
+            ],
+            groupResponses: [
+                {
+                    groupid: 'GHI',
+                    groupName: 'Group C',
+                    memberResponses: [
+                        {
+                            memberName: 'Charlie Brown',
+                            answers: [
+                                { question: 'How satisfied are you with your group members?', answer: 'Satisfied', questionid: 'q1' },
+                                { question: 'How engaged are you in group activities?', answer: 'Engaged', questionid: 'q2' },
+                                { question: 'What suggestions do you have for improving group satisfaction?', answer: 'Better communication', questionid: 'q3' }
+                            ]
+                        },
+                        {
+                            memberName: 'Diana Prince',
+                            answers: [
+                                { question: 'How satisfied are you with your group members?', answer: 'Very Satisfied', questionid: 'q1' },
+                                { question: 'How engaged are you in group activities?', answer: 'Highly Engaged', questionid: 'q2' },
+                                { question: 'What suggestions do you have for improving group satisfaction?', answer: 'More team-building activities', questionid: 'q3' }
+                            ]
+                        }
+                    ]
                 }
             ]
         }

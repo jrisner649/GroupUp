@@ -63,7 +63,9 @@ function displayProjectData(strSurveyID) {
 
     console.log(`Likert Options: ${arrLikertOptions}`)
     
-    // first collect all the answers for the question
+    const divCharts = document.createElement('div')
+    divCharts.id = 'divCharts'
+    document.querySelector('#divDashboard').appendChild(divCharts)
 
 
     // for loop that iterates over every likert question
@@ -81,23 +83,97 @@ function displayProjectData(strSurveyID) {
                 }
             });
         });
-
         console.log(`Responses for question "${question.questionText}":`);
         console.log(arrResponses);
+
+        // Count the occurrences of each answer choice
+        const objResponseCount = countResponses(arrResponses);
+        console.log("Count of every response: ");
+        console.log(objResponseCount);
+
+        // Create the x-axis
+        const arrXAxis = createXAxis(objResponseCount);
+        console.log('X Axis: ');
+        console.log(arrXAxis);
+
+        // Create the y-axis
+        const arrYAxis = createYAxis(objResponseCount);
+        console.log('Y Axis: ');
+        console.log(arrYAxis);
+
+        // Name of the series
+        const strName = question.questionText;
+        console.log(strName);
+
+        // Create a container div for the chart and its header
+        const chartContainer = document.createElement('div');
+        chartContainer.className = 'chart-container'; // Optional: Add a class for styling
+
+        // Create a header for the chart
+        const chartHeader = document.createElement('h2');
+        chartHeader.textContent = question.questionText; // Set the header text
+        chartHeader.className = 'chart-header'; // Optional: Add a class for styling
+        chartContainer.appendChild(chartHeader); // Append the header to the container
+
+        // Create a new div for the chart
+        const chartDiv = document.createElement('div');
+        chartDiv.id = `chart-${question.questionid}`; // Unique ID for the chart
+        chartContainer.appendChild(chartDiv); // Append the chart div to the container
+
+        // Append the container to the main charts div
+        document.querySelector('#divCharts').appendChild(chartContainer);
+
+        // Create the chart inside the new div
+        createBarChart(arrXAxis, arrYAxis, strName, chartDiv.id);
     })
 
-    // var options = {
-    //     chart: {
-    //         type: 'bar'
-    //     },
-    //     series: [{
-    //         name: 'Credits',
-    //         data: arrCreditsOnly
-    //     }],
-    //     xaxis: {
-    //         categories: arrProfOnly
-    //     }
-    // }
+    
+}
+
+function createBarChart(arrXAxis, arrYAxis, strName, chartDivId) {
+    const options = {
+        chart: {
+            type: 'bar'
+        },
+        series: [{
+            name: strName,
+            data: arrYAxis
+        }],
+        xaxis: {
+            categories: arrXAxis
+        }
+    }
+
+    const chart = new ApexCharts(document.querySelector(`#${chartDivId}`), options)
+    chart.render()
+}
+
+
+function countResponses(arrResponses) {
+    const setPossibleResponses = new Set(arrResponses)
+    let objResponseCount = {}
+    setPossibleResponses.forEach(option => {
+
+        objResponseCount[option] = 0
+        arrResponses.forEach(response => {
+            if (response == option) {
+                objResponseCount[option] += 1
+            }
+        })
+    })
+    return objResponseCount
+}
+
+// Get the keys of the object while preserving the order
+function createXAxis(objResponseCount) {
+    const arrXAxis = Object.keys(objResponseCount)
+    return arrXAxis
+}
+
+// Get the values of the object while preserving the order
+function createYAxis(objResponseCount) {
+    const arrYAxis = Object.values(objResponseCount)
+    return arrYAxis
 }
 
 // This function was created by Copilot

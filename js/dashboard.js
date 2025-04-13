@@ -81,6 +81,7 @@ function clearDashboard() {
 
 }
 
+// Append an h1 tag to the dashboard
 function addHeaderToDashboard(strInnerHTML) {
     let objHeader = document.createElement('h1')
     objHeader.innerHTML = strInnerHTML
