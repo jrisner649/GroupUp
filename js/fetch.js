@@ -13,17 +13,20 @@ function fetchProjectLeaderSurveys() {
                 {
                     questionText: 'How satisfied are you with the team collaboration?',
                     questionType: 'likert',
-                    options: ['Strongly Disagree', 'Disagree', 'Neutral', 'Agree', 'Strongly Agree']
+                    options: ['Strongly Disagree', 'Disagree', 'Neutral', 'Agree', 'Strongly Agree'],
+                    questionid: 'q1'
                 },
                 {
                     questionText: 'How often do you communicate with your team?',
                     questionType: 'multipleChoice',
-                    options: ['Daily', 'Weekly', 'Monthly', 'Rarely']
+                    options: ['Daily', 'Weekly', 'Monthly', 'Rarely'],
+                    questionid: 'q2'
                 },
                 {
                     questionText: 'What can be improved in team collaboration?',
                     questionType: 'shortAnswer',
-                    options: []
+                    options: [],
+                    questionid: 'q3'
                 }
             ],
             groupResponses: [
@@ -34,7 +37,7 @@ function fetchProjectLeaderSurveys() {
                         {
                             memberName: 'Seth Risner',
                             answers: [
-                                { question: 'How satisfied are you with the team collaboration?', answer: 'Strongly Agree' },
+                                { question: 'How satisfied are you with the team collaboration?', answer: 'Strongly Agree', questionid: 'q1' },
                                 { question: 'How often do you communicate with your team?', answer: 'Daily' },
                                 { question: 'What can be improved in team collaboration?', answer: 'More frequent meetings' }
                             ]
@@ -42,7 +45,7 @@ function fetchProjectLeaderSurveys() {
                         {
                             memberName: 'Franklin Doane',
                             answers: [
-                                { question: 'How satisfied are you with the team collaboration?', answer: 'Agree' },
+                                { question: 'How satisfied are you with the team collaboration?', answer: 'Agree', questionid: 'q1' },
                                 { question: 'How often do you communicate with your team?', answer: 'Weekly' },
                                 { question: 'What can be improved in team collaboration?', answer: 'Better task delegation' }
                             ]

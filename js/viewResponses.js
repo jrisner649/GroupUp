@@ -21,6 +21,7 @@ function onClickSurvey(strSurveyID) {
     
 
     // TODO: Fill in the dashboard with charts showing aggregate data for the survey response
+    displayProjectData(strCurrentSurveyID)
 
 }
 
@@ -41,6 +42,65 @@ function onClickBtnSideBarViewGroupData() {
     populateDashboard(arrDashboardData, displayGroupResponses)
 }
 
+// Displays charts for every likert and multiple choice question in a given survey
+function displayProjectData(strSurveyID) {
+
+    const arrSurveys = fetchProjectLeaderSurveys()
+    const objSurvey = arrSurveys.find(survey => survey.surveyid == strSurveyID)
+
+    console.log(objSurvey)
+
+    const arrLikertQuestions = objSurvey.questions.filter(question => question.questionType == 'likert')
+
+    console.log(`Likert Questions: `)
+    console.log(arrLikertQuestions)
+
+    const arrMultipleChoiceQuestions = objSurvey.questions.filter(question => question.questionType == 'multipleChoice')
+
+    console.log(`Multiple Choice Questions: ${arrMultipleChoiceQuestions}`)
+
+    const arrLikertOptions = arrLikertQuestions.map(question => question.options)
+
+    console.log(`Likert Options: ${arrLikertOptions}`)
+    
+    // first collect all the answers for the question
+
+
+    // for loop that iterates over every likert question
+    arrLikertQuestions.forEach(question => {
+        console.log('Current Question: ');
+        console.log(question);
+
+        // Collect all responses for the current question
+        let arrResponses = [];
+        objSurvey.groupResponses.forEach(group => {
+            group.memberResponses.forEach(member => {
+                const answer = member.answers.find(ans => ans.questionid === question.questionid);
+                if (answer) {
+                    arrResponses.push(answer.answer); // Collect the answer
+                }
+            });
+        });
+
+        console.log(`Responses for question "${question.questionText}":`);
+        console.log(arrResponses);
+    })
+
+    // var options = {
+    //     chart: {
+    //         type: 'bar'
+    //     },
+    //     series: [{
+    //         name: 'Credits',
+    //         data: arrCreditsOnly
+    //     }],
+    //     xaxis: {
+    //         categories: arrProfOnly
+    //     }
+    // }
+}
+
+// This function was created by Copilot
 function displayGroupResponses(strGroupID) {
     clearDashboard(); // Clear the dashboard
 
