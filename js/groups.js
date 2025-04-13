@@ -1,4 +1,3 @@
-
 // When the groups side bar button is clicked, the dashboard should be populated with the groups the user is in
 function onClickBtnMenuPanelGroups() {
     console.log('Groups side bar button clicked')
@@ -8,7 +7,7 @@ function onClickBtnMenuPanelGroups() {
     objGroupsHeader.innerHTML = 'Groups'
     document.querySelector('#divDashboard').appendChild(objGroupsHeader)
 
-    const objUserGroupData = getUserGroups() // make a call to the API to get all the groups the user is in
+    const objUserGroupData = fetchUserGroups() // make a call to the API to get all the groups the user is in
 
     let objDashboardData = []
     // iterate over each group and add them to a JSON obj in the form that the dashboard accepts
@@ -25,56 +24,14 @@ function onClickBtnMenuPanelGroups() {
     populateDashboard(objDashboardData)
 }
 
-// This function will eventually execute a get request to the API
-// to retrieve the groups the user is in. For now, just fetch dummy data.
-function getUserGroups(){
-    const objUserGroupData = [
-        {
-            name: 'Group A',
-            projectName: 'Project 1',
-            groupId: '123'
-        },
-        {
-            name: 'Group B',
-            projectName: 'Project 2',
-            groupId: '456'
-        }
-    ]
-    return objUserGroupData
-}
-
-
-
-
-
 
 // function accepts a JSON obj from the API that contains information on each group member
-function displayGroupMembers(arrGroupData) {
+function displayGroupMembers() {
+
+    clearDashboard()
 
     // this data will eventually be retrieved from the API, for now just use dummy data
-    const testData = [
-        {
-            name: 'Franklin Doane',
-            contactInfo: {
-                discord: '@cooldude',
-                email: '@fgdoane42@tntech.edu'
-            }
-        },
-        {
-            name: 'Seth Risner',
-            contactInfo: {
-                discord: '@cooldude1',
-                email: '@jsrisner42@tntech.edu'
-            }
-        },
-        {
-            name: 'Jacob McMurray',
-            contactInfo: {
-                discord: '@cooldude2',
-                email: '@jmmcmurray42@tntech.edu'
-            }
-        }
-    ]
+    const objGroupMemberInfo = fetchGroupMemberInfo()
 
 
     // Add a wrapper div for displaying the group members
@@ -91,7 +48,7 @@ function displayGroupMembers(arrGroupData) {
     document.querySelector('#divGroupMembersWrapper').appendChild(objGroupMembersHeader)
 
     // iterate over each group member and add them to the dashboard
-    arrGroupData.forEach(member => {
+    testData.forEach(member => {
         let objMemberNameHeader = document.createElement('h4')
         objMemberNameHeader.innerHTML = member.name
         document.querySelector('#divGroupMembersWrapper').appendChild(objMemberNameHeader)
