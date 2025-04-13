@@ -5,11 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GroupUp</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" integrity="sha384-tViUnnbYAV00FLIhhi3v/dWt3Jxw4gZQcNoSCxCIFNJVCx7/D55/wXsrNIRANwdD" crossorigin="anonymous">
     <link href="style.css" rel="stylesheet">
 </head>
 <body class="bg-light-color">
-
-
 
     <div id="divLandingPage" class="bg-white" style="display: none;">
         <div id="divLandingPageHeaderBar" class="d-flex justify-content-space-between align-items-center mb-5 bg-dark-color">
@@ -43,7 +42,6 @@
             <p style="color: lightgreen">Seth Risner and Franklin Doane</p>
         </footer>
     </div>
-
 
     <div class="d-flex justify-content-center align-items-center mt-5 mb-5 d-none">
         <form id="formLogin" class="card bg-dark col-6" style="display: block;">
@@ -86,14 +84,14 @@
         </form>
     </div>
     <div class="d-flex flex-column col-12">
-        <div id="divHeaderBar" class="d-flex d-row bg-dark-color justify-content-center">
-            
+        <div id="divHeaderBar" class="d-flex d-row bg-dark-color align-items-start">
+            <button id="btnHamburger" class="d-md-none d-block mx-3"><i id="iconHamburger" class="bi bi-list"></i></button>
         </div>
-        <div class="d-flex flex-row align-items-start col-12 bg-white">
-            <div id="divSideBar" class="col-2 bg-light-color d-flex align-items-center flex-column">
+        <div class="d-flex flex-md-row flex-column align-items-start col-12 bg-white">
+            <div id="divMenuPanel" class="col-md-2 col-12 bg-light-color align-items-center justify-content-center flex-column">
                 
             </div>
-            <div id="divDashboard" class="d-flex flex-column col-10">
+            <div id="divDashboard" class="d-flex flex-column col-md-10 col-12 p-2">
                 
             </div>
         </div>
@@ -106,10 +104,10 @@
     <script src="js/viewResponses.js"></script>
     <script src="js/projects.js"></script>
     <script src="js/groups.js"></script>
-    <!-- <script src="js/groupMembers.js"></script> -->
+    <script src="js/groupMembers.js"></script>
+    <script src="js/menuPanel.js"></script>
     <script src="js/surveyBuilder.js"></script>
-    <script src="js/sideBar.js"></script>
-
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>    
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>

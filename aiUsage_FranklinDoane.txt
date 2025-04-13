@@ -1,2 +1,15 @@
 Prompt: If I create a new element for my html page in a javascript file, then I add an event listener to that element, what happens to the event listener if I empty out part of the html file that contains the element it's assigned to? Do I need to delete it somehow? Does that event listener come back into play if I recreate an element with that same element id?
 Result: I gained knowledge.
+
+Prompt: Hey Copilot. I'm working on a website with bootstrap, and I want to make css style classes that work for different sized screens. I want to make classes that behave like bootstraps col-md-12 or d-sm-block, where they have size elements. Is there a css property that I can set in my style classes to give them this sizing behavior?
+Result: Copilot showed me how to make dynamic classes with @media, and I copied the template for my class.
+Follow-up: Is there a way I can specifically reference bootstrap screen sizes?
+Result: Copilot showed me all of the pixel values for bootstrap screen sizes that I then used in my CSS.
+
+Prompt: Hey Copilot. I have a question for you. I am building a website with bootstrap, and I have a div that is using the bootstrap d-none and d-md-block classes for responsiveness. What I want is for a button to reveal it if the screen is smaller than the bootstrap md size. So I have a button that calls the JQuery slidDown() method on this element when the screen is smaller than md. It's not working though. Could this have to do with th e bootrstrap classes I'm using? Any other ideas? 
+Follow-up: If it wont work with display: none;, how am I supposed to make then element go from being unseen to being seen?
+Result: I didn't use anything from this
+
+Prompt: Hey Copilot. I have my #divMenuPanel element in this website I am creating, and I need some help with it. What I want is for it to always show when the screen size is above medium (i.e. d-md-block class). But when the screen gets smaller I want to to hide unless the #divHambuger element is clicked, at which point I'd like it to slide down. I have that much working. The problem is that the hamburger calls slideToggle(), so when I click it to slide it back up, that's fine, but then if I make the screen size larger, it is still hidden. I'd like it to always show on the larger size no matter how it's toggled on the smaller size. Can you help with this? 
+Result: It showed me how to use JS to deal with resizing using an on resize event listener. That was my main takeaway.
+
