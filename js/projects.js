@@ -1,4 +1,4 @@
-// document.querySelector('#btnSideBarProjects').addEventListener('click', (event) => {
+// document.querySelector('#btnMenuPanelProjects').addEventListener('click', (event) => {
 //     console.log('Project side bar button clicked')
 //     clearDashboard()
 
@@ -20,7 +20,7 @@
 //     populateDashboard(arrDashboardData, loadProjectPage)
 // })
 
-function onClickBtnSideBarProjects() {
+function onClickBtnMenuPanelProjects() {
     console.log('Project side bar button clicked')
     clearDashboard()
 
