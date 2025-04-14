@@ -67,27 +67,33 @@ const objMenuPanelConfigs = {
                 onClick: onClickBtnMenuPanelViewGroupData
             }
         ]
+    },
+    objGroupPageConfig: {
+        pageInfo: {
+            pageId: 4,
+            defaultDashboard: displayGroupMembers
+        },
+        buttons: [
+            // members button
+            {
+                id: 'btnMenuPanelMembers',
+                innerHTML: 'Members',
+                onClick: displayGroupMembers
+            },
+            // surveys button
+            {
+                id: 'btnMenuPanelSurveys',
+                innerHTML: 'Surveys',
+                onClick: viewIssuedSurveys
+            },
+            // feedback button
+            {
+                id: 'btnMenuPanelFeedback',
+                innerHTML: 'Feedback',
+                onClick: viewFeedback
+            }
+        ]
     }
-    // objGroupPageConfig: [
-    //     // members button
-    //     {
-    //         id: 'btnMenuPanelMembers',
-    //         innerHTML: 'Members',
-    //         onClick: displayGroupMembers
-    //     },
-    //     // surveys button
-    //     {
-    //         id: 'btnMenuPanelSurveys',
-    //         innerHTML: 'Surveys',
-    //         onClick: null
-    //     },
-    //     // feedback button
-    //     {
-    //         id: 'btnMenuPanelFeedback',
-    //         innerHTML: 'Feedback',
-    //         onClick: null
-    //     }
-    // ]
 }
 
 

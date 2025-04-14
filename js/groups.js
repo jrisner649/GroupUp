@@ -21,14 +21,24 @@ function onClickBtnMenuPanelGroups() {
             }
         )
     })
-    populateDashboard(objDashboardData)
+    populateDashboard(objDashboardData, displayGroupMembers)
+}
+
+function onClickGroup(strGroupID) {
+    console.log(strGroupID)
 }
 
 
-// function accepts a JSON obj from the API that contains information on each group member
-function displayGroupMembers() {
+// This function displays all of the members of a given group, including their name and contact info
+// This is the func that executes when a group element is clicked on the Home Page, and it
+// is the default dashboard for the Groups Page.
+function displayGroupMembers(strGroupID) {
 
     clearDashboard()
+
+    populateMenuPanel(objMenuPanelConfigs.objGroupPageConfig)
+
+    console.log(`Loading data for Group ID: ${strGroupID}...`)
 
     // this data will eventually be retrieved from the API, for now just use dummy data
     const objGroupMemberInfo = fetchGroupMemberInfo()
@@ -48,7 +58,7 @@ function displayGroupMembers() {
     document.querySelector('#divGroupMembersWrapper').appendChild(objGroupMembersHeader)
 
     // iterate over each group member and add them to the dashboard
-    testData.forEach(member => {
+    objGroupMemberInfo.forEach(member => {
         let objMemberNameHeader = document.createElement('h4')
         objMemberNameHeader.innerHTML = member.name
         document.querySelector('#divGroupMembersWrapper').appendChild(objMemberNameHeader)
@@ -61,4 +71,58 @@ function displayGroupMembers() {
             document.querySelector('#divGroupMembersWrapper').appendChild(objContactMethod) // we add the info to the list
         })
     });
+}
+
+function viewIssuedSurveys() {
+    console.log('Surveys button clicked on Group Page')
+    clearDashboard()
+    addHeaderToDashboard('Surveys Your Project Leader Has Issued')
+}
+
+function viewFeedback() {
+    console.log('View feedback button clicked on Groups Page')
+    clearDashboard()
+    addHeaderToDashboard('View Feedback Your Group Members Have Given You')
+
+    // Get the feedback from the API. It is returned as an array of JSON objects of the form:
+    /*
+    {
+        name: (who gave the feedback)
+        message: (the actual feedback)
+    }
+    */
+    const arrFeedback = fetchFeedback()
+    console.log(arrFeedback)
+
+    // Create a card in the dashboard for each feedback the user has received
+    arrFeedback.forEach(feedback => {
+        createFeedbackCard(feedback)
+    })
+}
+
+function createFeedbackCard(objFeedback) {
+
+    // Create the card
+    let objFeedbackCard = document.createElement('div')
+    objFeedbackCard.class = 'card'
+
+    // Create the card body
+    let objFeedbackCardBody = document.createElement('div')
+    objFeedbackCardBody.class = 'card-body'
+
+    // The header of the card is the name of the feedback giver
+    let objFeedbackHeader = document.createElement('h4')
+    objFeedbackHeader.innerHTML = objFeedback.name
+
+    // Create a paragraph that contains the actual message of the feedback
+    let objFeedbackParagraph = document.createElement('p')
+    objFeedbackParagraph.innerHTML = objFeedback.message
+
+    // Now we can add the elements to the dashboard
+    document.querySelector('#divDashboard').appendChild(objFeedbackCard)
+    objFeedbackCard.appendChild(objFeedbackCardBody)
+    objFeedbackCardBody.appendChild(objFeedbackHeader)
+    objFeedbackCardBody.appendChild(objFeedbackParagraph)
+
+
 }
