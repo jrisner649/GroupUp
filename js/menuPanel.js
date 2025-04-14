@@ -1,5 +1,7 @@
 // class list for MenuPanel button
-var strMenuPanelBtnClassList = "btn-menu-panel p-3 col-10 mb-3";
+var strMenuPanelBtnClassList = "btn-menu-panel p-3 col-10 mb-3 text-center";
+var strBackBtnClassList = "btn-menu-panel p-3 col-4 mb-3 text-center";
+
 
 var intPreviousPageId = 1
 var intCurrentPageId = 1
@@ -109,14 +111,14 @@ function populateMenuPanel(objConfig) {
         btnMenuPanelButton.innerHTML = button.innerHTML
         btnMenuPanelButton.classList = strMenuPanelBtnClassList
         btnMenuPanelButton.addEventListener('click', button.onClick)
-        document.querySelector('#divMenuPanel').appendChild(btnMenuPanelButton)
+        document.querySelector('#divMenuPanelContents').appendChild(btnMenuPanelButton)
     });
 
     let btnBackButton = document.createElement('div')
     btnBackButton.id = 'btnBackButton'
     btnBackButton.innerHTML = 'Back'
-    btnBackButton.classList = strMenuPanelBtnClassList
-    document.querySelector('#divMenuPanel').appendChild(btnBackButton)
+    btnBackButton.classList = strBackBtnClassList
+    document.querySelector('#divMenuPanelContents').appendChild(btnBackButton)
     btnBackButton.addEventListener('click', onClickBackButton)
 }
 
@@ -175,7 +177,7 @@ function findPreviousPage() {
 }
 
 function clearMenuPanel() {
-    let divMenuPanel = document.querySelector('#divMenuPanel')
+    let divMenuPanel = document.querySelector('#divMenuPanelContents')
     divMenuPanel.innerHTML = ''
 }
 
