@@ -125,3 +125,19 @@ button {
     color: white;
     font-size: 60px;
 }
+.question-container {
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    margin-bottom: 20px;
+}
+
+.question-container h4 {
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.form-check {
+    margin-left: 20px;
+}
