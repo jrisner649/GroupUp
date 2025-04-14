@@ -67,27 +67,33 @@ const objMenuPanelConfigs = {
                 onClick: onClickBtnMenuPanelViewGroupData
             }
         ]
+    },
+    objGroupPageConfig: {
+        pageInfo: {
+            pageId: 4,
+            defaultDashboard: displayGroupMembers
+        },
+        buttons: [
+            // members button
+            {
+                id: 'btnMenuPanelMembers',
+                innerHTML: 'Members',
+                onClick: displayGroupMembers
+            },
+            // surveys button
+            {
+                id: 'btnMenuPanelSurveys',
+                innerHTML: 'Surveys',
+                onClick: viewIssuedSurveys
+            },
+            // feedback button
+            {
+                id: 'btnMenuPanelFeedback',
+                innerHTML: 'Feedback',
+                onClick: viewFeedback
+            }
+        ]
     }
-    // objGroupPageConfig: [
-    //     // members button
-    //     {
-    //         id: 'btnMenuPanelMembers',
-    //         innerHTML: 'Members',
-    //         onClick: displayGroupMembers
-    //     },
-    //     // surveys button
-    //     {
-    //         id: 'btnMenuPanelSurveys',
-    //         innerHTML: 'Surveys',
-    //         onClick: null
-    //     },
-    //     // feedback button
-    //     {
-    //         id: 'btnMenuPanelFeedback',
-    //         innerHTML: 'Feedback',
-    //         onClick: null
-    //     }
-    // ]
 }
 
 
@@ -110,7 +116,7 @@ function populateMenuPanel(objConfig) {
     btnBackButton.id = 'btnBackButton'
     btnBackButton.innerHTML = 'Back'
     btnBackButton.classList = strMenuPanelBtnClassList
-    document.querySelector('#divMenuPanelContents').appendChild(btnBackButton)
+    document.querySelector('#divMenuPanel').appendChild(btnBackButton)
     btnBackButton.addEventListener('click', onClickBackButton)
 }
 
