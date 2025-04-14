@@ -61,7 +61,7 @@ function loadProject(strProjectID) {
 
     intCurrentPageId = 2
 
-    populateSideBar(objSideBarConfigs.objProjectPageConfig) // The side bar is populated with new buttons to manage the project that was clicked
+    populateMenuPanel(objMenuPanelConfigs.objProjectPageConfig) // The side bar is populated with new buttons to manage the project that was clicked
 
     
     const objUserProjectData = fetchUserProjects() // Call the API to retrieve the project data
@@ -86,7 +86,7 @@ function loadProject(strProjectID) {
 }
 
 // Adds surveys that have been made to the dashboard so that the user can decide which survey to view data for
-function onClickBtnSideBarViewResponses() {
+function onClickBtnMenuPanelViewResponses() {
     console.log('View responses button clicked')
 
     clearDashboard()

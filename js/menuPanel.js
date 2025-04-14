@@ -110,7 +110,7 @@ function populateMenuPanel(objConfig) {
     btnBackButton.id = 'btnBackButton'
     btnBackButton.innerHTML = 'Back'
     btnBackButton.classList = strMenuPanelBtnClassList
-    document.querySelector('#divMenuPanelContents').appendChild(btnBackButton)
+    document.querySelector('#divMenuPanel').appendChild(btnBackButton)
     btnBackButton.addEventListener('click', onClickBackButton)
 }
 

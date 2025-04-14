@@ -15,7 +15,7 @@ function onClickSurvey(strSurveyID) {
 
     intCurrentPageId = 3
 
-    populateSideBar(objSideBarConfigs.objViewResponsesConfig)
+    populateMenuPanel(objMenuPanelConfigs.objViewResponsesConfig)
 
     clearDashboard()
 
@@ -28,7 +28,7 @@ function onClickSurvey(strSurveyID) {
 
 }
 
-function onClickBtnSideBarViewGroupData() {
+function onClickBtnMenuPanelViewGroupData() {
     clearDashboard()
     addHeaderToDashboard("Select Which Group's Data to View")
     const arrGroups = fetchGroups(strCurrentProjectID)
