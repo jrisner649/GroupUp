@@ -10,11 +10,11 @@
 </head>
 <body class="bg-light-color">
 
-    <div id="divLandingPage" class="bg-white" style="display: none;">
+    <div id="divLandingPage" class="bg-white" style="display: block;">
         <div id="divLandingPageHeaderBar" class="d-flex justify-content-space-between align-items-center mb-5 bg-dark-color">
             <h1 class="group-up-logo mx-4" style="color: lightgreen;">GroupUp (this will be logo)</h1>
-            <button class="sign-up-button">Sign Up</button>
-            <button class="login-button">Login</button>
+            <button class="sign-up-button" id="btnLandingPageSignUp">Sign Up</button>
+            <button class="login-button" id="btnLandingPageLogin">Login</button>
         </div>
         <div id="divLandingPageBody" class="container align-items-center flex-end">
             <h1>What is GroupUp?</h1>
@@ -36,15 +36,14 @@
             </div>
             <hr/>
             <h1>Get started today!</h1>
-            <button class="mb-5">Sign Up</button>
+            <button class="mb-5" id="btnLandingPageSignUpBottom">Sign Up</button>
         </div>
         <footer id="ftLandingPageFooter"class="d-flex align-items-center justify-content-center bg-dark-color">
             <p style="color: lightgreen">Seth Risner and Franklin Doane</p>
         </footer>
     </div>
-
-    <div class="d-flex justify-content-center align-items-center mt-5 mb-5 d-none">
-        <form id="formLogin" class="card bg-dark col-6" style="display: block;">
+    <div id="divAccountPages" class="d-flex justify-content-center align-items-center mt-5 mb-5 d-none">
+        <form id="formLogin" class="card bg-dark col-6" style="display: none;">
             <div class="card-body d-flex flex-column mx-3 mt-2">
                 <h1 class="text-center light-color">Login</h1>
                 <label id="lblEmailLogin" for="txtEmailLogin" class="form-label mt-3 light-color">Email</label>
@@ -83,7 +82,7 @@
             </div>
         </form>
     </div>
-    <div class="d-flex flex-column col-12">
+    <div id="divMainContent" class="d-flex flex-column col-12 d-none">
         <div id="divHeaderBar" class="d-flex d-row bg-dark-color align-items-start">
             <button id="btnHamburger" class="d-md-none d-block mx-3"><i id="iconHamburger" class="bi bi-list"></i></button>
         </div>
@@ -91,7 +90,7 @@
             
             <div id="divMenuPanel" class="col-md-3 col-12 bg-light-color">
                 <div id="divMenuPanelContents" class="d-flex flex-column col-12 align-items-center justify-content-center p-4">
-
+    
                 </div>
             </div>
             <div id="divDashboard" class="d-flex flex-column col-md-9 col-12 p-2">
@@ -99,7 +98,9 @@
             </div>
         </div>
     </div>
-
+    
+    <script src="js/landing.js"></script>
+    <script src="js/login.js"></script>
     <script src="js/fetch.js"></script>
     <script src="js/lib/apexcharts.min.js"></script>
     <script src="js/app.js"></script>
