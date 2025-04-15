@@ -125,6 +125,12 @@ button {
     color: white;
     font-size: 60px;
 }
+#btnBackButton {
+
+    color: white;
+    background-color: black;
+
+}
 .question-container {
     padding: 15px;
     border: 1px solid #ddd;

@@ -1,6 +1,6 @@
 // class list for MenuPanel button
-var strMenuPanelBtnClassList = "btn-menu-panel p-3 col-10 mb-3 text-center";
-var strBackBtnClassList = "btn-menu-panel p-3 col-4 mb-3 text-center";
+var strMenuPanelBtnClassList = "btn-menu-panel p-3 col-12 mb-1 mt-1 text-center";
+var strBackBtnClassList = "p-3 col-6 mt-4 text-center";
 
 
 var intPreviousPageId = 1
