@@ -69,9 +69,14 @@
     gap: 100px
 }
 .placeholder-img {
-    max-width:300px;
-    max-height:300px;
+    max-width: 400px;
+    max-height: 300px;
 }
+.placeholder-img2 {
+    max-width: 300px;
+    max-height: 300px;
+}
+
 .response-card {
     border: 1px solid #ddd;
     border-radius: 8px;

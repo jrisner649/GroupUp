@@ -35,7 +35,12 @@ document.querySelector('#btnLogin').addEventListener('click', (event) => {
         Swal.fire({
             title: "Login successful!",
             icon: "success"
-          });
+        })
+        // Since the login was successful, we will display the main page
+        .then(() => {
+            document.querySelector('#divAccountPages').classList.add("d-none")
+            document.querySelector('#divMainContent').classList.remove("d-none")
+        })
     }
 
 })
@@ -111,7 +116,8 @@ document.querySelector('#btnRegister').addEventListener('click', (event) => {
         Swal.fire({
             title: "Account registration successful!",
             icon: "success"
-          });
+        })
+        
     }
 
 })
