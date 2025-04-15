@@ -38,8 +38,12 @@ document.querySelector('#btnLogin').addEventListener('click', (event) => {
         })
         // Since the login was successful, we will display the main page
         .then(() => {
-            document.querySelector('#divAccountPages').classList.add("d-none")
-            document.querySelector('#divMainContent').classList.remove("d-none")
+            document.querySelector('#formLogin').classList.add("d-none");
+            document.querySelector('#divAccountsPage').classList.add('d-none');
+            document.querySelector('#divMainContent').classList.remove("d-none");
+
+            // load group content
+            onClickBtnMenuPanelGroups();
         })
     }
 
@@ -47,8 +51,8 @@ document.querySelector('#btnLogin').addEventListener('click', (event) => {
 
 // handle swapping from the login form to the registration form
 document.querySelector('#btnToRegister').addEventListener('click', (event) => {
-    document.querySelector('#formLogin').style.display = 'none';
-    document.querySelector('#formRegister').style.display = 'block';
+    document.querySelector('#formLogin').classList.add("d-none");
+    document.querySelector('#formRegister').classList.remove("d-none");
 })
 
 // input validation for registration
@@ -117,6 +121,11 @@ document.querySelector('#btnRegister').addEventListener('click', (event) => {
             title: "Account registration successful!",
             icon: "success"
         })
+        .then(() => {
+            document.querySelector('#formLogin').classList.add("d-none");
+            document.querySelector('#divAccountsPage').classList.add('d-none');
+            document.querySelector('#divMainContent').classList.remove("d-none");
+        })
         
     }
 
@@ -124,8 +133,12 @@ document.querySelector('#btnRegister').addEventListener('click', (event) => {
 
 // handle swapping from the registration page to the login page
 document.querySelector('#btnToLogin').addEventListener('click', (event) => {
-    document.querySelector('#formRegister').style.display = 'none';
-    document.querySelector('#formLogin').style.display = 'block';
+
+    // hide register
+    document.querySelector('#formRegister').classList.add('d-none');
+
+    // unhide login
+    document.querySelector('#formLogin').classList.remove('d-none');
 })
 
     

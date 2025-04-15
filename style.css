@@ -2,13 +2,19 @@
     background-color: rgb(116, 160, 125);
 }
 .bg-lightgrey-color {
-    background-color: rgb(185, 185, 185);
+    background-color: rgb(165, 165, 165);
 }
 .bg-dark-color {
     background-color: rgb(34, 39, 43);
 }
+.bg-dark2-color {
+    background-color: rgb(58, 57, 64);
+}
 .bg-darkblue-color {
     background-color: rgb(41, 75, 107);
+}
+.bg-orange-color {
+    background-color: rgb(219, 136, 48);
 }
 .btn-menu-panel {
     color: rgb(26, 35, 28);
@@ -20,6 +26,9 @@
     cursor: pointer;
     color: white;
 }
+.dashboard-element:hover {
+    cursor: pointer;
+}
 .btn-menu-panel:active{
     border: none;
     color: white;
@@ -27,7 +36,7 @@
 .bg-primary-color {
     background-color: rgb(219, 136, 48);
 }
-.bg-white {
+.bg-white-color {
     background-color: rgb(255, 255, 255);
 }
 .required-color {
@@ -48,35 +57,6 @@
 .btn-link {
     color: #479ceb;
 }
-.container {
-    display: flex;
-    flex-direction: column;
-    row-gap: 10px;
-    column-gap: 20px;
-}
-.group-up-logo{
-    flex-grow: 4;
-}
-.sign-up-button{
-    flex-grow: 1;
-}
-.login-button{
-    flex-grow: 1;
-}
-.flex-container {
-    display: flex;
-    justify-content: flex-end;
-    gap: 100px
-}
-.placeholder-img {
-    max-width: 400px;
-    max-height: 300px;
-}
-.placeholder-img2 {
-    max-width: 300px;
-    max-height: 300px;
-}
-
 .response-card {
     border: 1px solid #ddd;
     border-radius: 8px;
@@ -97,7 +77,7 @@
     margin-left: 20px;
 }
 hr {
-    border-top: 2px solid white;
+    border-top: 2px solid rgb(0, 0, 0);
 }
 button {
     background-color: transparent;
@@ -119,6 +99,9 @@ button {
 #divLandingPageHeaderBar {
     height: 15vh;
 }
+#divAccountsPageHeaderBar {
+    height: 12vh;
+}
 #ftLandingPageFooter {
     height: 15vh;
 }
@@ -133,7 +116,7 @@ button {
 #btnBackButton {
 
     color: white;
-    background-color: black;
+    background-color: rgb(26, 35, 28);
 
 }
 .question-container {

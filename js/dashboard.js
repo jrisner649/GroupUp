@@ -14,8 +14,8 @@ function populateDashboard(arrData, funcOnClick) {
     const strRowClasses = "d-flex flex-md-row flex-column col-12 align-items-center";
 
     // id and class template for each element
-    const strElementIdTemplate = "divDashboardElement";
-    const strElementClasses = "card col-md-3 col-9 mx-4 my-3 bg-lightgrey-color";
+    const strElementIdTemplate = "btnDashboardElement";
+    const strElementClasses = "dashboard-element card col-md-3 col-9 mx-4 my-3 bg-lightgrey-color";
 
     // fetch element html
     fetch("components/dashboardElement.html")
@@ -45,7 +45,7 @@ function populateDashboard(arrData, funcOnClick) {
             intElementCount ++;
     
             // create new element
-            let objNewElement = document.createElement('div');
+            let objNewElement = document.createElement('button');
             let strNewElementId = strElementIdTemplate + intElementCount;
             objNewElement.setAttribute("id", strNewElementId);
             objNewElement.setAttribute("class", strElementClasses);
@@ -57,8 +57,8 @@ function populateDashboard(arrData, funcOnClick) {
             document.querySelector(`#${strRowIdTemplate + intRowCount}`).appendChild(objNewElement);
 
             // set element text
-            document.querySelector(`#${strNewElementId} h1`).innerHTML = jsonElement.header;
-            document.querySelector(`#${strNewElementId} h4`).innerHTML = jsonElement.subheader;
+            document.querySelector(`#${strNewElementId} h2`).innerHTML = jsonElement.header;
+            document.querySelector(`#${strNewElementId} h5`).innerHTML = jsonElement.subheader;
 
             // create event listener for that element
             document.querySelector(`#${strNewElementId}`).addEventListener('click', () => {funcOnClick(jsonElement.uid)});

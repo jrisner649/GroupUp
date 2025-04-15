@@ -98,7 +98,6 @@ const objMenuPanelConfigs = {
     }
 }
 
-
 function populateMenuPanel(objConfig) {
     clearMenuPanel()
     let divMenuPanel = document.querySelector('#divMenuPanel')
@@ -116,7 +115,7 @@ function populateMenuPanel(objConfig) {
 
     let btnBackButton = document.createElement('div')
     btnBackButton.id = 'btnBackButton'
-    btnBackButton.innerHTML = 'Back'
+    btnBackButton.innerHTML = '<h6>Back</h6>'
     btnBackButton.classList = strBackBtnClassList
     document.querySelector('#divMenuPanelContents').appendChild(btnBackButton)
     btnBackButton.addEventListener('click', onClickBackButton)
