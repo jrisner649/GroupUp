@@ -4,46 +4,67 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GroupUp</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" integrity="sha384-tViUnnbYAV00FLIhhi3v/dWt3Jxw4gZQcNoSCxCIFNJVCx7/D55/wXsrNIRANwdD" crossorigin="anonymous">
     <link href="style.css" rel="stylesheet">
 </head>
 <body class="bg-light-color">
 
-    <div id="divLandingPage" class="bg-white" style="display: block;">
-        <div id="divLandingPageHeaderBar" class="d-flex justify-content-space-between align-items-center mb-5 bg-dark-color">
-            <h1 class="group-up-logo mx-5" style="color: lightgreen;">GroupUp</h1>
-            <button class="sign-up-button" id="btnLandingPageSignUp">Sign Up</button>
-            <button class="login-button" id="btnLandingPageLogin">Login</button>
+    <div id="divLandingPage" class="bg-white">
+        <div id="divLandingPageHeaderBar" class="d-flex align-items-center mb-2 bg-dark-color col-12">
+            <div class="d-flex flex-row col-6">
+                <h1 class="mx-5" style="color: lightgreen;">GroupUp</h1>
+            </div>
+            <div class="d-flex flex-sm-row flex-column justify-content-end align-items-end col-6">
+                <button class="btn btn-primary col-sm-4 col-8 mx-sm-0 mx-3 my-sm-0 my-2" id="btnLandingPageLogin" type="button">Login</button>
+                <button class="btn btn-primary col-sm-4 col-8 mx-sm-4 mx-3" id="btnLandingPageSignUp" type="button">Sign Up</button>
+            </div>
         </div>
-        <div id="divLandingPageBody" class="container align-items-center flex-end">
+        <div id="divLandingPageBody" class="p-5">
             <h1>What is GroupUp?</h1>
-            <div class="flex-container">
-                    <p id="paraGroupUpDescription">
-                        GroupUp is a revolutionary platform designed to bring people together for collaborative projects, events, and shared interests. Whether you're looking to form a study group, organize a community event, or find teammates for a creative endeavor, GroupUp makes it easy to connect with like-minded individuals. Our platform is built with simplicity and efficiency in mind, ensuring that users can quickly find and join groups that align with their goals and passions.
-                        At its core, GroupUp is about fostering connections and enabling collaboration. With intuitive tools for group management, communication, and event planning, users can focus on what matters most: achieving their objectives and building meaningful relationships. From hobbyists to professionals, GroupUp caters to a diverse audience, offering features that adapt to a wide range of needs.
-                        Signing up is quick and hassle-free. Once you're registered, you can explore a variety of groups based on categories, interests, or location. Each group has its own dedicated space for discussions, file sharing, and event scheduling, making it easier than ever to stay organized and engaged. Our advanced search and recommendation system ensures that you find the perfect match for your interests.
-                        GroupUp also prioritizes user safety and privacy. With robust moderation tools and customizable privacy settings, you can feel confident in your interactions and focus on building connections. Our team is committed to creating a positive and inclusive environment for all users.
-                        Ready to get started? Join GroupUp today and take the first step toward achieving your goals with the power of collaboration. Whether you're starting a new project or joining an existing one, GroupUp is here to help you succeed. Together, we can accomplish more.
-                    </p>
-                <img class="placeholder-img" src="https://media.istockphoto.com/id/1443245439/photo/business-meeting-businesswoman-woman-office-portrait-job-career-happy-businessman-teamwork.jpg?s=612x612&w=0&k=20&c=1ZR02c1UKfGdBCNWzzKlrwrVZuEiOqnAKcKF4V_t038=">
+            <div class="flex-md-row flex-column d-flex mt-md-5 mt-4 mb-4 align-items-center">
+                <div class="d-flex col-md-7 col-12 align-items-center justify-content-center">
+                    <h3 id="paraGroupUpDescription" class="mx-3 mb-4 col-md-8 col-11 text-center">
+                        GroupUp is a team work management system for acdemics, the workplace, or wherever group projects can be found.
+                    </h3>
+                </div>
+                <img id="imgLandingPage" class="col-md-4 col-10" src="https://media.istockphoto.com/id/1443245439/photo/business-meeting-businesswoman-woman-office-portrait-job-career-happy-businessman-teamwork.jpg?s=612x612&w=0&k=20&c=1ZR02c1UKfGdBCNWzzKlrwrVZuEiOqnAKcKF4V_t038=">
             </div>
             <hr/>
             <h1>How does it work?</h1>
-            <div class="flex-container">
-                <img class="placeholder-img2" src="https://fellow.app/wp-content/uploads/2022/01/team-collaboration.jpg">
-                <p>With GroupUp, you can either create a new project or join an existing one. Once part of a project, leaders have the ability to assign groups to participants, ensuring efficient collaboration and task distribution. Project leaders can also issue surveys to gather valuable feedback from group members, enabling insights into individual and team performance. This fosters a culture of accountability and continuous improvement, enhancing the overall quality of teamwork.</p>
+            <div class="flex-md-row flex-column d-flex mt-md-5 mt-4 mb-4 align-items-center">
+                <img id="imgLandingPage2" class="col-md-4 col-10" src="https://fellow.app/wp-content/uploads/2022/01/team-collaboration.jpg">
+                <div class="d-flex col-md-7 col-12 align-items-center justify-content-center">
+                    <h3 id="paraGroupUpDescription" class="mx-3 mb-4 col-md-8 col-11 text-center">
+                        With GroupUp, you can either create a new project or join an existing one. Project leaders have the ability to assign groups to participants, ensuring efficient collaboration and task distribution.
+                    </h3>
+                </div>
+            </div>
+            <hr/>
+            <div class="flex-row d-flex mt-5 mb-4">
+                <div class="d-flex col-12 align-items-center justify-content-center">
+                    <h3 id="paraGroupUpDescription" class="mx-3 col-8 text-center">
+                        Project leaders can issue surveys to gather valuable feedback from group members, enabling insights into individual and team performance.
+                    </h3>
+                </div>
             </div>
             <hr/>
             <h1>Get started today!</h1>
-            <button class="mb-5" id="btnLandingPageSignUpBottom">Sign Up</button>
+            <div class="d-flex flex-column align-items-center">
+                <button class="btn btn-primary mt-3 mb-5" type="button" id="btnLandingPageSignUpBottom">Sign Up</button>
+            </div>
         </div>
         <footer id="ftLandingPageFooter"class="d-flex align-items-center justify-content-center bg-dark-color">
             <p style="color: lightgreen">Seth Risner and Franklin Doane</p>
         </footer>
     </div>
-    <div id="divAccountPages" class="d-flex justify-content-center align-items-center mt-5 mb-5 d-none">
-        <form id="formLogin" class="card bg-dark col-6" style="display: none;">
+    <div id="divAccountsPage" class="d-flex flex-column justify-content-center align-items-center mb-5 d-none">
+        <div id="divAccountsPageHeaderBar" class="d-flex justify-content-space-between align-items-center mb-4 bg-dark-color col-12">
+            <h1 class="group-up-logo mx-5" style="color: lightgreen;">GroupUp</h1>
+        </div>
+        <form id="formLogin" class="card bg-dark col-lg-6 col-md-8 col-11 d-none">
             <div class="card-body d-flex flex-column mx-3 mt-2">
                 <h1 class="text-center light-color">Login</h1>
                 <label id="lblEmailLogin" for="txtEmailLogin" class="form-label mt-3 light-color">Email</label>
@@ -56,7 +77,7 @@
                 <button id="btnToRegister" class="btn btn-link mt-1 col-12" type="button">Need an account? Click to register</button>
             </div>
         </form>
-        <form id="formRegister" class="card bg-dark col-6" style="display: none;">
+        <form id="formRegister" class="card bg-dark col-lg-6 col-md-8 col-11 d-none">
             <div class="card-body d-flex flex-column mx-3 mt-2">
                 <h1 class="text-center light-color">Register</h1>
                 <label id="lblFirstNameRegister" for="txtFirstNameRegister" class="form-label mt-3 light-color">First Name *</label>
@@ -86,14 +107,14 @@
         <div id="divHeaderBar" class="d-flex d-row bg-dark-color align-items-start">
             <button id="btnHamburger" class="d-md-none d-block mx-3"><i id="iconHamburger" class="bi bi-list"></i></button>
         </div>
-        <div class="d-flex flex-md-row flex-column align-items-center col-12 bg-white">
+        <div class="d-flex flex-md-row flex-column align-items-center col-12">
             
             <div id="divMenuPanel" class="col-md-2 col-12 bg-light-color">
                 <div id="divMenuPanelContents" class="d-flex flex-column col-12 align-items-center justify-content-center">
 
                 </div>
             </div>
-            <div id="divDashboard" class="d-flex flex-column col-md-10 col-12 p-2">
+            <div id="divDashboard" class="d-flex flex-column col-md-10 col-12 p-2 bg-white-color">
                 
             </div>
         </div>
