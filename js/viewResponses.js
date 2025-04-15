@@ -209,7 +209,16 @@ function displayGroupResponses(strGroupID) {
 
         // Add the member's name as the card title
         const memberName = document.createElement('h3');
-        memberName.textContent = memberResponse.memberName;
+
+
+        memberName.textContent = memberResponse.memberName + " evaluating Frankin Doane";
+
+
+        // This is just a quick fix to prevent "Franklin Doane evaluating Franklin Doane"
+        if (memberResponse.memberName == 'Franklin Doane') {
+            memberName.textContent = 'Franklin Doane evaluating Seth Risner'
+        }
+
         memberCard.appendChild(memberName);
 
         // Iterate over each question in the survey
@@ -256,6 +265,10 @@ function displayGroupResponses(strGroupID) {
 
             // Append the question container to the member card
             memberCard.appendChild(questionContainer);
+
+            let btnApproveFeedback = document.createElement('button')
+            btnApproveFeedback.innerHTML = "Approve Feedback"
+            memberCard.appendChild(btnApproveFeedback)
         });
 
         // Append the member card to the dashboard

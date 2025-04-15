@@ -87,7 +87,7 @@ function viewIssuedSurveys() {
     arrGroupMembers.forEach(member => {
         arrDashboardData.push({
             header: objSurvey.title,
-            subheader: "Evaluate " + member.name,
+            subheader: "Evaluate " + member.name + " (responses are public)",
             uid: objSurvey.surveyid
         })
     })
