@@ -4,9 +4,14 @@
 
 let strCurrentProjectID = '' // Keep track with what project the user clicked on
 
+let boolInProjectsTab = true // Used to change the functionality of the plus button depending on if the user is in 
+                             // the Project tab or the Group tab on the Home Page
+
+
 // Fires when the user clicks the projects menu panel button in the Home Page
 function onClickBtnMenuPanelProjects() {
     console.log('Project side bar button clicked')
+    boolInProjectsTab = true
     clearDashboard() 
 
     const divProjectsWrapper = document.createElement('div')
@@ -47,25 +52,47 @@ function createPlusButton() {
     let btnPlusProject = document.querySelector('#btnPlus');
     btnPlusProject.classList.remove('d-none');
 
-    // If the user clicks the button, we will fire a sweet alert that has options for creating and joining a project
+    // The plus button acts different according to which tab the user is on in the home page
     btnPlusProject.addEventListener('click', () => {
-        Swal.fire({
-            title: "Create a project and invite project members, or join an existing project using a project code.",
-            showDenyButton: true,
-            showCancelButton: true,
-            confirmButtonText: "Create a Project",
-            denyButtonText: "Join a Project",
-          }).then((result) => {
-            // Fire a success alert if they clicked confirm
-            if (result.isConfirmed) {
-              Swal.fire("Project created!", "", "success");
-            } 
-            // Fire an alert containing a text box if they pressed join a project
-            // It says result denied because the "deny" button is used for the join button
-            else if (result.isDenied) {
-              Swal.fire({title: "Input a project code:", input: "text"}, "");
-            }
-        });
+        if (boolInProjectsTab) {
+            Swal.fire({
+                title: "Create a project and invite project members, or join an existing project using a project code.",
+                showDenyButton: true,
+                showCancelButton: true,
+                confirmButtonText: "Create a Project",
+                denyButtonText: "Join a Project",
+              }).then((result) => {
+                // Fire a success alert if they clicked confirm
+                if (result.isConfirmed) {
+                  Swal.fire("Project created!", "", "success");
+                } 
+                // Fire an alert containing a text box if they pressed join a project
+                // It says result denied because the "deny" button is used for the join button
+                else if (result.isDenied) {
+                  Swal.fire({title: "Input a project code:", input: "text"}, "");
+                }
+            });
+        }
+        else {
+            Swal.fire({
+                title: "Create a group or join an existing group.",
+                showCancelButton: true,
+                showDenyButton: true,
+                confirmButtonText: "Create a Group",
+                denyButtonText: "Join a Group",
+              }).then((result) => {
+                // Fire a success alert if they clicked confirm
+                if (result.isConfirmed) {
+                  Swal.fire("Group Created!", "", "success");
+                } 
+                // Fire an alert containing a text box if they pressed join a group
+                // It says result denied because the "deny" button is used for the join button
+                else if (result.isDenied) {
+                  Swal.fire({title: "Input a Group Code:", input: "text"}, "");
+                }
+            });
+        }
+        
     })
     return btnPlusProject
 }
