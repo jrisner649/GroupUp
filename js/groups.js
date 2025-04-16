@@ -1,5 +1,6 @@
 // When the groups side bar button is clicked, the dashboard should be populated with the groups the user is in
 function onClickBtnMenuPanelGroups() {
+    boolInProjectsTab = false // Do this so that the plus button in the header bar knows what to do
     clearDashboard()
 
     // add a header indicating that groups are being displayed
