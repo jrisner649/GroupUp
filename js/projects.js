@@ -4,10 +4,20 @@ function onClickBtnMenuPanelProjects() {
     console.log('Project side bar button clicked')
     clearDashboard() 
 
+    const divProjectsWrapper = document.createElement('div')
+    divProjectsWrapper.className = 'd-flex justify-content-between align-items-center'
+    document.querySelector('#divDashboard').appendChild(divProjectsWrapper)
+
     // this header goes at the top of the dashboard
     const objProjectsHeader = document.createElement('h1')
     objProjectsHeader.innerHTML = 'Projects'
-    document.querySelector('#divDashboard').appendChild(objProjectsHeader)
+    divProjectsWrapper.appendChild(objProjectsHeader)
+
+    // create the plus button that allows users to either create or join a project
+    const btnPlusProject = createPlusButton()
+    divProjectsWrapper.appendChild(btnPlusProject)
+
+
 
     const objUserProjectData = fetchUserProjects() // fetch the projects the user is in from the API
     
@@ -17,7 +27,7 @@ function onClickBtnMenuPanelProjects() {
         arrDashboardData.push(
             {
                 header: project.name,
-                subheader: ' ',
+                subheader: "Project Code: " + project.projectid,
                 uid: project.projectid
             }
         )
@@ -26,6 +36,32 @@ function onClickBtnMenuPanelProjects() {
     // Now that we have built the dashboard data, we can let the populate dashboard func handle the rest
     // We pass in the loadProject function so that each dashboard element knows what to do when it is clicked
     populateDashboard(arrDashboardData, loadProject)
+}
+
+// Create the plus button that is used to either create or join an existing project
+function createPlusButton() { 
+    const btnPlusProject = document.createElement('button')
+    btnPlusProject.class = 'btn'
+    btnPlusProject.type = 'button'
+    btnPlusProject.innerHTML = `<i class="bi bi-plus"></i>`
+    btnPlusProject.style = "font-size: 4rem; color: lightgreen;"
+    btnPlusProject.addEventListener('click', () => {
+        Swal.fire({
+            title: "Create a project and invite project members, or join an existing project using a project code.",
+            showDenyButton: true,
+            showCancelButton: true,
+            confirmButtonText: "Create a Project",
+            denyButtonText: "Join a Project",
+          }).then((result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+              Swal.fire("Project created!", "", "success");
+            } else if (result.isDenied) {
+              Swal.fire({title: "Input a project code:", input: "text"}, "");
+            }
+        });
+    })
+    return btnPlusProject
 }
 
 // Return an array of all the groups in a given project
