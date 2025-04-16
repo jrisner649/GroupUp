@@ -147,12 +147,16 @@ function onClickBackButton() {
             console.log('Already at the home page')
             break
         case 2:
-            // If the previous page is the project page, set the previous page to the home page
+            // Go back to home page from Project Management
             intCurrentPageId = 1
             break
         case 3:
-            // If the previous page is the view responses page, set the previous page to the project page
+            // Go back to Project Management from View Responses
             intCurrentPageId = 2
+            break
+        case 4:
+            // Go back to Home Page from Group Page 
+            intCurrentPageId = 1
             break
         default:
             console.error('Unknown page ID')
