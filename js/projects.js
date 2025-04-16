@@ -19,10 +19,7 @@ function onClickBtnMenuPanelProjects() {
     divProjectsWrapper.appendChild(objProjectsHeader)
 
     // create the plus button that allows users to either create or join a project
-    const btnPlusProject = createPlusButton()
-    divProjectsWrapper.appendChild(btnPlusProject)
-
-
+    createPlusButton()
 
     const objUserProjectData = fetchUserProjects() // fetch the projects the user is in from the API
     
@@ -45,11 +42,10 @@ function onClickBtnMenuPanelProjects() {
 
 // Create the plus button that is used to either create or join an existing project
 function createPlusButton() { 
-    const btnPlusProject = document.createElement('button')
-    btnPlusProject.class = 'btn'
-    btnPlusProject.type = 'button'
-    btnPlusProject.innerHTML = `<i class="bi bi-plus"></i>`
-    btnPlusProject.style = "font-size: 4rem; color: lightgreen;"
+   
+    // unhide button
+    let btnPlusProject = document.querySelector('#btnPlus');
+    btnPlusProject.classList.remove('d-none');
 
     // If the user clicks the button, we will fire a sweet alert that has options for creating and joining a project
     btnPlusProject.addEventListener('click', () => {

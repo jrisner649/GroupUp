@@ -1,8 +1,11 @@
 .bg-green-color {
-    background-color: rgb(52, 128, 67); 
+    background-color: rgb(64, 128, 77); 
 }
 .bg-light-color {
     background-color: rgb(116, 160, 125);
+}
+.text-light-color {
+    color: rgb(116, 160, 125);
 }
 .bg-lightgrey-color {
     background-color: rgb(165, 165, 165);
@@ -18,6 +21,9 @@
 }
 .bg-orange-color {
     background-color: rgb(219, 136, 48);
+}
+.text-orange-color {
+    color: rgb(219, 136, 48);
 }
 .btn-menu-panel {
     color: rgb(26, 35, 28);
@@ -59,6 +65,9 @@
 }
 .btn-link {
     color: #479ceb;
+}
+.btn-header:hover {
+    color: white;
 }
 .response-card {
     border: 1px solid #ddd;
@@ -112,15 +121,20 @@ button {
     overflow-y:auto;
     height: 85vh;
 }
+#btnBackButton {
+    color: white;
+    background-color: rgb(26, 35, 28);
+    cursor: pointer;
+}
 #iconHamburger {
     color: white;
     font-size: 60px;
 }
-#btnBackButton {
-
-    color: white;
-    background-color: rgb(26, 35, 28);
-
+#iconPlus {
+    font-size: 90px;
+}
+#iconSignOut {
+    font-size: 55px;
 }
 .question-container {
     padding: 15px;

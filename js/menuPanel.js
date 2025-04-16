@@ -8,7 +8,7 @@
 
 // class list for MenuPanel button
 var strMenuPanelBtnClassList = "btn-menu-panel p-3 col-12 mb-1 mt-1 text-center";
-var strBackBtnClassList = "p-3 col-6 mt-4 text-center";
+var strBackBtnClassList = "p-3 col-md-6 col-3 mt-4 text-center mb-4";
 
 var intCurrentPageId = 1 // used for back button logic
 
@@ -119,7 +119,7 @@ function populateMenuPanel(objConfig) {
     
     // Iterate through the buttons in the config and add them to the menu panel
     objConfig.buttons.forEach(button => {
-        let btnMenuPanelButton = document.createElement('div')
+        let btnMenuPanelButton = document.createElement('button')
         btnMenuPanelButton.id = button.id
         btnMenuPanelButton.innerHTML = button.innerHTML
         btnMenuPanelButton.classList = strMenuPanelBtnClassList
@@ -128,7 +128,7 @@ function populateMenuPanel(objConfig) {
     });
 
     // We also need to create a back button
-    let btnBackButton = document.createElement('div')
+    let btnBackButton = document.createElement('button')
     btnBackButton.id = 'btnBackButton'
     btnBackButton.innerHTML = '<h6>Back</h6>'
     btnBackButton.classList = strBackBtnClassList
