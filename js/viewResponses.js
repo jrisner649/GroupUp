@@ -1,4 +1,11 @@
-let strCurrentSurveyID = ''
+/*
+    This file handles functions for the View Responses Pgae.
+    The View Responses Page is accessed from the Project Management Page
+    when the project leader clicks on a specific survey to view data for.
+*/
+
+
+let strCurrentSurveyID = '' // Keep track of what survey data is being viewed for
 
 // Navigates the user to the View Responses page for the clicked survey
 function onClickSurvey(strSurveyID) {
@@ -13,17 +20,15 @@ function onClickSurvey(strSurveyID) {
 
     console.log(strCurrentProjectID)
 
-    intCurrentPageId = 3
+    intCurrentPageId = 3 // change the page id since we are changing pages
 
-    populateMenuPanel(objMenuPanelConfigs.objViewResponsesConfig)
+    populateMenuPanel(objMenuPanelConfigs.objViewResponsesConfig) // menu panel must be changed since we are changing pages
 
     clearDashboard()
 
     addHeaderToDashboard('Project Data')
 
-    
-
-    // TODO: Fill in the dashboard with charts showing aggregate data for the survey response
+    // Display bar charts indicating statistics for the survey responses
     displayProjectData(strCurrentSurveyID)
 
 }
@@ -45,27 +50,27 @@ function onClickBtnMenuPanelViewGroupData() {
     populateDashboard(arrDashboardData, displayGroupResponses)
 }
 
-// Displays charts for every likert and multiple choice question in a given survey
+// Displays charts for every likert questions in a given survey
 function displayProjectData(strSurveyID) {
 
+    // Find the survey in question. We get strSurveyID from the dashboard element
     const arrSurveys = fetchProjectLeaderSurveys()
-    const objSurvey = arrSurveys.find(survey => survey.surveyid == strSurveyID)
+    const objSurvey = arrSurveys.find(survey => survey.surveyid == strSurveyID) 
 
     console.log(objSurvey)
 
+    // Get the likert questions
     const arrLikertQuestions = objSurvey.questions.filter(question => question.questionType == 'likert')
 
     console.log(`Likert Questions: `)
     console.log(arrLikertQuestions)
 
-    const arrMultipleChoiceQuestions = objSurvey.questions.filter(question => question.questionType == 'multipleChoice')
-
-    console.log(`Multiple Choice Questions: ${arrMultipleChoiceQuestions}`)
-
+    // Get the available options for the questions
     const arrLikertOptions = arrLikertQuestions.map(question => question.options)
 
     console.log(`Likert Options: ${arrLikertOptions}`)
     
+    // Create a div for the charts
     const divCharts = document.createElement('div')
     divCharts.id = 'divCharts'
     document.querySelector('#divDashboard').appendChild(divCharts)
@@ -89,22 +94,22 @@ function displayProjectData(strSurveyID) {
         console.log(`Responses for question "${question.questionText}":`);
         console.log(arrResponses);
 
-        // Count the occurrences of each answer choice
+        // Count the occurrences of each answer choice. This will be our y-axis.
         const objResponseCount = countResponses(arrResponses);
         console.log("Count of every response: ");
         console.log(objResponseCount);
 
-        // Create the x-axis
+        // Create the x-axis. This will be the possible responses
         const arrXAxis = createXAxis(objResponseCount);
         console.log('X Axis: ');
         console.log(arrXAxis);
 
-        // Create the y-axis
+        // Create the y-axis. Occurrences of an answer.
         const arrYAxis = createYAxis(objResponseCount);
         console.log('Y Axis: ');
         console.log(arrYAxis);
 
-        // Name of the series
+        // Name of the series is the question
         const strName = question.questionText;
         console.log(strName);
 
@@ -180,6 +185,8 @@ function createYAxis(objResponseCount) {
 }
 
 // This function was created by Copilot
+// It's purpose is to show the responses that group members have given to the survey.
+// strGroupID is given from the dashboard element
 function displayGroupResponses(strGroupID) {
     clearDashboard(); // Clear the dashboard
 
@@ -209,7 +216,16 @@ function displayGroupResponses(strGroupID) {
 
         // Add the member's name as the card title
         const memberName = document.createElement('h3');
-        memberName.textContent = memberResponse.memberName;
+
+
+        memberName.textContent = memberResponse.memberName + " evaluating Frankin Doane";
+
+
+        // This is just a quick fix to prevent "Franklin Doane evaluating Franklin Doane"
+        if (memberResponse.memberName == 'Franklin Doane') {
+            memberName.textContent = 'Franklin Doane evaluating Seth Risner'
+        }
+
         memberCard.appendChild(memberName);
 
         // Iterate over each question in the survey
@@ -256,6 +272,10 @@ function displayGroupResponses(strGroupID) {
 
             // Append the question container to the member card
             memberCard.appendChild(questionContainer);
+
+            let btnApproveFeedback = document.createElement('button')
+            btnApproveFeedback.innerHTML = "Approve Feedback"
+            memberCard.appendChild(btnApproveFeedback)
         });
 
         // Append the member card to the dashboard
