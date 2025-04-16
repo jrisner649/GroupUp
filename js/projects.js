@@ -14,9 +14,7 @@ function onClickBtnMenuPanelProjects() {
     document.querySelector('#divDashboard').appendChild(divProjectsWrapper)
 
     // this header goes at the top of the dashboard
-    const objProjectsHeader = document.createElement('h1')
-    objProjectsHeader.innerHTML = 'Projects'
-    divProjectsWrapper.appendChild(objProjectsHeader)
+    addHeaderToDashboard("Projects")
 
     // create the plus button that allows users to either create or join a project
     createPlusButton()
@@ -128,14 +126,12 @@ function loadProject(strProjectID) {
 
 // Adds surveys that have been made to the dashboard so that the user can decide which survey to view data for
 function onClickBtnMenuPanelViewResponses() {
-    console.log('View responses button clicked')
+    console.log('View survey responses')
 
     clearDashboard()
 
     // Create the header
-    let objViewResponsesHeader = document.createElement('h1')
-    objViewResponsesHeader.innerHTML = "Select Which Survey's Data to View"
-    document.querySelector('#divDashboard').appendChild(objViewResponsesHeader)
+    addHeaderToDashboard("View survey responses");
 
     // Iterate over every survey and add them to the dashboard
     const arrSurveys = fetchProjectLeaderSurveys() // Make the API call to get the surveys that the user had made
