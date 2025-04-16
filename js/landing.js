@@ -35,4 +35,3 @@ document.querySelector('#btnLandingPageLogin').addEventListener('click', () => {
     document.querySelector('#formLogin').classList.remove('d-none');
 
 });
-

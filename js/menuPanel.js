@@ -1,17 +1,25 @@
+/*
+    This file contains the logic for handling the menu panel.
+    All of the possible button configurations are stored in
+    an object. When a page transition occurs, the populateMenuPanel
+    function is called and the menu panel buttons change.
+*/
+
+
 // class list for MenuPanel button
 var strMenuPanelBtnClassList = "btn-menu-panel p-3 col-12 mb-1 mt-1 text-center";
 var strBackBtnClassList = "p-3 col-6 mt-4 text-center";
 
+var intCurrentPageId = 1 // used for back button logic
 
-var intPreviousPageId = 1
-var intCurrentPageId = 1
-
-// side bar configs
+// Menu panel configs
+// Every page has its own config
 const objMenuPanelConfigs = {
+    // Page that displays the projects the user leads and the groups the user is in
     objHomePageConfig: {
         pageInfo: {
-            defaultDashboard: onClickBtnMenuPanelProjects,
-            pageId: 1
+            defaultDashboard: onClickBtnMenuPanelProjects, // What should load when the user clicks the back button to get here?
+            pageId: 1 // Used for tracking the current page for the back button logic
         },
         buttons: [
             {
@@ -26,6 +34,7 @@ const objMenuPanelConfigs = {
             }
         ]
     },
+    // Project management page
     objProjectPageConfig: {
         pageInfo: {
             defaultDashboard: loadProject,
@@ -52,6 +61,7 @@ const objMenuPanelConfigs = {
             }
         ]
     },
+    // Page where the project leader views data about a survey
     objViewResponsesConfig: {
         pageInfo: {
             defaultDashboard: onClickSurvey,
@@ -70,6 +80,7 @@ const objMenuPanelConfigs = {
             }
         ]
     },
+    // Page where the user views data about a group they are in
     objGroupPageConfig: {
         pageInfo: {
             pageId: 4,
@@ -98,12 +109,15 @@ const objMenuPanelConfigs = {
     }
 }
 
+// We call this function anytime we change a page. It accepts a configuration listed above, and 
+// changes the menu panel buttons accordingly.
 function populateMenuPanel(objConfig) {
     clearMenuPanel()
     let divMenuPanel = document.querySelector('#divMenuPanel')
 
-    intCurrentPageId = objConfig.pageInfo.pageId
+    intCurrentPageId = objConfig.pageInfo.pageId // we need to keep track of what page we are on for the back button
     
+    // Iterate through the buttons in the config and add them to the menu panel
     objConfig.buttons.forEach(button => {
         let btnMenuPanelButton = document.createElement('div')
         btnMenuPanelButton.id = button.id
@@ -113,6 +127,7 @@ function populateMenuPanel(objConfig) {
         document.querySelector('#divMenuPanelContents').appendChild(btnMenuPanelButton)
     });
 
+    // We also need to create a back button
     let btnBackButton = document.createElement('div')
     btnBackButton.id = 'btnBackButton'
     btnBackButton.innerHTML = '<h6>Back</h6>'
@@ -121,9 +136,10 @@ function populateMenuPanel(objConfig) {
     btnBackButton.addEventListener('click', onClickBackButton)
 }
 
+// Take the user back one page in the tree.
+// The tree can be found in GroupUp.png
 function onClickBackButton() {
 
-    console.log('Previous Page ID: ' + intPreviousPageId)
     console.log('Current Page ID: ' + intCurrentPageId)
     switch (intCurrentPageId) {
         case 1:
@@ -132,12 +148,10 @@ function onClickBackButton() {
             break
         case 2:
             // If the previous page is the project page, set the previous page to the home page
-            intPreviousPageId = 1
             intCurrentPageId = 1
             break
         case 3:
             // If the previous page is the view responses page, set the previous page to the project page
-            intPreviousPageId = 2
             intCurrentPageId = 2
             break
         default:
@@ -162,10 +176,9 @@ function findPreviousPage() {
     for (const configKey of Object.keys(objMenuPanelConfigs)) {
         const config = objMenuPanelConfigs[configKey];
         console.log(config.pageInfo.pageId);
-        console.log(intPreviousPageId);
 
         // Check if the pageId matches intPreviousPageId
-        if (config.pageInfo.pageId === intPreviousPageId) {
+        if (config.pageInfo.pageId === intCurrentPageId) {
             return config; // Return the matching config
         }
     }

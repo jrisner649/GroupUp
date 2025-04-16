@@ -1,5 +1,10 @@
-let strCurrentProjectID = ''
+/*
+    This file is used for handling logic for the Project Management Page
+*/
 
+let strCurrentProjectID = '' // Keep track with what project the user clicked on
+
+// Fires when the user clicks the projects menu panel button in the Home Page
 function onClickBtnMenuPanelProjects() {
     console.log('Project side bar button clicked')
     clearDashboard() 
@@ -45,6 +50,8 @@ function createPlusButton() {
     btnPlusProject.type = 'button'
     btnPlusProject.innerHTML = `<i class="bi bi-plus"></i>`
     btnPlusProject.style = "font-size: 4rem; color: lightgreen;"
+
+    // If the user clicks the button, we will fire a sweet alert that has options for creating and joining a project
     btnPlusProject.addEventListener('click', () => {
         Swal.fire({
             title: "Create a project and invite project members, or join an existing project using a project code.",
@@ -53,10 +60,13 @@ function createPlusButton() {
             confirmButtonText: "Create a Project",
             denyButtonText: "Join a Project",
           }).then((result) => {
-            /* Read more about isConfirmed, isDenied below */
+            // Fire a success alert if they clicked confirm
             if (result.isConfirmed) {
               Swal.fire("Project created!", "", "success");
-            } else if (result.isDenied) {
+            } 
+            // Fire an alert containing a text box if they pressed join a project
+            // It says result denied because the "deny" button is used for the join button
+            else if (result.isDenied) {
               Swal.fire({title: "Input a project code:", input: "text"}, "");
             }
         });
@@ -95,11 +105,10 @@ function loadProject(strProjectID) {
     // Place a header at the top of the dashboard, the default tab in the projects page is the groups in the projet
     addHeaderToDashboard('Groups in Project')
 
-    intCurrentPageId = 2
+    intCurrentPageId = 2 // We are changing pages to the Project Management Page since the user clicked on a project
 
     populateMenuPanel(objMenuPanelConfigs.objProjectPageConfig) // The side bar is populated with new buttons to manage the project that was clicked
 
-    
     const objUserProjectData = fetchUserProjects() // Call the API to retrieve the project data
 
     // We need to find the specific project that was clicked on, so we filter by the uuid of the project
@@ -127,6 +136,7 @@ function onClickBtnMenuPanelViewResponses() {
 
     clearDashboard()
 
+    // Create the header
     let objViewResponsesHeader = document.createElement('h1')
     objViewResponsesHeader.innerHTML = "Select Which Survey's Data to View"
     document.querySelector('#divDashboard').appendChild(objViewResponsesHeader)

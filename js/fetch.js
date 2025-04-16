@@ -245,18 +245,3 @@ function fetchGroupMemberInfo() {
 }
 
 
-// Function executes when the user tries to view their received feedback on the Groups Page
-function fetchFeedback() {
-    const objFeedback = [
-        {
-            name: 'Franklin Doane', // the group member who gave the feedback
-            message: 'It was a pleasure working with you on this project!'
-        },
-        {
-            name: 'Seth Risner', // the group member who gave the feedback
-            message: 'You need to comment your code better <3'
-        }
-    ]
-    return objFeedback
-    
-}
