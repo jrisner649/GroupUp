@@ -123,6 +123,7 @@ function populateMenuPanel(objConfig) {
         btnMenuPanelButton.id = button.id
         btnMenuPanelButton.innerHTML = button.innerHTML
         btnMenuPanelButton.classList = strMenuPanelBtnClassList
+        btnMenuPanelButton.tabIndex = "0"
         btnMenuPanelButton.addEventListener('click', button.onClick)
         document.querySelector('#divMenuPanelContents').appendChild(btnMenuPanelButton)
     });
