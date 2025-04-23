@@ -75,23 +75,21 @@ function clearDashboard() {
     // clear html
     document.querySelector('#divDashboard').innerHTML = "";
 
+    document.querySelector('#headerMain').innerHTML = "";
+    document.querySelector('#headerMainSmall').innerHTML = "";
+
     // reset counts
     intElementCount = 0;
     intRowCount = 0;
 
 }
 
-// create header
-function addHeader() {
 
-    
-
-}
 
 // Append an h1 tag to the dashboard
 function addHeaderToDashboard(strInnerHTML) {
-    let objHeader = document.createElement('h1')
-    objHeader.innerHTML = strInnerHTML
-    document.querySelector('#divDashboard').appendChild(objHeader)
+    
+    document.querySelector('#headerMain').innerHTML = strInnerHTML;
+    document.querySelector('#headerMainSmall').innerHTML = strInnerHTML;
 }
 

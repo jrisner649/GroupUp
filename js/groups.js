@@ -4,9 +4,7 @@ function onClickBtnMenuPanelGroups() {
     clearDashboard()
 
     // add a header indicating that groups are being displayed
-    const objGroupsHeader = document.createElement('h1')
-    objGroupsHeader.innerHTML = 'Groups'
-    document.querySelector('#divDashboard').appendChild(objGroupsHeader)
+    addHeaderToDashboard("Groups");
 
     const objUserGroupData = fetchUserGroups() // make a call to the API to get all the groups the user is in
 

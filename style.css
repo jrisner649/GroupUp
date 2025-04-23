@@ -88,6 +88,11 @@
 .response-card .form-check {
     margin-left: 20px;
 }
+.header-bar-text {
+    color: white;
+    font-size: 72px;
+
+}
 hr {
     border-top: 2px solid rgb(0, 0, 0);
 }
@@ -96,7 +101,16 @@ button {
     border: none;
 }
 #divHeaderBar {
-    height: 15vh;
+    height: 20vh;
+}
+/* remove view height setting at med or smaller */
+@media (max-width: 991.98px) {
+    #divHeaderBar {
+        height: auto;
+    }
+}
+#divHeaderBarContent {
+    height: 20vh;
 }
 #divMenuPanel {
     height: 85vh;

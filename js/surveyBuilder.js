@@ -12,6 +12,8 @@ function loadSurveyBuilder() {
         .then(response => response.text())
         .then(html => {
             clearDashboard();
+            addHeaderToDashboard("Create Survey");
+
             let divSurveyBuilderWrapper = document.createElement('div');
             divSurveyBuilderWrapper.id = 'divSurveyBuilderWrapper';
             divSurveyBuilderWrapper.className = 'scrollable-container'; // Add a class for styling
