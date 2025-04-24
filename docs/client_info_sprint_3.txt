@@ -1,0 +1,101 @@
+Database
+    People
+        - Email
+        - Name
+        - Bcrypted passwords
+        - Last login dates
+        - Socials
+        - Preferred method of contact
+        - Account creation date
+    Courses
+        - Name
+        - Leader
+        - UUID
+        - Course info (code and number)?
+        - Time info (term, start and end dates)
+        - group number
+        - People in Course
+            - First and last Name
+            - Email
+            - The role (leader or group member)
+            - other courses?
+            - group membership
+    Reviews
+        - Date created
+        - Due date
+        - Questions in the survey
+            - Question
+            - Possible responses
+            - Question type
+
+Tables
+    tblUsers
+        - First Name
+        - Last Name
+        - Email
+        - passwords
+        - creation date
+        - last login date
+    tblCourses
+        - Name
+        - number
+        - section
+        - term
+        - start date
+        - end date
+    tblPhone
+        - email
+        - nation code
+        - area code
+        - phone number
+        - status
+    tblSocials
+        - email
+        - social type
+        - social @
+    tblEnrollments
+        - course id
+        - user id
+    tblAssessments
+        - course id
+        - start date
+        - end date
+        - status
+        - type
+    tblAssessmentQuestions
+        - question type
+        - options
+        - question narrative
+        - helper text
+    tblAssessmentResponse
+        - assessment id
+        - user id
+        - question id
+        - responses
+        - public
+        - target user
+    tblCourseGroups
+        - group Name
+        - course id
+    tblGroupMembers
+        - group id
+        - user id
+    tblSessions
+        - user id
+        - start date
+        - last used date
+        - status
+    tblLogs
+        - description
+        - type (error, info, warning)
+        - time
+
+Implementation
+    - No triggers bc they lock up tables
+    - Table for 
+        - socials
+        - last login dates
+    - Send email with Gmail's SMTP 
+
+
+Due Final Datetime end (due May 5th 10am)

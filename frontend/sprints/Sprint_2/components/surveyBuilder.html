@@ -1,0 +1,32 @@
+<div id="surveyBuilder" class="container mt-5">
+    <form id="surveyForm">
+        <div id="questionsContainer">
+            <!-- Questions will be dynamically added here -->
+        </div>
+        <button type="button" class="btn btn-success mt-3" onclick="addQuestion()">Add Question</button>
+        <button type="submit" class="btn btn-primary mt-3">Send Survey to All Groups</button>
+        <button type="button" class="btn btn-primary mt-3" id="btnScheduleSurvey">Schedule Send</button>
+        <button type="button" class="btn btn-primary mt-3" id="btnPrivateSurveyToggle">Make Responses Private</button>
+        <button type="button" class="btn btn-secondary mt-3" onclick="previewSurvey()">Preview Survey</button>
+    </form>
+</div>
+
+<!-- Add this modal for the survey preview -->
+<div class="modal fade" id="previewModal" tabindex="-1" aria-labelledby="previewModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="previewModalLabel">Survey Preview</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="previewContainer">
+                    <!-- Survey preview will be dynamically added here -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,11 @@
+
+Features
+    - Private feedback to instructor
+    - Public feedback to everyone
+    - give scores
+    - course access code
+    - first deliverable is login and registration
+    - every team member must turn it in
+    - 
+
+

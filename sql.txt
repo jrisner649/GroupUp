@@ -1,0 +1,119 @@
+-- Create tblUsers
+CREATE TABLE tblUsers (
+    UserID TEXT PRIMARY KEY,
+    FirstName TEXT NOT NULL,
+    LastName TEXT NOT NULL,
+    Email TEXT UNIQUE NOT NULL,
+    Passwords TEXT NOT NULL,
+    CreationDate DATETIME DEFAULT CURRENT_TIMESTAMP,
+    LastLoginDate DATETIME
+);
+
+-- Create tblCourses
+CREATE TABLE tblCourses (
+    CourseID TEXT PRIMARY KEY,
+    Name TEXT NOT NULL,
+    Number TEXT NOT NULL,
+    Section TEXT NOT NULL,
+    Term TEXT NOT NULL,
+    StartDate DATE NOT NULL,
+    EndDate DATE NOT NULL
+);
+
+-- Create tblPhone
+CREATE TABLE tblPhone (
+    PhoneID TEXT PRIMARY KEY,
+    Email TEXT NOT NULL,
+    NationCode TEXT NOT NULL,
+    AreaCode TEXT NOT NULL,
+    PhoneNumber TEXT NOT NULL,
+    Status TEXT NOT NULL,
+    FOREIGN KEY (Email) REFERENCES tblUsers (Email)
+);
+
+-- Create tblSocials
+CREATE TABLE tblSocials (
+    SocialID TEXT PRIMARY KEY,
+    Email TEXT NOT NULL,
+    SocialType TEXT NOT NULL,
+    SocialHandle TEXT NOT NULL,
+    FOREIGN KEY (Email) REFERENCES tblUsers (Email)
+);
+
+-- Create tblEnrollments
+CREATE TABLE tblEnrollments (
+    EnrollmentID TEXT PRIMARY KEY,
+    CourseID TEXT NOT NULL,
+    UserID TEXT NOT NULL,
+    FOREIGN KEY (CourseID) REFERENCES tblCourses (CourseID),
+    FOREIGN KEY (UserID) REFERENCES tblUsers (UserID)
+);
+
+-- Create tblAssessments
+CREATE TABLE tblAssessments (
+    AssessmentID TEXT PRIMARY KEY,
+    CourseID TEXT NOT NULL,
+    StartDate DATE NOT NULL,
+    EndDate DATE NOT NULL,
+    Status TEXT NOT NULL,
+    Type TEXT NOT NULL,
+    FOREIGN KEY (CourseID) REFERENCES tblCourses (CourseID)
+);
+
+-- Create tblAssessmentQuestions
+CREATE TABLE tblAssessmentQuestions (
+    QuestionID TEXT PRIMARY KEY,
+    QuestionType TEXT NOT NULL,
+    Options TEXT,
+    QuestionNarrative TEXT NOT NULL,
+    HelperText TEXT
+);
+
+-- Create tblAssessmentResponse
+CREATE TABLE tblAssessmentResponse (
+    ResponseID TEXT PRIMARY KEY,
+    AssessmentID TEXT NOT NULL,
+    UserID TEXT NOT NULL,
+    QuestionID TEXT NOT NULL,
+    Responses TEXT NOT NULL,
+    Public BOOLEAN NOT NULL,
+    TargetUser TEXT,
+    FOREIGN KEY (AssessmentID) REFERENCES tblAssessments (AssessmentID),
+    FOREIGN KEY (UserID) REFERENCES tblUsers (UserID),
+    FOREIGN KEY (QuestionID) REFERENCES tblAssessmentQuestions (QuestionID)
+);
+
+-- Create tblCourseGroups
+CREATE TABLE tblCourseGroups (
+    GroupID TEXT PRIMARY KEY,
+    GroupName TEXT NOT NULL,
+    CourseID TEXT NOT NULL,
+    FOREIGN KEY (CourseID) REFERENCES tblCourses (CourseID)
+);
+
+-- Create tblGroupMembers
+CREATE TABLE tblGroupMembers (
+    GroupMemberID TEXT PRIMARY KEY,
+    GroupID TEXT NOT NULL,
+    UserID TEXT NOT NULL,
+    FOREIGN KEY (GroupID) REFERENCES tblCourseGroups (GroupID),
+    FOREIGN KEY (UserID) REFERENCES tblUsers (UserID)
+);
+
+-- Create tblSessions
+CREATE TABLE tblSessions (
+    SessionID TEXT PRIMARY KEY,
+    UserID TEXT NOT NULL,
+    StartDate DATETIME NOT NULL,
+    LastUsedDate DATETIME NOT NULL,
+    Status TEXT NOT NULL,
+    FOREIGN KEY (UserID) REFERENCES tblUsers (UserID)
+);
+
+-- Create tblLogs
+CREATE TABLE tblLogs (
+    LogID TEXT PRIMARY KEY,
+    Description TEXT NOT NULL,
+    Type TEXT NOT NULL CHECK (Type IN ('error', 'info', 'warning')),
+    Time DATETIME DEFAULT CURRENT_TIMESTAMP
+);

@@ -1,0 +1,168 @@
+.bg-green-color {
+    background-color: rgb(64, 128, 77); 
+}
+.bg-light-color {
+    background-color: rgb(116, 160, 125);
+}
+.text-light-color {
+    color: rgb(116, 160, 125);
+}
+.bg-lightgrey-color {
+    background-color: rgb(165, 165, 165);
+}
+.bg-dark-color {
+    background-color: rgb(34, 39, 43);
+}
+.bg-dark2-color {
+    background-color: rgb(58, 57, 64);
+}
+.bg-darkblue-color {
+    background-color: rgb(41, 75, 107);
+}
+.bg-orange-color {
+    background-color: rgb(219, 136, 48);
+}
+.text-orange-color {
+    color: rgb(219, 136, 48);
+}
+.btn-menu-panel {
+    color: rgb(26, 35, 28);
+    font-size: 28px;
+    border-bottom: 3px solid rgb(26, 35, 28);
+}
+.btn-menu-panel:hover{
+    border-bottom: 3px solid transparent;
+    cursor: pointer;
+    color: white;
+}
+.dashboard-element:hover {
+    cursor: pointer;
+}
+.btn-menu-panel:active{
+    border: none;
+    color: white;
+}
+.bg-primary-color {
+    background-color: rgb(219, 136, 48);
+}
+.bg-white-color {
+    background-color: rgb(255, 255, 255);
+}
+.required-color {
+    color: #bf310a;
+}
+.light-color {
+    color: white;
+}
+.btn-primary {
+    color: black;
+    border: 0;
+    background-color: rgb(219, 136, 48);
+}
+.btn-primary:hover {
+    background-color: rgb(55, 63, 70);
+    color: white;
+}
+.btn-link {
+    color: #479ceb;
+}
+.btn-header:hover {
+    color: white;
+}
+.response-card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9; /* Light background for distinction */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    margin-bottom: 20px;
+}
+.response-card h3 {
+    margin-bottom: 10px;
+    color: #333;
+}
+.response-card p {
+    margin: 5px 0;
+    color: #555;
+}
+.response-card .form-check {
+    margin-left: 20px;
+}
+.header-bar-text {
+    color: white;
+    font-size: 72px;
+
+}
+hr {
+    border-top: 2px solid rgb(0, 0, 0);
+}
+button {
+    background-color: transparent;
+    border: none;
+}
+#divHeaderBar {
+    height: 20vh;
+}
+/* remove view height setting at med or smaller */
+@media (max-width: 991.98px) { /*991.98*/
+    #divHeaderBar {
+        height: auto;
+    }
+}
+#divHeaderBarContent {
+    height: 20vh;
+}
+#divMenuPanel {
+    height: 85vh;
+}
+/* remove view height setting at med or smaller */
+@media (max-width: 991.98px) {
+    #divMenuPanel {
+        height: auto;
+        display: none;
+    }
+}
+#divLandingPageHeaderBar {
+    height: 20vh;
+}
+#divAccountsPageHeaderBar {
+    height: 12vh;
+}
+#ftLandingPageFooter {
+    height: 15vh;
+}
+#divDashboard {
+    overflow-y:auto;
+    height: 85vh;
+}
+#btnBackButton {
+    color: white;
+    background-color: rgb(26, 35, 28);
+    cursor: pointer;
+}
+#iconHamburger {
+    color: white;
+    font-size: 60px;
+}
+#iconPlus {
+    font-size: 90px;
+}
+#iconSignOut {
+    font-size: 55px;
+}
+.question-container {
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    margin-bottom: 20px;
+}
+
+.question-container h4 {
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.form-check {
+    margin-left: 20px;
+}
