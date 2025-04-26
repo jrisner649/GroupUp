@@ -19,11 +19,38 @@ var app = express();
 app.use(cors());
 app.use(express.json());
 
+
+
+
+
 // User account registration
+// req body should be in the following format:
+/*
+{
+    "first_name": "John",
+    "last_name": "Doe",
+    "email": "example@example.com",
+    "password": "Password123!",
+    "phone": "+1 (123) 456-7890", // the format of the phone number is flexible, so 11234567890 would also work, etc.
+    "socials": [ // socials is optional
+        {
+            "type": "twitter",
+            "username": "@example"
+        },
+        {
+            "type": "facebook",
+            "username": "@example"
+        }
+    ]
+*/
 app.post('/user', async (req, res, next) => {
     try {
+        // Validate request body
+        if (!req.body || !req.body.first_name || !req.body.last_name || !req.body.email || !req.body.password || !req.body.phone) {
+            return res.status(400).json({ error: "Missing required fields" });
+        }
+        
         // Setup variables to store information about the user's account
-        const strUserID = uuidv4();
         const strFirstName = req.body.first_name;
         const strLastName = req.body.last_name;
         const strEmail = req.body.email.trim().toLowerCase();
@@ -72,7 +99,6 @@ app.post('/user', async (req, res, next) => {
         }
         
         // Ensure the phone number does not exist
-        let blnPhoneExists = true;
         strQuery = "SELECT * FROM tblPhone WHERE nation_code = ? AND area_code = ? AND phone_number = ?";
         arrParams = [objPhone.nationCode, objPhone.areaCode, objPhone.phoneNumber];
         const phoneResult = await allDb(strQuery, arrParams);
@@ -80,34 +106,89 @@ app.post('/user', async (req, res, next) => {
             return res.status(400).json({error: "Phone number is already assoicated with an account"});
         }
 
+
+        
+
         // All checks passed, so we are good to create the account
-        // First, insert into tblUsers
-        // Hash the password
-        strPassword = bcrypt.hashSync(strPassword, intSalt);
-        // Make the query and run it on the database
-        strQuery = `INSERT INTO tblUsers (user_id, first_name, last_name, email, password, creation_datetime, last_used_datetime) VALUES (?, ?, ?, ?, ?, ?, ?)`;
-        arrParams = [strUserID, strFirstName, strLastName, strEmail, strPassword, strCreationDate, strLastDateUsed];
-        await runDb(strQuery, arrParams);
-
-        // Now make an insert into tblPhone
-        strPhoneID = uuidv4();
-        strQuery = 'INSERT INTO tblPhone VALUES (?, ?, ?, ?, ?)';
-        arrParams = [strPhoneID, objPhone.nationCode, objPhone.areaCode, objPhone.phoneNumber, strUserID];
-        await runDb(strQuery, arrParams);
-
-        // Finally, insert into tblSocials if any socials are provided
-        if (arrSocials) {
-            let strSocialID = '';
-            strQuery = 'INSERT INTO tblSocials VALUES (?, ?, ?, ?)';
-            for (intCurrent = 0; intCurrent < arrSocials.length; intCurrent++) {
-                strSocialID = uuidv4();
-                arrParams = [strSocialID, arrSocials[intCurrent].type, arrSocials[intCurrent].username, strUserID];
-                await runDb(strQuery, arrParams);
+        // We need to generate a uuid for 3 tables: tblUsers, tblPhone, and tblSocials
+        // Generate a uuid for tblUsers
+        let strUserID = "";
+        let blnUserIDExists = true;
+        do {
+            strUserID = uuidv4();
+            // Check if the user ID already exists in the database
+            strQuery = "SELECT * FROM tblUsers WHERE user_id = ?";
+            arrParams = [strUserID];
+            const userResult = await allDb(strQuery, arrParams);
+            if (userResult.length === 0) {
+                blnUserIDExists = false; // User ID is unique, exit the loop
             }
-            
-        }
+            // If it exists, generate a new UUID and check again
+        } while (blnUserIDExists);
 
-        res.status(200).json({message: "Account creation successful", user_id: strUserID});
+        // Generate a uuid for tblPhone
+        let strPhoneID = "";
+        let blnPhoneIDExists = true;
+        do {
+            strPhoneID = uuidv4();
+            // Check if the phone ID already exists in the database
+            strQuery = "SELECT * FROM tblPhone WHERE phone_id = ?";
+            arrParams = [strPhoneID];
+            const phoneResult = await allDb(strQuery, arrParams);
+            if (phoneResult.length === 0) {
+                blnPhoneIDExists = false; // Phone ID is unique, exit the loop
+            }
+        } while (blnPhoneIDExists);
+
+        // Generate a uuid for tblSocials
+        let strSocialID = "";
+        let blnSocialIDExists = true;
+        do {
+            strSocialID = uuidv4();
+            // Check if the social ID already exists in the database
+            strQuery = "SELECT * FROM tblSocials WHERE social_id = ?";
+            arrParams = [strSocialID];
+            const socialResult = await allDb(strQuery, arrParams);
+            if (socialResult.length === 0) {
+                blnSocialIDExists = false; // Social ID is unique, exit the loop
+            }
+        } while (blnSocialIDExists);
+
+        // Use a transaction for atomicity
+        db.serialize(() => {
+            db.run("BEGIN TRANSACTION");
+
+            try {
+                // Insert into tblUsers
+                const strUserID = uuidv4();
+                strQuery = `INSERT INTO tblUsers (user_id, first_name, last_name, email, password, creation_datetime, last_used_datetime) VALUES (?, ?, ?, ?, ?, ?, ?)`;
+                arrParams = [strUserID, strFirstName, strLastName, strEmail, strPassword, strCreationDate, strLastDateUsed];
+                db.run(strQuery, arrParams);
+
+                // Insert into tblPhone
+                const strPhoneID = uuidv4();
+                strQuery = 'INSERT INTO tblPhone VALUES (?, ?, ?, ?, ?)';
+                arrParams = [strPhoneID, objPhone.nationCode, objPhone.areaCode, objPhone.phoneNumber, strUserID];
+                db.run(strQuery, arrParams);
+
+                // Insert into tblSocials
+                if (arrSocials) {
+                    strQuery = 'INSERT INTO tblSocials VALUES (?, ?, ?, ?)';
+                    for (const social of arrSocials) {
+                        const strSocialID = uuidv4();
+                        arrParams = [strSocialID, social.type, social.username, strUserID];
+                        db.run(strQuery, arrParams);
+                    }
+                }
+
+                db.run("COMMIT");
+                res.status(200).json({ message: "Account creation successful", user_id: strUserID });
+            } catch (err) {
+                db.run("ROLLBACK");
+                console.error(err);
+                res.status(500).json({ error: "An error occurred while creating the account" });
+            }
+        });
 
 
     }
