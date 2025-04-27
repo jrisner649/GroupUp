@@ -9,7 +9,7 @@ let boolInProjectsTab = true // Used to change the functionality of the plus but
 
 
 // Fires when the user clicks the projects menu panel button in the Home Page
-function onClickBtnMenuPanelProjects() {
+async function onClickBtnMenuPanelProjects() {
     console.log('Project side bar button clicked')
     boolInProjectsTab = true
     clearDashboard() 
@@ -24,16 +24,17 @@ function onClickBtnMenuPanelProjects() {
     // create the plus button that allows users to either create or join a project
     createPlusButton()
 
-    const objUserProjectData = fetchUserProjects() // fetch the projects the user is in from the API
+    const arrUserProjects = await fetchUserProjects() // fetch the projects the user is in from the API
+    console.log(arrUserProjects)
     
     // we must convert the projects to the form accepted by the populate dashboard function
     let arrDashboardData = []
-    objUserProjectData.forEach(project => {
+    arrUserProjects.forEach(project => {
         arrDashboardData.push(
             {
                 header: project.name,
-                subheader: "Project Code: " + project.projectid,
-                uid: project.projectid
+                subheader: "Project Code: " + project.project_id,
+                uid: project.project_id
             }
         )
     })

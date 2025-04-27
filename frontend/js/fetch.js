@@ -158,32 +158,34 @@ function fetchProjectLeaderSurveys() {
     return arrSurveys;
 }
 
+// Function to fetch the projects the user is a leader of
+// This function will be called when the user clicks on the "Projects" button in the menu panel
+async function fetchUserProjects() {
+    try {
+        const response = await fetch(baseURL + `/projects?user_id=${strUserID}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
 
-function fetchUserProjects() {
-    fetch(baseURL + "/projects", {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    })
-    .then((response) => {
-        if (response.ok) {
-            return response.json(); // Parse the response body as JSON for successful requests
-        } else {
-            return response.json().then((errorData) => {
-                // Display the error message from the server
-                Swal.fire({
-                    title: "Oops...",
-                    html: `<p>${errorData.error}</p>`, // Use the error message from the server
-                    icon: "error"
-                });
+        if (!response.ok) {
+            const errorData = await response.json();
+            Swal.fire({
+                title: "Oops...",
+                html: `<p>${errorData.error}</p>`,
+                icon: "error"
             });
+            throw new Error(errorData.error);
         }
-    })
-    .then((data) => {
-        console.log(data); // Handle the data received from the server
-    })
-    return objUserProjectData
+
+        const data = await response.json(); // Parse the response body as JSON
+        console.log(data); // Log the fetched data
+        return data; // Return the fetched data
+    } catch (error) {
+        console.error('Error fetching user projects:', error);
+        return []; // Return an empty array in case of an error
+    }
 }
 
 
