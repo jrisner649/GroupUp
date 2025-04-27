@@ -1,3 +1,5 @@
+let strUserID = 'd0f8e6fd-7b56-4fdb-9fb1-fe5ac8ea64ed'; // this is a test user id, it will be replaced with the actual user id when the user logs in;
+
 // input validation for login form
 document.querySelector('#btnLogin').addEventListener('click', (event) => {
 

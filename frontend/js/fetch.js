@@ -158,46 +158,34 @@ function fetchProjectLeaderSurveys() {
     return arrSurveys;
 }
 
+// Function to fetch the projects the user is a leader of
+// This function will be called when the user clicks on the "Projects" button in the menu panel
+async function fetchUserProjects() {
+    try {
+        const response = await fetch(baseURL + `/projects?user_id=${strUserID}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
 
-function fetchUserProjects() {
-    const objUserProjectData = [
-        {
-            name: 'Project 1',
-            groups: [
-                {
-                    name: 'Group A',
-                    members: [
-                        {
-                            name: 'User 1'
-                        },
-                        {
-                            name: 'User 2'
-                        }
-                    ],
-                    groupid: 'ABC'
-                },
-                {
-                    name: 'Group B',
-                    members: [
-                        {
-                            name: 'User 3'
-                        },
-                        {
-                            name: 'User 4'
-                        }
-                    ],
-                    groupid: 'DEF'
-                }
-            ],
-            projectid: '123'
-        },
-        {
-            name: 'Project 2',
-            groups: [],
-            projectid: '456'
+        if (!response.ok) {
+            const errorData = await response.json();
+            Swal.fire({
+                title: "Oops...",
+                html: `<p>${errorData.error}</p>`,
+                icon: "error"
+            });
+            throw new Error(errorData.error);
         }
-    ]
-    return objUserProjectData
+
+        const data = await response.json(); // Parse the response body as JSON
+        console.log(data); // Log the fetched data
+        return data; // Return the fetched data
+    } catch (error) {
+        console.error('Error fetching user projects:', error);
+        return []; // Return an empty array in case of an error
+    }
 }
 
 
