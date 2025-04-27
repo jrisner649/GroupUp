@@ -3,6 +3,8 @@
     For now, we will simply use sample data to exhibit the functionalities of the website.
 */
 
+const baseURL = "http://localhost:8000"
+
 function fetchProjectLeaderSurveys() {
     const arrSurveys = [
         {

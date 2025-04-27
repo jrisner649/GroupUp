@@ -1,6 +1,6 @@
-
 // input validation for login form
 document.querySelector('#btnLogin').addEventListener('click', (event) => {
+
     // retrieve the values that the user input
     const strEmail = document.querySelector('#txtEmailLogin').value
     const strPassword = document.querySelector('#txtPasswordLogin').value
@@ -57,6 +57,7 @@ document.querySelector('#btnToRegister').addEventListener('click', (event) => {
 
 // input validation for registration
 document.querySelector('#btnRegister').addEventListener('click', (event) => {
+    event.preventDefault();
 
     // retrieve the values that the user input
     const strFirstName = document.querySelector('#txtFirstNameRegister').value
@@ -115,18 +116,56 @@ document.querySelector('#btnRegister').addEventListener('click', (event) => {
             icon: "error"
           });
     }
-    // else, the input is valid and we simulate a successful account registration
+    // else, the input is valid and we can register a new user account
     else {
-        Swal.fire({
-            title: "Account registration successful!",
-            icon: "success"
+
+        // Create the req body
+        const objReqBody = {
+            first_name: strFirstName,
+            last_name: strLastName,
+            email: strEmail,
+            password: strPassword,
+            phone: strPhoneNumber,
+            socials: []
+        };
+
+        // Send the req body to the server
+        fetch(baseURL + '/user', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(objReqBody)
         })
-        .then(() => {
-            document.querySelector('#formLogin').classList.add("d-none");
-            document.querySelector('#divAccountsPage').classList.add('d-none');
-            document.querySelector('#divMainContent').classList.remove("d-none");
+        .then((response) => {
+            if (response.ok) {
+                return response.json(); // Parse the response body as JSON for successful requests
+            } else {
+                return response.json().then((errorData) => {
+                    // Display the error message from the server
+                    Swal.fire({
+                        title: "Oops...",
+                        html: `<p>${errorData.error}</p>`, // Use the error message from the server
+                        icon: "error"
+                    });
+                    throw new Error(errorData.error); // Throw an error to stop further processing
+                });
+            }
         })
-        
+        .then((data) => {
+            console.log('Success:', data);
+            Swal.fire({
+                title: "Registration successful!",
+                icon: "success"
+            });
+            // Take the user to the login page
+            document.querySelector('#formRegister').classList.add("d-none");
+            document.querySelector('#formLogin').classList.remove('d-none');
+
+        })
+        .catch((error) => {
+            console.error(error);
+        });
     }
 
 })
@@ -141,4 +180,4 @@ document.querySelector('#btnToLogin').addEventListener('click', (event) => {
     document.querySelector('#formLogin').classList.remove('d-none');
 })
 
-    
+
