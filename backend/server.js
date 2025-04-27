@@ -67,7 +67,7 @@ app.post("/GroupUp/Project", (req,res,next) => {
     // return if error
     if (boolError) {
 
-        console.log(JSON.stringify({status: "error", message: strErrorMsg}))
+        console.log(JSON.stringify({status: "error", message: strErrorMsg}));
 
         res.status(400).json({status: "error", message: strErrorMsg});
 
