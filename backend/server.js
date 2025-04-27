@@ -249,6 +249,25 @@ const parsePhoneNumber = (phone) => {
     };
 };
 
+// Retrieves the projects that the user is a leader of
+app.get('/projects', async (req, res, next) => {
+    
+    const strUserID = req.body.user_id;
+
+    if (!strUserID) {
+        return res.status(400).json({ error: "Missing user ID" });
+    }
+
+    // Query to get the projects the user is a leader of
+    const strQuery = "SELECT * FROM tblProjects WHERE ? = project_leader";
+    const arrParams = [strUserID];
+    const arrRows = await allDb(strQuery, arrParams);
+    console.log(arrRows);
+    if (arrRows.length === 0) {
+        return res.status(404).json({ error: "No projects found" });
+    }
+    res.status(200).json(arrRows);
+});
 
 app.listen(HTTP_PORT, () => {
     console.log("Listening on", HTTP_PORT);  

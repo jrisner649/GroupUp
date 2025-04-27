@@ -160,43 +160,29 @@ function fetchProjectLeaderSurveys() {
 
 
 function fetchUserProjects() {
-    const objUserProjectData = [
-        {
-            name: 'Project 1',
-            groups: [
-                {
-                    name: 'Group A',
-                    members: [
-                        {
-                            name: 'User 1'
-                        },
-                        {
-                            name: 'User 2'
-                        }
-                    ],
-                    groupid: 'ABC'
-                },
-                {
-                    name: 'Group B',
-                    members: [
-                        {
-                            name: 'User 3'
-                        },
-                        {
-                            name: 'User 4'
-                        }
-                    ],
-                    groupid: 'DEF'
-                }
-            ],
-            projectid: '123'
-        },
-        {
-            name: 'Project 2',
-            groups: [],
-            projectid: '456'
+    fetch(baseURL + "/projects", {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
         }
-    ]
+    })
+    .then((response) => {
+        if (response.ok) {
+            return response.json(); // Parse the response body as JSON for successful requests
+        } else {
+            return response.json().then((errorData) => {
+                // Display the error message from the server
+                Swal.fire({
+                    title: "Oops...",
+                    html: `<p>${errorData.error}</p>`, // Use the error message from the server
+                    icon: "error"
+                });
+            });
+        }
+    })
+    .then((data) => {
+        console.log(data); // Handle the data received from the server
+    })
     return objUserProjectData
 }
 
