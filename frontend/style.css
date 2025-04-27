@@ -91,7 +91,6 @@
 .header-bar-text {
     color: white;
     font-size: 72px;
-
 }
 hr {
     border-top: 2px solid rgb(0, 0, 0);
@@ -104,16 +103,16 @@ button {
     height: 20vh;
 }
 /* remove view height setting at med or smaller */
-@media (max-width: 991.98px) { /*991.98*/
+/*@media (max-width: 991.98px) {
     #divHeaderBar {
-        height: auto;
+        height: 15vh;
     }
-}
+}*/
 #divHeaderBarContent {
     height: 20vh;
 }
 #divMenuPanel {
-    height: 85vh;
+    height: 80vh;
 }
 /* remove view height setting at med or smaller */
 @media (max-width: 991.98px) {
@@ -123,7 +122,7 @@ button {
     }
 }
 #divLandingPageHeaderBar {
-    height: 20vh;
+    height: 25vh;
 }
 #divAccountsPageHeaderBar {
     height: 12vh;
@@ -133,7 +132,7 @@ button {
 }
 #divDashboard {
     overflow-y:auto;
-    height: 85vh;
+    height: 80vh;
 }
 #btnBackButton {
     color: white;
@@ -149,6 +148,16 @@ button {
 }
 #iconSignOut {
     font-size: 55px;
+}
+#imgHeaderLogo {
+    height: 18vh;
+}
+#imgAccountHeaderLogo {
+    height: 10vh;
+}
+#imgMainPageLogo {
+    height: 16vh;
+    width: auto;
 }
 .question-container {
     padding: 15px;

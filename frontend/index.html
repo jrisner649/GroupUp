@@ -15,7 +15,7 @@
     <div id="divLandingPage" class="bg-white">
         <div id="divLandingPageHeaderBar" class="d-flex align-items-center mb-2 bg-dark-color col-12">
             <div class="d-flex flex-row col-6">
-                <h1 class="mx-5" style="color: lightgreen;">GroupUp</h1>
+                <img id="imgHeaderLogo" class="mx-2" src="Logo-White.png" alt="group up logo">
             </div>
             <div class="d-flex flex-sm-row flex-column justify-content-end align-items-end col-6">
                 <button class="btn btn-primary col-sm-4 col-8 mx-sm-0 mx-3 my-sm-0 my-2" id="btnLandingPageLogin" type="button">Login</button>
@@ -27,15 +27,15 @@
             <div class="flex-md-row flex-column d-flex mt-md-5 mt-4 mb-4 align-items-center">
                 <div class="d-flex col-md-7 col-12 align-items-center justify-content-center">
                     <h3 id="paraGroupUpDescription" class="mx-3 mb-4 col-md-8 col-11 text-center">
-                        GroupUp is a team work management system for acdemics, the workplace, or wherever group projects can be found.
+                        GroupUp is a teamwork management system for acdemics, the workplace, or wherever group projects can be found.
                     </h3>
                 </div>
-                <img id="imgLandingPage" class="col-md-4 col-10" src="https://media.istockphoto.com/id/1443245439/photo/business-meeting-businesswoman-woman-office-portrait-job-career-happy-businessman-teamwork.jpg?s=612x612&w=0&k=20&c=1ZR02c1UKfGdBCNWzzKlrwrVZuEiOqnAKcKF4V_t038=">
+                <img id="imgLandingPage" class="col-md-4 col-10" alt="a diverse team collaborating" src="https://media.istockphoto.com/id/1443245439/photo/business-meeting-businesswoman-woman-office-portrait-job-career-happy-businessman-teamwork.jpg?s=612x612&w=0&k=20&c=1ZR02c1UKfGdBCNWzzKlrwrVZuEiOqnAKcKF4V_t038=">
             </div>
             <hr/>
             <h1>How does it work?</h1>
             <div class="flex-md-row flex-column d-flex mt-md-5 mt-4 mb-4 align-items-center">
-                <img id="imgLandingPage2" class="col-md-4 col-10" src="https://fellow.app/wp-content/uploads/2022/01/team-collaboration.jpg">
+                <img id="imgLandingPage2" class="col-md-4 col-10" alt="a team collaborating" src="https://fellow.app/wp-content/uploads/2022/01/team-collaboration.jpg">
                 <div class="d-flex col-md-7 col-12 align-items-center justify-content-center">
                     <h3 id="paraGroupUpDescription" class="mx-3 mb-4 col-md-8 col-11 text-center">
                         With GroupUp, you can either create a new project or join an existing one. Project leaders have the ability to assign groups to participants, ensuring efficient collaboration and task distribution.
@@ -62,7 +62,7 @@
     </div>
     <div id="divAccountsPage" class="d-flex flex-column justify-content-center align-items-center mb-5 d-none">
         <div id="divAccountsPageHeaderBar" class="d-flex justify-content-space-between align-items-center mb-4 bg-dark-color col-12">
-            <h1 class="group-up-logo mx-5" style="color: lightgreen;">GroupUp</h1>
+            <img id="imgAccountHeaderLogo" class="mx-5" src="Logo-White-Inline.png" alt="group up logo">
         </div>
         <form id="formLogin" class="card bg-dark col-lg-6 col-md-8 col-11 d-none">
             <div class="card-body d-flex flex-column mx-3 mt-2">
@@ -107,7 +107,12 @@
         <div id="divHeaderBar" class="d-flex flex-column bg-dark-color">
             <div id="divHeaderBarContent" class="d-flex flex-row justify-content-end align-items-center col-12">
                 <button id="btnHamburger" class="d-md-none d-block mx-3 col-md-0 col-4"><i id="iconHamburger" class="bi bi-list"></i></button>
-                <div class="col-md-10 d-md-block d-none align-items-center justify-content-start">
+                <div class="col-md-2 d-md-block d-none">
+                    <div class="d-flex flex-column justify-content-center align-items-center">
+                        <img id="imgMainPageLogo" class="" src="Logo-White.png" alt="group up logo">
+                    </div>
+                </div>
+                <div class="col-md-8 d-md-block d-none align-items-center justify-content-start">
                     <h1 id="headerMain" class="header-bar-text mx-4"></h1>
                 </div>
                 <div class="d-flex flex-row justify-content-center col-md-1 col-4">
@@ -117,34 +122,32 @@
                     <button id="btnSignOut" class="btn-header text-orange-color" type="button"><i id="iconSignOut" class="bi bi-box-arrow-left"></i></button>
                 </div>
             </div>
-            <div class="col-md-10 col-12 d-md-none d-block align-items-center justify-content-start p-3">
+            <div class="col-md-10 col-12 d-md-none d-block align-items-center justify-content-start">
                 <h1 id="headerMainSmall"class="header-bar-text"></h1>
             </div>
         </div>
-        <div class="d-flex flex-md-row flex-column align-items-center col-12">
+        <div class="d-flex flex-column flex-md-row align-items-center col-12">
             
             <div id="divMenuPanel" class="col-md-2 col-12 bg-green-color">
                 <div id="divMenuPanelContents" class="d-flex flex-column col-12 align-items-center justify-content-center">
 
                 </div>
             </div>
-            <div id="divDashboard" class="d-flex flex-column col-lg-10 col-12 p-2 bg-white-color mt-sm-3">
+            <div id="divDashboard" class="d-flex flex-column col-lg-10 col-12 p-2 bg-white-color">
                 
             </div>
         </div>
     </div>
-    
+    <script scr="js/sessions.js"></script>
     <script src="js/landing.js"></script>
     <script src="js/login.js"></script>
     <script src="js/fetch.js"></script>
     <script src="js/signOut.js"></script>
     <script src="js/lib/apexcharts.min.js"></script>
-    <script src="js/app.js"></script>
     <script src="js/dashboard.js"></script>
     <script src="js/viewResponses.js"></script>
     <script src="js/projects.js"></script>
     <script src="js/groups.js"></script>
-    <script src="js/groupMembers.js"></script>
     <script src="js/surveyBuilder.js"></script>
     <script src="js/menuPanel.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>    

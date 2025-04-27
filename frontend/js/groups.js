@@ -6,6 +6,8 @@ function onClickBtnMenuPanelGroups() {
     // add a header indicating that groups are being displayed
     addHeaderToDashboard("Groups");
 
+    createPlusButton()
+
     const objUserGroupData = fetchUserGroups() // make a call to the API to get all the groups the user is in
 
     let objDashboardData = []
@@ -29,6 +31,9 @@ function onClickBtnMenuPanelGroups() {
 function displayGroupMembers(strGroupID) {
 
     clearDashboard()
+
+    addHeaderToDashboard('Group members');
+
 
     // Since we are changing pages, we need to change the menu panel config to be that of the Groups Page
     populateMenuPanel(objMenuPanelConfigs.objGroupPageConfig)
@@ -72,7 +77,7 @@ function displayGroupMembers(strGroupID) {
 function viewIssuedSurveys() {
     console.log('Surveys button clicked on Group Page')
     clearDashboard()
-    addHeaderToDashboard('Surveys Your Project Leader Has Issued')
+    addHeaderToDashboard('Issued Surveys')
 
     // Fetch data from the API
     const objSurvey = fetchProjectLeaderSurveys()[0]
@@ -175,7 +180,7 @@ function loadSurvey(strSurveyID) {
 function viewFeedback() {
     console.log('View feedback button clicked on Groups Page')
     clearDashboard()
-    addHeaderToDashboard('View Feedback Your Group Members Have Given You')
+    addHeaderToDashboard('View Feedback')
 
 
     const arrSurveys = fetchProjectLeaderSurveys(); // Fetch all surveys

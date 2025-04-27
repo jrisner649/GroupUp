@@ -6,30 +6,35 @@ Main things
     - Survey creation and response
     
 Specific Tasks
-    - F> Fix responsiveness 
+    - \, F> Fix responsiveness 
+    - \, F> add logo
     1. Database
         - S> Generate databases
     2. Login and Registration
         - S> Post | Registration
         - D> Post | Login
+        - ?> Implement session storage on frontend
     3. Project and group creation
-        - F> Post | Project creation
+        - \, F> Post | Project creation
+        - Debug reloading
         - G> Post | Group creation
+            - Add frontend project code receiver
     4. Project management
-        - Get | Group overview
-        - Get | Projects overview
-        - Get | Group info
-        - Get | Project info
+        - G> Get | Group overview
+        - G> Get | Group info
+        - G/S> Post | Join group
+            - Frontend group code receiver
+        - S> Get | Projects overview
+        - S> Get | Project info
     5. Surveys
-        - Get | Surveys created
-        - Get | Surveys received
-        - Post | Survey create
-        - Post |Survey response
-    6. Update frontend
+        - F> Get | Surveys created
+        - D> Get | Surveys received
+        - F> Post | Survey create
+        - D> Post |Survey response
 
 Timeline
     Fri, 25th | Meeting @4
     Fri, 25th | 1, 2, & 3 Completed
     Mon, 28th | Meeting @10
-    Sat, 3rd  | 4, 5, & 6 Completed
+    Sat, 3rd  | 4, 5 Completed
 

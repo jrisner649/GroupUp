@@ -35,7 +35,7 @@ function onClickSurvey(strSurveyID) {
 
 function onClickBtnMenuPanelViewGroupData() {
     clearDashboard()
-    addHeaderToDashboard("Select Which Group's Data to View")
+    addHeaderToDashboard("Select Group")
     const arrGroups = fetchGroups(strCurrentProjectID)
     let arrDashboardData = []
     arrGroups.forEach(group => {

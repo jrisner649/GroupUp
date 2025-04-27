@@ -72,7 +72,7 @@ function displayGroupMembers(strGroupID) {
 function viewIssuedSurveys() {
     console.log('Surveys button clicked on Group Page')
     clearDashboard()
-    addHeaderToDashboard('Surveys Your Project Leader Has Issued')
+    addHeaderToDashboard('Issued Surveys')
 
     // Fetch data from the API
     const objSurvey = fetchProjectLeaderSurveys()[0]

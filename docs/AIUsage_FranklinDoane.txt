@@ -13,3 +13,18 @@ Result: I didn't use anything from this
 Prompt: Hey Copilot. I have my #divMenuPanel element in this website I am creating, and I need some help with it. What I want is for it to always show when the screen size is above medium (i.e. d-md-block class). But when the screen gets smaller I want to to hide unless the #divHambuger element is clicked, at which point I'd like it to slide down. I have that much working. The problem is that the hamburger calls slideToggle(), so when I click it to slide it back up, that's fine, but then if I make the screen size larger, it is still hidden. I'd like it to always show on the larger size no matter how it's toggled on the smaller size. Can you help with this? 
 Result: It showed me how to use JS to deal with resizing using an on resize event listener. That was my main takeaway.
 
+Prompt: Can you please write me a sweet alert here that accepts 2 values. They should be called project name (short text) and project description (long text) and then on confirm, another sweet alert fires saying "Project created"?
+Result: Copilot crafted the Sweet Alert for me In-line.
+
+Prompt: Hey Copilot! This sweet alert is firing on the front end and it seems like the page is reloading after. Even though this is the error message, it seems like at least from the backend that there are no problems. Is this because the way I am referencing the response status is incorrect? Or is it something else?
+Result: It showed me that I need to reference the status before I get the response json. I used this information to re-write part of it.
+
+Prompt: Hey Copilot! It seems like this sweet alert is firing, and then the website is reloading so I can never see what happens. I don't know why the website does this, if its reloading or if it's crashing, but I don't want it to do that. Can you help?
+Result: I added a .then() to my Swal.fire but it didn't help
+Follow-up: Hey Copilot! Can you help me with my event listener for my plus button? This button creates a new project. The problem is in projects.js. Inisde of the the .then for the fetch function on line 94 is the problem. My backend code indicates that the post is successful but then when that happens my whole website just resets to the landing page before I can see any sweet alerts. It's either crashing or something is making it reload for some reason. And idea why?
+Result: It told me to use event.preventDefault() which didn't help at all, amongst other things.
+Follow-up: That doesn't seem to be helping. Can you take another look at the code? I think that it's crashing for some reson, maybe not reloading per say. Any other ideas?
+Result: Nothing that appeared to be helpful.
+Follow-up: Hmm, I think I've pinpointed the problem. For whatever reason, the page seems to be reloading after the confirm button is hit for the sweet alert that is defined on line 72 of the current file projects.js. Any ideas why this could be happening?
+
+
