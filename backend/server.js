@@ -291,6 +291,125 @@ app.post('/user', async (req, res, next) => {
 
 });
 
+// Group Creation, add creating user to group immediately
+app.post('/groups', (req, res) => {
+    const { groupName, projectId, userId } = req.body;
+
+
+    if (!groupName || !projectId || !userId) {
+        return res.status(400).json({ error: 'Missing groupName, projectId, or userId in request body' });
+    }
+
+
+    // Generate a unique group ID
+    const groupId = `G-${uuidv4().slice(0, 8)}`;
+
+
+    // Insert into tblProjectGroups
+    const queryInsertGroup = `
+        INSERT INTO tblProjectGroups (group_id, group_name, project_id)
+        VALUES (?, ?, ?)
+    `;
+
+
+    db.run(queryInsertGroup, [groupId, groupName, projectId], function(err) {
+        if (err) {
+            console.error('Error inserting into tblProjectGroups:', err);
+            return res.status(500).json({ error: 'Database error when creating group' });
+        }
+
+
+        // Now: Insert into tblGroupMembers
+        const groupMemberId = `GM-${uuidv4().slice(0, 8)}`; // Generate unique group member ID
+
+
+        const queryInsertMember = `
+            INSERT INTO tblGroupMembers (group_member_id, group_id, user_id, role)
+            VALUES (?, ?, ?, ?)
+        `;
+
+
+        db.run(queryInsertMember, [groupMemberId, groupId, userId, 'leader'], function(err) {
+            if (err) {
+                console.error('Error inserting into tblGroupMembers:', err);
+                return res.status(500).json({ error: 'Database error when adding user to group' });
+            }
+
+
+            res.status(201).json({
+                message: 'Group created successfully and user added as leader',
+                groupId: groupId,
+                groupMemberId: groupMemberId
+            });
+        });
+    });
+});
+
+
+//User Groups
+app.get('/user-groups', async (req, res) => {
+    try {
+        const { userId } = req.query; // Get userId from query parameters
+        if (!userId) {
+            return res.status(400).json({ error: 'Missing userId in query parameters' });
+        }
+
+
+        // Query to get user groups
+        const strQuery = `
+            SELECT pg.group_id, pg.group_name, p.project_name
+            FROM tblProjectGroups pg
+            JOIN tblProject p ON pg.project_id = p.project_id
+            JOIN tblGroupMembers gm ON pg.group_id = gm.group_id
+            WHERE gm.user_id = ?
+        `;
+
+
+        const arrParams = [userId];
+
+
+        const rows = await allDb(strQuery, arrParams);
+        res.status(200).json(rows);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'An error occurred while fetching user groups' });
+    }
+});
+
+
+//Group member info
+app.get('/group-member-info', async (req, res) => {
+    try {
+        const {groupId} = req.query; // Get groupId from query parameters
+        if (!groupId) {
+            return res.status(400).json({ error: 'Missing groupId in query parameters' });
+        }
+
+
+        // Query to get group member info
+        const strQuery = `
+            SELECT gm.group_member_id, gm.user_id, gm.role, u.first_name, u.last_name, u.email, p.nation_code, p.area_code, p.phone_number
+            FROM tblGroupMembers gm
+            JOIN tblUsers u ON gm.user_id = u.user_id
+            JOIN tblPhone p ON u.user_id = p.user_id
+            WHERE gm.group_id = ?
+        `;
+
+
+        const arrParams = [];
+
+
+        const rows = await allDb(strQuery, arrParams);
+        res.status(200).json(rows);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'An error occurred while fetching group member info' });
+    }
+});
+
+
+
+
 // Use this function when you want to run a SELECT
 function allDb(strQuery, arrParams) {
     return new Promise((resolve, reject) => {

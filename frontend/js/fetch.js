@@ -201,49 +201,36 @@ function fetchUserProjects() {
 }
 
 
-function fetchUserGroups() {
-    const objUserGroupData = [
-        {
-            name: 'Group A',
-            projectName: 'Project 1',
-            groupId: '123'
-        },
-        {
-            name: 'Group B',
-            projectName: 'Project 2',
-            groupId: '456'
+async function fetchUserGroups() {
+    try {
+        const response = await fetch(baseURL + '/user-groups'); // Replace with actual API endpoint
+        if (!response.ok) {
+            throw new Error('Network response was not ok' + response.statusText);
         }
-    ]
-    return objUserGroupData
-
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('There was a problem with the fetch operation:', error);
+        return null; // or handle the error as needed
+    }
 }
 
 
-function fetchGroupMemberInfo() {
-    const testData = [
-        {
-            name: 'Franklin Doane',
-            contactInfo: {
-                discord: '@cooldude',
-                email: '@fgdoane42@tntech.edu'
-            }
-        },
-        {
-            name: 'Seth Risner',
-            contactInfo: {
-                discord: '@cooldude1',
-                email: '@jsrisner42@tntech.edu'
-            }
-        },
-        {
-            name: 'Jacob McMurray',
-            contactInfo: {
-                discord: '@cooldude2',
-                email: '@jtmcmurray42@tntech.edu'
-            }
+
+
+async function fetchGroupMemberInfo() {
+    try {
+        const response = await fetch(baseURL + '/group-member-info'); // Replace with actual API endpoint
+        if (!response.ok) {
+            throw new Error('Network response was not ok' + response.statusText);
         }
-    ]
-    return testData
+        const data = await response.json();
+        return data;
+    }
+    catch (error) {
+        console.error('There was a problem with the fetch operation:', error);
+        return null; // or handle the error as needed
+    }
 }
 
 

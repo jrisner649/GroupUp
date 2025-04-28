@@ -139,18 +139,81 @@ function createPlusButton() {
               }).then((result) => {
                 // Fire a success alert if they clicked confirm
                 if (result.isConfirmed) {
-                  Swal.fire("Group Created!", "", "success");
-                } 
+                    (async () => {
+                        const { value: formValues } = await Swal.fire({
+                            title: 'Create New Group',
+                            html:
+                                '<input id="swal-input1" class="swal2-input" placeholder="Group Name">' +
+                                '<input id="swal-input2" class="swal2-input" placeholder="Project ID">',
+                            focusConfirm: false,
+                            showCancelButton: true,
+                            confirmButtonText: 'Create',
+                            cancelButtonText: 'Cancel',
+                            preConfirm: () => {
+                                const groupName = document.getElementById('swal-input1').value.trim();
+                                const projectId = document.getElementById('swal-input2').value.trim();
+                                if (!groupName || !projectId) {
+                                    Swal.showValidationMessage('Both fields are required!');
+                                }
+                                return { groupName, projectId };
+                            }
+                        });
+
+
+                        if (formValues) {
+                            try {
+                                const userId = 'U-12345'; // TODO: Replace with dynamic userId/however it was implemented in the login
+
+
+                                const response = await fetch(baseURL + '/groups', {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json'
+                                    },
+                                    body: JSON.stringify({
+                                        groupName: formValues.groupName,
+                                        projectId: formValues.projectId,
+                                        userId: userId
+                                    })
+                                });
+
+
+                                if (!response.ok) {
+                                    const errorText = await response.text();
+                                    throw new Error(errorText || 'Failed to create group.');
+                                }
+
+
+                                await Swal.fire({
+                                    icon: 'success',
+                                    title: 'Group Created!',
+                                    text: `${formValues.groupName} was successfully created.`,
+                                    timer: 2000,
+                                    showConfirmButton: false
+                                });
+
+
+                                onClickBtnMenuPanelGroups(); // Reload Groups dashboard
+                            } catch (error) {
+                                console.error(error);
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error Creating Group',
+                                    text: error.message || 'Something went wrong.'
+                                });
+                            }
+                        }
+                    })();
                 // Fire an alert containing a text box if they pressed join a group
                 // It says result denied because the "deny" button is used for the join button
-                else if (result.isDenied) {
+                } else if (result.isDenied) {
                   Swal.fire({title: "Input a Group Code:", input: "text"}, "");
                 }
             });
         }
-        
+       
     })
-    //return btnPlusProject
+    return btnPlusProject
 }
 
 // Return an array of all the groups in a given project
