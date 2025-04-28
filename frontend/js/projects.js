@@ -189,10 +189,10 @@ function loadProject(strProjectID) {
 
     populateMenuPanel(objMenuPanelConfigs.objProjectPageConfig) // The side bar is populated with new buttons to manage the project that was clicked
 
-    const objUserProjectData = fetchUserProjects() // Call the API to retrieve the project data
+    const arrUserProjects = fetchProjectGroups() // Call the API to retrieve the project data
 
     // We need to find the specific project that was clicked on, so we filter by the uuid of the project
-    const objProject = objUserProjectData.filter(project => project.projectid == strCurrentProjectID)[0]
+    const objProject = arrUserProjects.filter(project => project.project_id == strCurrentProjectID)[0]
     
     // Since the default tab of project management is 'Groups in Project', we must display every group that is in the project in the dashboard
     let arrGroups = []
