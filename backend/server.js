@@ -132,7 +132,7 @@ app.post("/GroupUp/Project", (req,res,next) => {
         }
     ]
 */
-app.post('/user', async (req, res, next) => {
+app.post('/GroupUp/User', async (req, res, next) => {
     try {
         // Validate request body
         if (!req.body || !req.body.first_name || !req.body.last_name || !req.body.email || !req.body.password || !req.body.phone) {
@@ -340,7 +340,7 @@ const parsePhoneNumber = (phone) => {
 };
 
 // Retrieves the projects that the user is a leader of
-app.get('/projects', async (req, res, next) => {
+app.get('/GroupUp/Projects', async (req, res, next) => {
     
     const strUserID = req.query.user_id;
 
