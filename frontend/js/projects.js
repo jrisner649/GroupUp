@@ -63,7 +63,60 @@ function createPlusButton() {
               }).then((result) => {
                 // Fire a success alert if they clicked confirm
                 if (result.isConfirmed) {
-                  Swal.fire("Project created!", "", "success");
+
+                    // get information
+                    Swal.fire({
+                        title: "Enter project details",
+                        html: `
+                            <input id="projectName" class="swal2-input" placeholder="Project Name">
+                            <textarea id="projectDescription" class="swal2-textarea" placeholder="Project Description"></textarea>
+                        `,
+                        focusConfirm: false,
+                        preConfirm: () => {
+                            const projectName = document.getElementById('projectName').value;
+                            const projectDescription = document.getElementById('projectDescription').value;
+
+                            if (!projectName || !projectDescription) {
+                                Swal.showValidationMessage('Both fields are required');
+                                return false;
+                            }
+
+                            return { projectName, projectDescription };
+                        }
+                    }).then((result) => {
+
+                        // capture project details
+                        const { projectName, projectDescription } = result.value;
+
+                        // make call to backend
+                        fetch("http://localhost:8000/GroupUp/Project", {
+                            method: "POST",
+                            headers: {"Content-Type": "application/json"},
+                            body: JSON.stringify({
+                                session_id: strSessionID,
+                                name: projectName,
+                                desc: projectDescription
+                                })
+                            }
+                        )
+                        .then(response => ({ responseStatus: response.status, responseBody: response.json()}))
+                        .then(({responseStatus, responseBody}) => {
+
+                            // catch error
+                            if (responseStatus != 201) {
+                                console.log(`Error during project creation: ${JSON.stringify(responseBody)}`);
+                                Swal.fire("Uh oh!", "Something went wrong with creating your project.", "error");
+                            }
+                            else {
+
+                                Swal.fire("Project created!", "", "success");
+
+                            }
+
+                        });
+                        
+                    });
+
                 } 
                 // Fire an alert containing a text box if they pressed join a project
                 // It says result denied because the "deny" button is used for the join button

@@ -162,7 +162,7 @@ function fetchProjectLeaderSurveys() {
 // This function will be called when the user clicks on the "Projects" button in the menu panel
 async function fetchUserProjects() {
     try {
-        const response = await fetch(baseURL + `/projects?user_id=${strUserID}`, {
+        const response = await fetch(baseURL + `/GroupUp/Projects?session_id=${strSessionID}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
