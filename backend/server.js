@@ -29,14 +29,12 @@ app.get("/", (req,res,next) => {
 
 
 // create new project
-app.post("/GroupUp/Project", (req,res,next) => {
+app.post("/GroupUp/Project", async (req,res,next) => {
 
     // get info from body and verify
-    let strUser = req.body.userEmail;
+    let strSessionID = req.body.session_id;
     let strProjectName = req.body.name;
     let strProjectDesc = req.body.desc;
-
-    const regEmail = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/g
 
     // error parameters
     let boolError = false;
@@ -45,10 +43,10 @@ app.post("/GroupUp/Project", (req,res,next) => {
     let strWarningMsg = "";
 
     // verify that all 3 were passed
-    if (!regEmail.test(strUser)) {
+    if (!strSessionID) {
 
         boolError = true;
-        strErrorMsg += "Must pass a valid user email address. ";
+        strErrorMsg += "Must pass a session ID. ";
 
     }
     else if (!strProjectName) {
@@ -64,6 +62,17 @@ app.post("/GroupUp/Project", (req,res,next) => {
         strProjectDesc = "";
 
     }
+
+    // ensure that the session ID is valid
+    console.log("Session ID: " + strSessionID);
+    let strQuery = "SELECT user_id FROM tblSessions WHERE session_id = ?";
+    let arrParams = [strSessionID];
+    const arrRows = await allDb(strQuery, arrParams);
+    console.log(arrRows);
+    if (arrRows.length === 0) {
+        boolError = true;
+        strErrorMsg += "Session ID is invalid. ";
+    }
     
     // return if error
     if (boolError) {
@@ -77,6 +86,10 @@ app.post("/GroupUp/Project", (req,res,next) => {
 
         // create new ID
         let strProjectId = uuidv4();
+
+        // get user ID from session ID
+        let strUser = arrRows[0].user_id;
+        console.log("User ID: " + strUser);
 
         // run sql command
         let strInsertCmd = 'INSERT INTO tblProjects VALUES (?,?,?,?)';
@@ -339,18 +352,38 @@ const parsePhoneNumber = (phone) => {
     };
 };
 
-// Retrieves the projects that the user is a leader of
-app.get('/GroupUp/Projects', async (req, res, next) => {
-    
-    const strUserID = req.query.user_id;
-
-    if (!strUserID) {
-        return res.status(400).json({ error: "Missing user ID" });
+// Middleware to validate session ID
+function validateSession(req, res, next) {
+    const strSessionID = req.query.session_id;
+    if (!strSessionID) {
+        return res.status(400).json({ error: "Missing session ID" });
     }
+
+    // Query to check if the session ID is valid
+    const strQuery = "SELECT user_id FROM tblSessions WHERE session_id = ?";
+    const arrParams = [strSessionID];
+    allDb(strQuery, arrParams)
+        .then(arrRows => {
+            if (arrRows.length === 0) {
+                return res.status(401).json({ error: "Invalid session ID" });
+            }
+            // Store the user ID in the request object for later use
+            req.user_id = arrRows[0].user_id;
+            next();
+        })
+        .catch(err => {
+            console.error(err);
+            res.status(500).json({ error: "Internal server error" });
+        });
+}
+
+// Retrieves the projects that the user is a leader of
+// This is the endpoint that the frontend will call when the user clicks on the "Projects" tab in the home page
+app.get('/GroupUp/Projects', validateSession, async (req, res, next) => {
 
     // Query to get the projects the user is a leader of
     const strQuery = "SELECT * FROM tblProjects WHERE ? = project_leader";
-    const arrParams = [strUserID];
+    const arrParams = [req.user_id];
     const arrRows = await allDb(strQuery, arrParams);
     console.log(arrRows);
     if (arrRows.length === 0) {
@@ -359,18 +392,17 @@ app.get('/GroupUp/Projects', async (req, res, next) => {
     res.status(200).json(arrRows);
 });
 
-app.get('/GroupUp/Projects/Groups', async (req, res, next) => {
-    const strProjectID = req.query.project_id;
-
+app.get("/GroupUp/Projects/Groups", validateSession, async (req, res, next) => {
+    // Query to get the groups the user is a member of
     const strQuery = "SELECT * FROM tblProjectGroups WHERE project_id = ?";
-    const arrParams = [strProjectID];
+    const arrParams = [req.query.project_id];
     const arrRows = await allDb(strQuery, arrParams);
+    console.log(arrRows);
     if (arrRows.length === 0) {
         return res.status(404).json({ error: "No groups found" });
     }
     res.status(200).json(arrRows);
-
-})
+});
 
 app.listen(HTTP_PORT, () => {
     console.log("Listening on", HTTP_PORT);  

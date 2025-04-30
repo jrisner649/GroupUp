@@ -98,7 +98,7 @@ function createPlusButton() {
                             method: "POST",
                             headers: {"Content-Type": "application/json"},
                             body: JSON.stringify({
-                                userEmail: strSessionUserEmail,
+                                session_id: strSessionID,
                                 name: projectName,
                                 desc: projectDescription
                                 })
@@ -151,21 +151,11 @@ function createPlusButton() {
         }
         
     })
-    //return btnPlusProject
-}
-
-// Return an array of all the groups in a given project
-function fetchGroups(strProjectID) {
-
-    // We need to find the specific project that was clicked on, so we filter by the uuid of the project
-    const objUserProjectData = fetchUserProjects()
-    const objProject = objUserProjectData.filter(project => project.projectid == strProjectID)[0]
-    return objProject.groups
-
+    return btnPlusProject
 }
 
 // This function is called when a project is clicked on the projects page
-function loadProject(strProjectID) {
+async function loadProject(strProjectID) {
     console.log(`strProjectID = ${strProjectID}`)
 
     // This is needed because the function is reused for btnSideBarProjectGroups
@@ -189,19 +179,18 @@ function loadProject(strProjectID) {
 
     populateMenuPanel(objMenuPanelConfigs.objProjectPageConfig) // The side bar is populated with new buttons to manage the project that was clicked
 
-    const arrUserProjects = fetchProjectGroups() // Call the API to retrieve the project data
+    const objProjectGroups = await fetchProjectGroups() // Call the API to retrieve the project data
 
-    // We need to find the specific project that was clicked on, so we filter by the uuid of the project
-    const objProject = arrUserProjects.filter(project => project.project_id == strCurrentProjectID)[0]
+    console.log("Project Groups: " + objProjectGroups);
     
     // Since the default tab of project management is 'Groups in Project', we must display every group that is in the project in the dashboard
     let arrGroups = []
-    objProject.groups.forEach(group => {
+    objProjectGroups.forEach(group => {
         arrGroups.push(
             {
-                header: group.name,
+                header: group.group_name,
                 subheader: '',
-                uid: group.groupid
+                uid: group.group_id
             }
         )
     })

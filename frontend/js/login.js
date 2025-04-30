@@ -1,4 +1,4 @@
-let strUserID = 'd0f8e6fd-7b56-4fdb-9fb1-fe5ac8ea64ed'; // this is a test user id, it will be replaced with the actual user id when the user logs in;
+let strSessionID = 'cc8a5d86-8b1a-4d3e-9204-14e7e6837ef2'; // this is a test user id, it will be replaced with the actual user id when the user logs in
 
 // input validation for login form
 document.querySelector('#btnLogin').addEventListener('click', (event) => {
