@@ -392,6 +392,18 @@ app.get('/GroupUp/Projects', validateSession, async (req, res, next) => {
     res.status(200).json(arrRows);
 });
 
+app.get("/GroupUp/Projects/Groups", validateSession, async (req, res, next) => {
+    // Query to get the groups the user is a member of
+    const strQuery = "SELECT * FROM tblProjectGroups WHERE project_id = ?";
+    const arrParams = [req.query.project_id];
+    const arrRows = await allDb(strQuery, arrParams);
+    console.log(arrRows);
+    if (arrRows.length === 0) {
+        return res.status(404).json({ error: "No groups found" });
+    }
+    res.status(200).json(arrRows);
+});
+
 app.listen(HTTP_PORT, () => {
     console.log("Listening on", HTTP_PORT);  
 });

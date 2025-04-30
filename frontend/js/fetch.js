@@ -188,6 +188,33 @@ async function fetchUserProjects() {
     }
 }
 
+// This function will be called when the user clicks on the "Groups" button in the menu panel while in the Project Management Page
+async function fetchProjectGroups() {
+    try {
+        const response = await fetch(baseURL + `/GroupUp/Projects/Groups?session_id=${strSessionID}&project_id=${strCurrentProjectID}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        if (!response.ok) {
+            const errorData = await response.json();
+            Swal.fire({
+                title: "Oops...",
+                html: `<p>${errorData.error}</p>`,
+                icon: "error"
+            });
+            throw new Error(errorData.error);
+        }
+        const data = await response.json(); // Parse the response body as JSON
+        console.log(data); // Log the fetched data
+        return data; // Return the fetched data
+    }
+    catch (error) {
+        console.error('Error fetching project groups:', error);
+        return []; // Return an empty array in case of an error
+    }
+}
 
 function fetchUserGroups() {
     const objUserGroupData = [
