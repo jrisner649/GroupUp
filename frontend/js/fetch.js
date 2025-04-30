@@ -216,49 +216,50 @@ async function fetchProjectGroups() {
     }
 }
 
-function fetchUserGroups() {
-    const objUserGroupData = [
-        {
-            name: 'Group A',
-            projectName: 'Project 1',
-            groupId: '123'
-        },
-        {
-            name: 'Group B',
-            projectName: 'Project 2',
-            groupId: '456'
+async function fetchUserGroups() {
+    try {
+        const response = await fetch(baseURL + `/GroupUp/Groups?session_id=${strSessionID}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        if (!response.ok) {
+            const errorData = await response.json();
+            Swal.fire({
+                title: "Oops...",
+                html: `<p>${errorData.error}</p>`,
+                icon: "error"
+            });
+            throw new Error(errorData.error);
         }
-    ]
-    return objUserGroupData
-
+        const data = await response.json(); // Parse the response body as JSON
+        console.log(data); // Log the fetched data
+        return data; // Return the fetched data
+        
+    } catch (error) {
+        console.error('There was a problem with the fetch operation:', error);
+        return null; // or handle the error as needed
+    }
 }
 
 
-function fetchGroupMemberInfo() {
-    const testData = [
-        {
-            name: 'Franklin Doane',
-            contactInfo: {
-                discord: '@cooldude',
-                email: '@fgdoane42@tntech.edu'
-            }
-        },
-        {
-            name: 'Seth Risner',
-            contactInfo: {
-                discord: '@cooldude1',
-                email: '@jsrisner42@tntech.edu'
-            }
-        },
-        {
-            name: 'Jacob McMurray',
-            contactInfo: {
-                discord: '@cooldude2',
-                email: '@jtmcmurray42@tntech.edu'
-            }
-        }
-    ]
-    return testData
+
+
+async function fetchGroupMemberInfo() {
+    console.log("Fetching group member info...");
+    // try {
+    //     const response = await fetch(baseURL + '/group-member-info'); // Replace with actual API endpoint
+    //     if (!response.ok) {
+    //         throw new Error('Network response was not ok' + response.statusText);
+    //     }
+    //     const data = await response.json();
+    //     return data;
+    // }
+    // catch (error) {
+    //     console.error('There was a problem with the fetch operation:', error);
+    //     return null; // or handle the error as needed
+    // }
 }
 
 

@@ -336,7 +336,7 @@ app.post('/GroupUp/Groups', validateSession, (req, res) => {
             VALUES (?, ?, ?, ?)
         `;
 
-        db.run(queryInsertMember, [groupMemberId, groupId, userId, 'leader'], function(err) {
+        db.run(queryInsertMember, [groupMemberId, groupId, req.user_id, 'leader'], function(err) {
             if (err) {
                 console.error('Error inserting into tblGroupMembers:', err);
                 return res.status(500).json({ error: 'Database error when adding user to group' });
@@ -350,6 +350,64 @@ app.post('/GroupUp/Groups', validateSession, (req, res) => {
         });
     });
 });
+
+// User Groups
+app.get('/GroupUp/Groups', validateSession, async (req, res) => {
+    try {
+        // Query to get user groups
+        const strQuery = `
+            SELECT tblProjectGroups.group_id, tblProjects.name, tblProjectGroups.group_name FROM tblProjectGroups
+            LEFT JOIN tblProjects ON tblProjectGroups.project_id = tblProjects.project_id
+            LEFT JOIN tblGroupMembers ON tblProjectGroups.group_id = tblGroupMembers.group_id
+            WHERE tblGroupMembers.user_id = ?;
+        `;
+
+
+        const arrParams = [req.user_id];
+
+
+        const arrRows = await allDb(strQuery, arrParams);
+        console.log(arrRows);
+        res.status(200).json(arrRows);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'An error occurred while fetching user groups' });
+    }
+});
+
+
+//Group member info
+app.get('/group-member-info', async (req, res) => {
+    try {
+        const {groupId} = req.query; // Get groupId from query parameters
+        if (!groupId) {
+            return res.status(400).json({ error: 'Missing groupId in query parameters' });
+        }
+
+
+        // Query to get group member info
+        const strQuery = `
+            SELECT gm.group_member_id, gm.user_id, gm.role, u.first_name, u.last_name, u.email, p.nation_code, p.area_code, p.phone_number
+            FROM tblGroupMembers gm
+            JOIN tblUsers u ON gm.user_id = u.user_id
+            JOIN tblPhone p ON u.user_id = p.user_id
+            WHERE gm.group_id = ?
+        `;
+
+
+        const arrParams = [];
+
+
+        const rows = await allDb(strQuery, arrParams);
+        res.status(200).json(rows);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'An error occurred while fetching group member info' });
+    }
+});
+
+
+
 
 // Use this function when you want to run a SELECT
 function allDb(strQuery, arrParams) {

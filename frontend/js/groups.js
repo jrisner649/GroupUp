@@ -1,5 +1,5 @@
 // When the groups side bar button is clicked, the dashboard should be populated with the groups the user is in
-function onClickBtnMenuPanelGroups() {
+async function onClickBtnMenuPanelGroups() {
     boolInProjectsTab = false // Do this so that the plus button in the header bar knows what to do
     clearDashboard()
 
@@ -8,7 +8,9 @@ function onClickBtnMenuPanelGroups() {
 
     createPlusButton()
 
-    const objUserGroupData = fetchUserGroups() // make a call to the API to get all the groups the user is in
+    const objUserGroupData = await fetchUserGroups() // make a call to the API to get all the groups the user is in
+
+    console.log(objUserGroupData)
 
     let objDashboardData = []
     // iterate over each group and add them to a JSON obj in the form that the dashboard accepts
@@ -16,9 +18,9 @@ function onClickBtnMenuPanelGroups() {
     objUserGroupData.forEach(group => { 
         objDashboardData.push(
             {
-                header: group.name,
-                subheader: group.projectName,
-                uid: group.groupId 
+                header: group.group_name,
+                subheader: "Project: " + group.name,
+                uid: group.group_id 
             }
         )
     })

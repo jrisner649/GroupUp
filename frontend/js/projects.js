@@ -205,7 +205,7 @@ function createPlusButton() {
                 }
             });
         }
-        
+       
     })
     return btnPlusProject
 }
