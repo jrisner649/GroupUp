@@ -305,6 +305,52 @@ app.post('/GroupUp/User', async (req, res, next) => {
 
 });
 
+// Group Creation, add creating user to group immediately
+app.post('/GroupUp/Groups', validateSession, (req, res) => {
+    const { groupName, projectId } = req.body;
+
+    if (!groupName || !projectId) {
+        return res.status(400).json({ error: 'Missing groupName or projectId in request body' });
+    }
+
+    // Generate a unique group ID
+    const groupId = `G-${uuidv4().slice(0, 8)}`;
+
+    // Insert into tblProjectGroups
+    const queryInsertGroup = `
+        INSERT INTO tblProjectGroups (group_id, group_name, project_id)
+        VALUES (?, ?, ?)
+    `;
+
+    db.run(queryInsertGroup, [groupId, groupName, projectId], function(err) {
+        if (err) {
+            console.error('Error inserting into tblProjectGroups:', err);
+            return res.status(500).json({ error: 'Database error when creating group' });
+        }
+
+        // Now: Insert into tblGroupMembers
+        const groupMemberId = `GM-${uuidv4().slice(0, 8)}`; // Generate unique group member ID
+
+        const queryInsertMember = `
+            INSERT INTO tblGroupMembers (group_member_id, group_id, user_id, role)
+            VALUES (?, ?, ?, ?)
+        `;
+
+        db.run(queryInsertMember, [groupMemberId, groupId, userId, 'leader'], function(err) {
+            if (err) {
+                console.error('Error inserting into tblGroupMembers:', err);
+                return res.status(500).json({ error: 'Database error when adding user to group' });
+            }
+
+            res.status(201).json({ 
+                message: 'Group created successfully and user added as leader', 
+                groupId: groupId,
+                groupMemberId: groupMemberId
+            });
+        });
+    });
+});
+
 // Use this function when you want to run a SELECT
 function allDb(strQuery, arrParams) {
     return new Promise((resolve, reject) => {
