@@ -508,6 +508,22 @@ app.get("/GroupUp/Projects/Groups", validateSession, async (req, res, next) => {
     res.status(200).json(arrRows);
 });
 
+
+app.get("/GroupUp/Surveys", validateSession, async (req, res) => {
+    // Query to get the surveys for a specific project
+    const strQuery = "SELECT * FROM tblSurveys WHERE project_id = ?";
+    const arrParams = [req.query.project_id];
+    const arrRows = await allDb(strQuery, arrParams);
+    console.log(arrRows);
+    if (arrRows.length === 0) {
+        return res.status(404).json({ error: "No surveys found" });
+    }
+    res.status(200).json(arrRows);
+});
+
+
+
+
 app.listen(HTTP_PORT, () => {
     console.log("Listening on", HTTP_PORT);  
 });

@@ -256,23 +256,25 @@ async function loadProject(strProjectID) {
 }
 
 // Adds surveys that have been made to the dashboard so that the user can decide which survey to view data for
-function onClickBtnMenuPanelViewResponses() {
-    console.log('View survey responses')
+async function onClickBtnMenuPanelViewResponses() {
+    
 
     clearDashboard()
 
     // Create the header
-    addHeaderToDashboard("View survey responses");
+    addHeaderToDashboard("View Survey Responses");
 
     // Iterate over every survey and add them to the dashboard
-    const arrSurveys = fetchProjectLeaderSurveys() // Make the API call to get the surveys that the user had made
+    const arrSurveys = await fetchProjectSurveys() // Make the API call to get the surveys that the user had made
+    console.log(arrSurveys)
+
     let arrDashboardData = []
     arrSurveys.forEach(survey => {
         arrDashboardData.push(
             {
-                header: survey.title,
-                subheader: survey.description,
-                uid: survey.surveyid
+                header: survey.name,
+                subheader: "Type: " + survey.visibility,
+                uid: survey.survey_id
             }
         )
     })
