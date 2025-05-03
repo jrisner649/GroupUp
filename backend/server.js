@@ -27,7 +27,6 @@ app.get("/", (req,res,next) => {
 
 })
 
-
 // create new project
 app.post("/GroupUp/Project", async (req,res,next) => {
 
@@ -123,7 +122,6 @@ app.post("/GroupUp/Project", async (req,res,next) => {
     }
 
 })
-
 
 // User account registration
 // req body should be in the following format:
@@ -375,7 +373,6 @@ app.get('/GroupUp/Groups', validateSession, async (req, res) => {
     }
 });
 
-
 //Group member info
 app.get('/group-member-info', async (req, res) => {
     try {
@@ -406,7 +403,68 @@ app.get('/group-member-info', async (req, res) => {
     }
 });
 
+app.post('/GroupUp/survey', (req,res,next) => {
 
+    console.log(req.body);
+
+    // get info from the body
+    const strProjectId = req.body.projectId;
+    const strName = req.body.name;
+    const strVisibility = req.body.visibility;
+    const arrQuestions = JSON.parse(req.body.questions);
+    const strScheduledTime = req.body.scheduledTime;
+
+    // verify questions were passed
+    if (!strProjectId || !strName || !strVisibility || !arrQuestions) {
+        res.status(400).json({status: "error", message: "Survey post must pass a projectId, name, visibility, questions, and scheduledTime."});
+    }
+    else {
+
+        // generate new survey id
+        const strSurveyId = uuidv4();
+
+        // insert survey into database
+        const strSurveyInsertCmd = 'INSERT INTO tblSurveys (survey_id, project_id, scheduled_datetime, name, visibility) VALUES (?, ?, ?, ?, ?)';
+        db.run(strSurveyInsertCmd, [strSurveyId, strProjectId, strScheduledTime, strName, strVisibility], (err, result) => {
+
+            // return error
+            if (err) {
+
+                console.log(err);
+                return res.status(400).json({status: "error", message: err.message});
+
+            }
+
+        });
+
+        // insert survey questions into database
+        const strQuestionInsertCmd = 'INSERT INTO tblSurveyQuestions (question_id, survey_id, question_type, options, question_narrative, question_order) VALUES (?, ?, ?, ?, ?, ?)';
+        let intQuestionOrder = 0;
+        arrQuestions.forEach(({ questionText, questionType, options }) => {
+            
+            // uuid for question key
+            const strQuestionId = uuidv4();
+            intQuestionOrder ++;
+
+            db.run(strQuestionInsertCmd, [strQuestionId, strSurveyId, questionType, JSON.stringify(options), questionText, intQuestionOrder], (err, result) => {
+
+                // return error
+                if (err) {
+
+                    console.log(err);
+                    return res.status(400).json({status: "error", message: err.message});
+
+                }
+
+            });
+
+        });
+
+        res.status(201).json({status: "success", surveyId: strSurveyId});
+
+    }
+
+});
 
 
 // Use this function when you want to run a SELECT
