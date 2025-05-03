@@ -27,4 +27,20 @@ Follow-up: That doesn't seem to be helping. Can you take another look at the cod
 Result: Nothing that appeared to be helpful.
 Follow-up: Hmm, I think I've pinpointed the problem. For whatever reason, the page seems to be reloading after the confirm button is hit for the sweet alert that is defined on line 72 of the current file projects.js. Any ideas why this could be happening?
 
+Prompt: Can you write a query for me to delete a column called start_date from a table called tblSurveys in my sqlite3 database?
+Result: Copilot wrote a SQL command for me to execute that I ran to edit my table.
 
+Prompt: Hey Copilot, I want to add a name field to the form builder so that here I have a name for the survey to send to the backend. Could you add that field to the survey builder page and make it so that it starts saying "Untitled survey" and you can edit it by clicking on it?
+Result: I used the incline chat and Copilot didn't really do what I wanted
+
+Prompt: I have a git question. If I made changes to my codebase in the main base that I haven't commited, can you tell me how to create a new branch and commit them to that branch?
+Result: It told me to make my new branch and check it out then add and commit. This worked fine.
+
+Prompt: Can you help me be able to write code in the .then() method that only executes when the user presses submit and not cancel?
+Result: Copilot wrote an if statement for me that referenced the response.isConfirmed attribute of Sweet Alert responses.
+
+Prompt: Can you make it so that this sweet alert date field is required in order to hit submit?
+Result: Copilot added a parameter to the Sweet Alert fire statement to make the input required
+
+Prompt: is there some way I could make it so that the date on this Sweet Alert input field is required to be a date in the future? (It won't let the user select dates in the past)
+Result: Copilot added code that gets today's date and makes it the minimum for the sweet alert input

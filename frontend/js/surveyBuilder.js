@@ -83,7 +83,6 @@ function sendSurvey(strScheduledTime) {
     }
 }
 
-
 function loadSurveyBuilder() {
 
     boolSurveyIsPublic = true;
@@ -108,28 +107,33 @@ function loadSurveyBuilder() {
             // Add a button to allow the project leader to make a survey private or public
             document.querySelector('#btnPrivateSurveyToggle').addEventListener('click', () => {
                 let btnPrivateSurveyToggle = document.querySelector('#btnPrivateSurveyToggle')
-                if (btnPrivateSurveyToggle.innerHTML == 'Make Responses Private') {
-                    btnPrivateSurveyToggle.innerHTML = 'Make Reponses Public';
+                if (btnPrivateSurveyToggle.innerText == 'Make Responses Private') {
+                    btnPrivateSurveyToggle.innerText = 'Make Reponses Public';
                     boolSurveyIsPublic = false;
                 }
                 else {
-                    btnPrivateSurveyToggle.innerHTML = 'Make Responses Private';
+                    btnPrivateSurveyToggle.innerText = 'Make Responses Private';
                     boolSurveyIsPublic = true;
                 }
             })
 
             // Allow the project leader to schedule send a survey
             document.querySelector("#btnScheduleSurvey").addEventListener('click', () => {
+                const today = new Date().toISOString().split('T')[0]; // Get today's date in YYYY-MM-DD format
                 Swal.fire({
                     title: "Enter a date you would like to send out the survey.",
                     showCancelButton: true,
-                    input: "date"
+                    input: "date",
+                    inputAttributes: {
+                        required: true,
+                        min: today 
+                    }
                 })
                 .then(objInput => {
-
-                    sendSurvey(objInput.value);
-
-                })
+                    if (objInput.isConfirmed) { // Check if the user pressed submit
+                        sendSurvey(objInput.value);
+                    }
+                });
             })
 
             // Initialize survey builder functionality
@@ -149,9 +153,9 @@ function addQuestion() {
             <label for="questionText-${questionCount}" class="form-label">Question ${questionCount}</label>
             <input type="text" id="questionText-${questionCount}" class="form-control mb-2" placeholder="Enter your question" required>
             <select id="questionType-${questionCount}" class="form-select mb-2" onchange="updateQuestionType(${questionCount})">
+                <option value="shortAnswer">Short Answer</option>
                 <option value="multipleChoice">Multiple Choice</option>
                 <option value="likert">Likert Scale</option>
-                <option value="shortAnswer">Short Answer</option>
             </select>
             <div id="optionsContainer-${questionCount}">
                 <!-- Options for multiple choice or Likert scale will be added here -->
