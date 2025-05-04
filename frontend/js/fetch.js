@@ -113,11 +113,36 @@ async function fetchUserGroups() {
         
     } catch (error) {
         console.error('There was a problem with the fetch operation:', error);
-        return null; // or handle the error as needed
+        return null;
     }
 }
 
-
+async function fetchFeedback() {
+    try {
+        const response = await fetch(baseURL + `/GroupUp/Groups/Feedback?session_id=${strSessionID}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        if (!response.ok) {
+            const errorData = await response.json();
+            Swal.fire({
+                title: "Oops...",
+                html: `<p>${errorData.error}</p>`,
+                icon: "error"
+            });
+            throw new Error(errorData.error);
+        }
+        const data = await response.json(); // Parse the response body as JSON
+        console.log(data); // Log the fetched data
+        return data; // Return the fetched data
+        
+    } catch (error) {
+        console.error('There was a problem with the fetch operation:', error);
+        return null; 
+    }
+}
 
 
 async function fetchGroupMemberInfo() {
@@ -132,7 +157,7 @@ async function fetchGroupMemberInfo() {
     // }
     // catch (error) {
     //     console.error('There was a problem with the fetch operation:', error);
-    //     return null; // or handle the error as needed
+    //     return null;
     // }
 }
 

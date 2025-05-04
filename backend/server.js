@@ -508,7 +508,8 @@ app.get("/GroupUp/Projects/Groups", validateSession, async (req, res, next) => {
     res.status(200).json(arrRows);
 });
 
-
+// Returns all of the surveys for a specific project
+// This is the endpoint that the frontend will call when the user clicks on the "View Responses" button in the project management page
 app.get("/GroupUp/Surveys", validateSession, async (req, res) => {
     // Query to get the surveys for a specific project
     const strQuery = "SELECT * FROM tblSurveys WHERE project_id = ?";
@@ -519,6 +520,191 @@ app.get("/GroupUp/Surveys", validateSession, async (req, res) => {
         return res.status(404).json({ error: "No surveys found" });
     }
     res.status(200).json(arrRows);
+});
+
+// Returns all of the responses for a specific survey
+app.get("/GroupUp/Surveys/Responses", validateSession, async (req, res) => {
+    // Query to get the surveys for a specific project
+    const strQuery = "SELECT * FROM tblSurveyResponses WHERE survey_id = ?";
+    const arrParams = [req.query.survey_id];
+    const arrRows = await allDb(strQuery, arrParams);
+    console.log(arrRows);
+    if (arrRows.length === 0) {
+        return res.status(404).json({ error: "No responses found" });
+    }
+    res.status(200).json(arrRows);
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+// "groupResponses": [
+//         {
+//             "groupid": "ABC",
+//             "memberResponses": [
+//                 {
+//                     "memberName": "John Doe",
+//                     "answers": [
+//                         {
+//                             "question": "How well did the team collaborate?",
+//                             "answer": "Good"
+//                         },
+//                         {
+//                             "question": "What could be improved?",
+//                             "answer": "Better communication"
+//                         }
+//                     ]
+//                 },
+//                 {
+//                     "memberName": "Jane Smith",
+//                     "answers": [
+//                         {
+//                             "question": "How well did the team collaborate?",
+//                             "answer": "Excellent"
+//                         },
+//                         {
+//                             "question": "What could be improved?",
+//                             "answer": "More frequent meetings"
+//                         }
+//                     ]
+//                 }
+//             ]
+//         }
+//     ],
+//     "questions": [
+//         {
+//             "questionText": "How well did the team collaborate?",
+//             "questionType": "likert",
+//             "options": ["Poor", "Fair", "Good", "Excellent"]
+//         },
+//         {
+//             "questionText": "What could be improved?",
+//             "questionType": "shortAnswer"
+//         }
+//     ]
+
+
+
+
+app.get("/GroupUp/Groups/Feedback", validateSession, async (req, res) => {
+    let arrFeedback = [
+        {
+            "survey_name": "",
+            "sender_name": "",
+            "arrQuestions": [
+                {
+                    "question_text": "",
+                    "question_type": "",
+                    "options": [],
+                    "arrAnswers": [
+                        {
+                            "answer_text": "",
+                            "answer_type": ""
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+        // who gave the feedback
+        // what survey they gave feedback on
+
+
+    // Query to get the feedback for the user_id received from the frontend
+    let strQuery = "SELECT * FROM tblSurveyTargets WHERE receiver_id = ?";
+    let arrParams = [req.user_id];
+    console.log(req.user_id);
+    const arrSurveys = await allDb(strQuery, arrParams);
+    // console.log(arrSurveys);
+    if (arrSurveys.length === 0) {
+        return res.status(404).json({ error: "No feedback found" });
+    }
+
+    let arrRows = [];
+    let arrAnswers = [];
+    for (let i = 0; i < arrSurveys.length; i++) {
+        // Get the name of the survey
+        strQuery = "SELECT name FROM tblSurveys WHERE survey_id = ?";
+        arrParams = [arrSurveys[i].survey_id];
+        arrRows = await allDb(strQuery, arrParams);
+        arrFeedback[i].survey_name = arrRows[0].name;
+
+        // Get the name of the sender
+        strQuery = "SELECT first_name, last_name FROM tblUsers WHERE user_id = ?";
+        arrParams = [arrSurveys[i].sender_id];
+        arrRows = await allDb(strQuery, arrParams);
+        arrFeedback[i].sender_name = arrRows[0].first_name + " " + arrRows[0].last_name;
+
+        // Get the questions for the survey
+        strQuery = "SELECT * FROM tblSurveyQuestions WHERE survey_id = ?";
+        arrParams = [arrSurveys[i].survey_id];
+        arrRows = await allDb(strQuery, arrParams);
+        arrFeedback[i].arrQuestions = arrRows;
+        
+
+        // Get the answers for the questions
+        for (let j = 0; j < arrRows.length; j++) {
+            strQuery = "SELECT response, question_id FROM tblSurveyResponses WHERE question_id = ? AND survey_id = ?";
+            arrParams = [arrRows[j].question_id, arrSurveys[i].survey_id];
+            arrAnswers = await allDb(strQuery, arrParams);
+            arrFeedback[i].arrQuestions[j].arrAnswers = arrAnswers;
+        }
+
+
+    }
+    console.log(arrFeedback);
+    console.log(arrFeedback[0].arrQuestions);
+    console.log(arrFeedback[0].arrQuestions[2].arrAnswers);   
+
+    // arrFeedback.arrQuestions.forEach((question) => {
+    //     // Get the answers for the question
+    //     strQuery = "SELECT * FROM tblSurveyResponses WHERE question_id = ? AND survey_id = ?";
+    //     arrParams = [question.question_id, arrSurveys[i].survey_id];
+    //     arrAnswers = await allDb(strQuery, arrParams);
+    //     question.answers = arrAnswers;
+    // });
+
+    // Loop through the surveys and get the survey name, questions, for each one
+    // let arrRows = [];
+    // arrSurveys.forEach(async (survey) => {
+    //     // Get the name
+    //     strQuery = "SELECT name FROM tblSurveys WHERE survey_id = ?";
+    //     arrParams = [survey.survey_id];
+    //     arrRows = await allDb(strQuery, arrParams);
+    //     console.log(arrRows);
+    // });
+
+    // We need to fill out an array of the questions and answers for each survey
+    // arrSurveys.forEach(async (survey) => {
+    //     const strQuery = "SELECT * FROM tblSurveyQuestions WHERE survey_id = ?";
+    //     const arrParams = [survey.survey_id];
+    //     const arrRows = await allDb(strQuery, arrParams);
+    //     console.log(arrRows);
+    //     if (arrRows.length === 0) {
+    //         return res.status(404).json({ error: "No questions found" });
+    //     }
+    //     survey.questions = arrRows; // Add the questions to the survey object
+    // });
+    // console.log(arrSurveys);
+
+    // We need the sender of the survey, the answers they provided, and the survey ID
+    // We can get the sender of the survey from the tblSurveyTargets table, and the answers from the tblSurveyResponses table
+
+
+
+
+
+
+    res.status(200).json(arrFeedback);
 });
 
 

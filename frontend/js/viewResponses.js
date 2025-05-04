@@ -50,90 +50,101 @@ function onClickBtnMenuPanelViewGroupData() {
     populateDashboard(arrDashboardData, displayGroupResponses)
 }
 
-// Displays charts for every likert questions in a given survey
-function displayProjectData(strSurveyID) {
+// Display charts for every likert question in a given survey
+async function displayProjectData(strSurveyID) {
 
-    // Find the survey in question. We get strSurveyID from the dashboard element
-    const arrSurveys = fetchProjectLeaderSurveys()
-    const objSurvey = arrSurveys.find(survey => survey.surveyid == strSurveyID) 
+    // Get the surveys
+    const arrSurveys = await fetchProjectSurveys();
+    console.log(`All Surveys: ${arrSurveys}`);
 
-    console.log(objSurvey)
+    // Filter for the survey that is being viewed
+    const objSurvey = arrSurveys.find(survey => survey.survey_id == strSurveyID);
+    console.log(`Selected Survey: ${objSurvey}`);
 
-    // Get the likert questions
-    const arrLikertQuestions = objSurvey.questions.filter(question => question.questionType == 'likert')
+    // Filter for the likert questions in the survey
 
-    console.log(`Likert Questions: `)
-    console.log(arrLikertQuestions)
 
-    // Get the available options for the questions
-    const arrLikertOptions = arrLikertQuestions.map(question => question.options)
+    // // Find the survey in question. We get strSurveyID from the dashboard element
+    // const arrSurveys = fetchProjectLeaderSurveys()
+    // const objSurvey = arrSurveys.find(survey => survey.surveyid == strSurveyID) 
 
-    console.log(`Likert Options: ${arrLikertOptions}`)
+    // console.log(objSurvey)
+
+    // // Get the likert questions
+    // const arrLikertQuestions = objSurvey.questions.filter(question => question.questionType == 'likert')
+
+    // console.log(`Likert Questions: `)
+    // console.log(arrLikertQuestions)
+
+    // // Get the available options for the questions
+    // const arrLikertOptions = arrLikertQuestions.map(question => question.options)
+
+    // console.log(`Likert Options: ${arrLikertOptions}`)
     
-    // Create a div for the charts
-    const divCharts = document.createElement('div')
-    divCharts.id = 'divCharts'
-    document.querySelector('#divDashboard').appendChild(divCharts)
+    // // Create a div for the charts
+    // const divCharts = document.createElement('div')
+    // divCharts.id = 'divCharts'
+    // document.querySelector('#divDashboard').appendChild(divCharts)
 
 
-    // for loop that iterates over every likert question
-    arrLikertQuestions.forEach(question => {
-        console.log('Current Question: ');
-        console.log(question);
+    // // for loop that iterates over every likert question
+    // arrLikertQuestions.forEach(question => {
+    //     console.log('Current Question: ');
+    //     console.log(question);
 
-        // Collect all responses for the current question
-        let arrResponses = [];
-        objSurvey.groupResponses.forEach(group => {
-            group.memberResponses.forEach(member => {
-                const answer = member.answers.find(ans => ans.questionid === question.questionid);
-                if (answer) {
-                    arrResponses.push(answer.answer); // Collect the answer
-                }
-            });
-        });
-        console.log(`Responses for question "${question.questionText}":`);
-        console.log(arrResponses);
+    //     // Collect all responses for the current question
+    //     let arrResponses = [];
+    //     objSurvey.groupResponses.forEach(group => {
+    //         group.memberResponses.forEach(member => {
+    //             const answer = member.answers.find(ans => ans.questionid === question.questionid);
+    //             if (answer) {
+    //                 arrResponses.push(answer.answer); // Collect the answer
+    //             }
+    //         });
+    //     });
+    //     console.log(`Responses for question "${question.questionText}":`);
+    //     console.log(arrResponses);
 
-        // Count the occurrences of each answer choice. This will be our y-axis.
-        const objResponseCount = countResponses(arrResponses);
-        console.log("Count of every response: ");
-        console.log(objResponseCount);
+    //     // Count the occurrences of each answer choice. This will be our y-axis.
+    //     const objResponseCount = countResponses(arrResponses);
+    //     console.log("Count of every response: ");
+    //     console.log(objResponseCount);
 
-        // Create the x-axis. This will be the possible responses
-        const arrXAxis = createXAxis(objResponseCount);
-        console.log('X Axis: ');
-        console.log(arrXAxis);
+    //     // Create the x-axis. This will be the possible responses
+    //     const arrXAxis = createXAxis(objResponseCount);
+    //     console.log('X Axis: ');
+    //     console.log(arrXAxis);
 
-        // Create the y-axis. Occurrences of an answer.
-        const arrYAxis = createYAxis(objResponseCount);
-        console.log('Y Axis: ');
-        console.log(arrYAxis);
+    //     // Create the y-axis. Occurrences of an answer.
+    //     const arrYAxis = createYAxis(objResponseCount);
+    //     console.log('Y Axis: ');
+    //     console.log(arrYAxis);
 
-        // Name of the series is the question
-        const strName = question.questionText;
-        console.log(strName);
+    //     // Name of the series is the question
+    //     const strName = question.questionText;
+    //     console.log(strName);
 
-        // Create a container div for the chart and its header
-        const chartContainer = document.createElement('div');
-        chartContainer.className = 'chart-container'; // Optional: Add a class for styling
+    //     // Create a container div for the chart and its header
+    //     const chartContainer = document.createElement('div');
+    //     chartContainer.className = 'chart-container'; // Optional: Add a class for styling
 
-        // Create a header for the chart
-        const chartHeader = document.createElement('h2');
-        chartHeader.textContent = question.questionText; // Set the header text
-        chartHeader.className = 'chart-header'; // Optional: Add a class for styling
-        chartContainer.appendChild(chartHeader); // Append the header to the container
+    //     // Create a header for the chart
+    //     const chartHeader = document.createElement('h2');
+    //     chartHeader.textContent = question.questionText; // Set the header text
+    //     chartHeader.className = 'chart-header'; // Optional: Add a class for styling
+    //     chartContainer.appendChild(chartHeader); // Append the header to the container
 
-        // Create a new div for the chart
-        const chartDiv = document.createElement('div');
-        chartDiv.id = `chart-${question.questionid}`; // Unique ID for the chart
-        chartContainer.appendChild(chartDiv); // Append the chart div to the container
+    //     // Create a new div for the chart
+    //     const chartDiv = document.createElement('div');
+    //     chartDiv.id = `chart-${question.questionid}`; // Unique ID for the chart
+    //     chartContainer.appendChild(chartDiv); // Append the chart div to the container
 
-        // Append the container to the main charts div
-        document.querySelector('#divCharts').appendChild(chartContainer);
+    //     // Append the container to the main charts div
+    //     document.querySelector('#divCharts').appendChild(chartContainer);
 
-        // Create the chart inside the new div
-        createBarChart(arrXAxis, arrYAxis, strName, chartDiv.id);
-    })
+    //     // Create the chart inside the new div
+    //     createBarChart(arrXAxis, arrYAxis, strName, chartDiv.id);
+    // })
 
     
 }

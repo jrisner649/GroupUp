@@ -81,23 +81,23 @@ function viewIssuedSurveys() {
     clearDashboard()
     addHeaderToDashboard('Issued Surveys')
 
-    // Fetch data from the API
-    const objSurvey = fetchProjectLeaderSurveys()[0]
-    const arrGroupMembers = fetchGroupMemberInfo()
+    // // Fetch data from the API
+    // const objSurvey = fetchProjectLeaderSurveys()[0]
+    // const arrGroupMembers = fetchGroupMemberInfo()
 
-    // We need to add the survey to the dashboard.
-    // A survey is sent for every group member. For example, if you are working with two
-    // other group members, you will receive two copies of one survey. One for each group
-    // member. 
-    let arrDashboardData = []
-    arrGroupMembers.forEach(member => {
-        arrDashboardData.push({
-            header: objSurvey.title,
-            subheader: "Evaluate " + member.name + " (responses are public)", // The user evaluates each group member
-            uid: objSurvey.surveyid
-        })
-    })
-    populateDashboard(arrDashboardData, loadSurvey)
+    // // We need to add the survey to the dashboard.
+    // // A survey is sent for every group member. For example, if you are working with two
+    // // other group members, you will receive two copies of one survey. One for each group
+    // // member. 
+    // let arrDashboardData = []
+    // arrGroupMembers.forEach(member => {
+    //     arrDashboardData.push({
+    //         header: objSurvey.title,
+    //         subheader: "Evaluate " + member.name + " (responses are public)", // The user evaluates each group member
+    //         uid: objSurvey.surveyid
+    //     })
+    // })
+    // populateDashboard(arrDashboardData, loadSurvey)
 }
 
 // Function executes when a survey dashboard element is clicked in the Groups Page.
@@ -179,92 +179,86 @@ function loadSurvey(strSurveyID) {
     document.querySelector('#divDashboard').appendChild(btnSubmitSurvey)
 }
 
-function viewFeedback() {
-    console.log('View feedback button clicked on Groups Page')
-    clearDashboard()
-    addHeaderToDashboard('View Feedback')
+async function viewFeedback() {
+    console.log('View feedback button clicked on Groups Page');
+    clearDashboard();
+    addHeaderToDashboard('View Feedback');
 
+    // Fetch feedback data from the backend
+    const arrFeedback = await fetchFeedback(); // Fetch all feedback
+    console.log(arrFeedback);
 
-    const arrSurveys = fetchProjectLeaderSurveys(); // Fetch all surveys
-    const objCurrentSurvey = arrSurveys[0];
-
-    console.log(objCurrentSurvey)
-
-    if (!objCurrentSurvey) {
-        console.error('Survey not found');
+    if (!arrFeedback || arrFeedback.length === 0) {
+        console.error('No feedback found.');
+        Swal.fire("No Feedback", "No feedback data is available.", "info");
         return;
     }
 
-    const strGroupID = "ABC"
+    // Iterate over each feedback entry
+    arrFeedback.forEach(feedback => {
+        // Create a card for the feedback
+        const feedbackCard = document.createElement('div');
+        feedbackCard.className = 'feedback-card mb-4 p-3 border rounded';
 
-    const groupResponses = objCurrentSurvey.groupResponses.find(group => group.groupid === strGroupID);
+        // Add the survey name as the card title
+        const surveyName = document.createElement('h3');
+        surveyName.textContent = feedback.survey_name;
+        feedbackCard.appendChild(surveyName);
 
-    if (!groupResponses) {
-        console.error('Group responses not found for the given group ID.');
-        return;
-    }
+        // Add the sender's name
+        const senderName = document.createElement('p');
+        senderName.innerHTML = `<strong>Sender:</strong> ${feedback.sender_name}`;
+        feedbackCard.appendChild(senderName);
 
-
-
-    // Iterate over each member's responses
-    groupResponses.memberResponses.forEach(memberResponse => {
-        // Create a response card for each member
-        const memberCard = document.createElement('div');
-        memberCard.className = 'response-card'; // Use the new custom class
-
-        // Add the member's name as the card title
-        const memberName = document.createElement('h3');
-        memberName.textContent = memberResponse.memberName;
-        memberCard.appendChild(memberName);
-
-        // Iterate over each question in the survey
-        objCurrentSurvey.questions.forEach(question => {
+        // Iterate over each question in the feedback
+        feedback.arrQuestions.forEach(question => {
             const questionContainer = document.createElement('div');
-            questionContainer.className = 'mb-4';
+            questionContainer.className = 'mb-3';
 
             // Add the question text
             const questionText = document.createElement('p');
-            questionText.innerHTML = `<strong>${question.questionText}</strong>`;
+            questionText.innerHTML = `<strong>${question.question_narrative}</strong>`;
             questionContainer.appendChild(questionText);
 
-            // Display options based on question type
-            if (question.questionType === 'likert' || question.questionType === 'multipleChoice') {
-                question.options.forEach(option => {
+            // Display options or answers based on question type
+            if (question.question_type === 'likert' || question.question_type === 'multiple choice') {
+                // Parse the stringified JSON options
+                const options = JSON.parse(question.options);
+                console.log('Options:', options);
+                console.log('Answers:', question.arrAnswers);
+
+                // Iterate over the options object
+                Object.entries(options).forEach(([key, value]) => {
                     const optionLabel = document.createElement('div');
                     optionLabel.classList.add('form-check');
 
-                    // Check if this option was selected by the member
-                    const isSelected = memberResponse.answers.some(
-                        answer => answer.question === question.questionText && answer.answer === option
+                    // Check if this option was selected by matching the numerical key with the response
+                    const isSelected = question.arrAnswers.some(
+                        answer => answer.response === key // Compare with the numerical key instead of the text value
                     );
 
                     optionLabel.innerHTML = `
                         <input class="form-check-input" type="radio" disabled ${isSelected ? 'checked' : ''}>
-                        <label class="form-check-label">${option}</label>
+                        <label class="form-check-label">${value}</label>
                     `;
                     questionContainer.appendChild(optionLabel);
                 });
-            } else if (question.questionType === 'shortAnswer') {
-                // Find the member's answer for the short answer question
-                const memberAnswer = memberResponse.answers.find(
-                    answer => answer.question === question.questionText
-                );
-
+            } else if (question.question_type === 'short answer') {
+                // Display the short answer
                 const shortAnswerInput = document.createElement('input');
                 shortAnswerInput.type = 'text';
                 shortAnswerInput.classList.add('form-control');
                 shortAnswerInput.placeholder = 'Short answer text';
-                shortAnswerInput.value = memberAnswer ? memberAnswer.answer : '';
+                shortAnswerInput.value = question.arrAnswers.length > 0 ? question.arrAnswers[0].response : ''; // Change answer_text to response
                 shortAnswerInput.disabled = true;
                 questionContainer.appendChild(shortAnswerInput);
             }
 
-            // Append the question container to the member card
-            memberCard.appendChild(questionContainer);
+            // Append the question container to the feedback card
+            feedbackCard.appendChild(questionContainer);
         });
 
-        // Append the member card to the dashboard
-        document.querySelector('#divDashboard').appendChild(memberCard);
-    })
-
+        // Append the feedback card to the dashboard
+        document.querySelector('#divDashboard').appendChild(feedbackCard);
+    });
 }
