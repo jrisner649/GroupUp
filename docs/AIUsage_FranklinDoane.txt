@@ -44,3 +44,12 @@ Result: Copilot added a parameter to the Sweet Alert fire statement to make the 
 
 Prompt: is there some way I could make it so that the date on this Sweet Alert input field is required to be a date in the future? (It won't let the user select dates in the past)
 Result: Copilot added code that gets today's date and makes it the minimum for the sweet alert input
+
+Prompt: Hey Copilot, could you write me a sqllite command that could take in a uuid, and search for the entry in the table named tblProjectGroups that who's group_id is equal to that uuid, and then from that entry return it's project_id? Basically I have a group Id, and I want the project ID for that group, and both project_id and group_id are columns of the table tblProjectGroups. Can you help?
+Result: It wrote me a sql command that I used. It also suggested how to run the command and get the result, which I borrowed from heavily.
+
+Prompt: Hey Copilot. If I have a db.all function that fetches from a database in javascript, how can I write it such that the callback lambda function that it runs can mutate a variable defined right before the db.all call?
+Result: Copilot suggested amongst other things using an async lambda function to wait for database calls to be complete before returning the variables they mutate.
+Follow-up: Can you write this for me (the async option) with the code in my current file? I want to make sure that the updates to each objNewSurvey in arrSurveys is updated inside it's respsective db.all call where items are pushed to its questions attribute, all that before it gets pushed to arrSurveys. Can you write that for me?
+Result: I borrowed very heavily from the code Copilot gave me, copying portions of it and arranging it for my get.
+

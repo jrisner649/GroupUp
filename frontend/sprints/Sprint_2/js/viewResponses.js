@@ -54,87 +54,89 @@ function onClickBtnMenuPanelViewGroupData() {
 function displayProjectData(strSurveyID) {
 
     // Find the survey in question. We get strSurveyID from the dashboard element
-    const arrSurveys = fetchProjectLeaderSurveys()
-    const objSurvey = arrSurveys.find(survey => survey.surveyid == strSurveyID) 
+    fetchProjectLeaderSurveys().then(arrSurveys => {
 
-    console.log(objSurvey)
+        const objSurvey = arrSurveys.find(survey => survey.surveyid == strSurveyID) 
 
-    // Get the likert questions
-    const arrLikertQuestions = objSurvey.questions.filter(question => question.questionType == 'likert')
+        console.log(objSurvey)
 
-    console.log(`Likert Questions: `)
-    console.log(arrLikertQuestions)
+        // Get the likert questions
+        const arrLikertQuestions = objSurvey.questions.filter(question => question.questionType == 'likert')
 
-    // Get the available options for the questions
-    const arrLikertOptions = arrLikertQuestions.map(question => question.options)
+        console.log(`Likert Questions: `)
+        console.log(arrLikertQuestions)
 
-    console.log(`Likert Options: ${arrLikertOptions}`)
-    
-    // Create a div for the charts
-    const divCharts = document.createElement('div')
-    divCharts.id = 'divCharts'
-    document.querySelector('#divDashboard').appendChild(divCharts)
+        // Get the available options for the questions
+        const arrLikertOptions = arrLikertQuestions.map(question => question.options)
+
+        console.log(`Likert Options: ${arrLikertOptions}`)
+        
+        // Create a div for the charts
+        const divCharts = document.createElement('div')
+        divCharts.id = 'divCharts'
+        document.querySelector('#divDashboard').appendChild(divCharts)
 
 
-    // for loop that iterates over every likert question
-    arrLikertQuestions.forEach(question => {
-        console.log('Current Question: ');
-        console.log(question);
+        // for loop that iterates over every likert question
+        arrLikertQuestions.forEach(question => {
+            console.log('Current Question: ');
+            console.log(question);
 
-        // Collect all responses for the current question
-        let arrResponses = [];
-        objSurvey.groupResponses.forEach(group => {
-            group.memberResponses.forEach(member => {
-                const answer = member.answers.find(ans => ans.questionid === question.questionid);
-                if (answer) {
-                    arrResponses.push(answer.answer); // Collect the answer
-                }
+            // Collect all responses for the current question
+            let arrResponses = [];
+            objSurvey.groupResponses.forEach(group => {
+                group.memberResponses.forEach(member => {
+                    const answer = member.answers.find(ans => ans.questionid === question.questionid);
+                    if (answer) {
+                        arrResponses.push(answer.answer); // Collect the answer
+                    }
+                });
             });
-        });
-        console.log(`Responses for question "${question.questionText}":`);
-        console.log(arrResponses);
+            console.log(`Responses for question "${question.questionText}":`);
+            console.log(arrResponses);
 
-        // Count the occurrences of each answer choice. This will be our y-axis.
-        const objResponseCount = countResponses(arrResponses);
-        console.log("Count of every response: ");
-        console.log(objResponseCount);
+            // Count the occurrences of each answer choice. This will be our y-axis.
+            const objResponseCount = countResponses(arrResponses);
+            console.log("Count of every response: ");
+            console.log(objResponseCount);
 
-        // Create the x-axis. This will be the possible responses
-        const arrXAxis = createXAxis(objResponseCount);
-        console.log('X Axis: ');
-        console.log(arrXAxis);
+            // Create the x-axis. This will be the possible responses
+            const arrXAxis = createXAxis(objResponseCount);
+            console.log('X Axis: ');
+            console.log(arrXAxis);
 
-        // Create the y-axis. Occurrences of an answer.
-        const arrYAxis = createYAxis(objResponseCount);
-        console.log('Y Axis: ');
-        console.log(arrYAxis);
+            // Create the y-axis. Occurrences of an answer.
+            const arrYAxis = createYAxis(objResponseCount);
+            console.log('Y Axis: ');
+            console.log(arrYAxis);
 
-        // Name of the series is the question
-        const strName = question.questionText;
-        console.log(strName);
+            // Name of the series is the question
+            const strName = question.questionText;
+            console.log(strName);
 
-        // Create a container div for the chart and its header
-        const chartContainer = document.createElement('div');
-        chartContainer.className = 'chart-container'; // Optional: Add a class for styling
+            // Create a container div for the chart and its header
+            const chartContainer = document.createElement('div');
+            chartContainer.className = 'chart-container'; // Optional: Add a class for styling
 
-        // Create a header for the chart
-        const chartHeader = document.createElement('h2');
-        chartHeader.textContent = question.questionText; // Set the header text
-        chartHeader.className = 'chart-header'; // Optional: Add a class for styling
-        chartContainer.appendChild(chartHeader); // Append the header to the container
+            // Create a header for the chart
+            const chartHeader = document.createElement('h2');
+            chartHeader.textContent = question.questionText; // Set the header text
+            chartHeader.className = 'chart-header'; // Optional: Add a class for styling
+            chartContainer.appendChild(chartHeader); // Append the header to the container
 
-        // Create a new div for the chart
-        const chartDiv = document.createElement('div');
-        chartDiv.id = `chart-${question.questionid}`; // Unique ID for the chart
-        chartContainer.appendChild(chartDiv); // Append the chart div to the container
+            // Create a new div for the chart
+            const chartDiv = document.createElement('div');
+            chartDiv.id = `chart-${question.questionid}`; // Unique ID for the chart
+            chartContainer.appendChild(chartDiv); // Append the chart div to the container
 
-        // Append the container to the main charts div
-        document.querySelector('#divCharts').appendChild(chartContainer);
+            // Append the container to the main charts div
+            document.querySelector('#divCharts').appendChild(chartContainer);
 
-        // Create the chart inside the new div
-        createBarChart(arrXAxis, arrYAxis, strName, chartDiv.id);
-    })
+            // Create the chart inside the new div
+            createBarChart(arrXAxis, arrYAxis, strName, chartDiv.id);
+        })
 
+    });
     
 }
 
@@ -190,96 +192,101 @@ function createYAxis(objResponseCount) {
 function displayGroupResponses(strGroupID) {
     clearDashboard(); // Clear the dashboard
 
-    const arrSurveys = fetchProjectLeaderSurveys(); // Fetch all surveys
-    const objCurrentSurvey = arrSurveys.find(survey => survey.surveyid === strCurrentSurveyID);
+    // Fetch all surveys
+    fetchProjectLeaderSurveys().then(arrSurveys => {
 
-    if (!objCurrentSurvey) {
-        console.error('Survey not found');
-        return;
-    }
+        const objCurrentSurvey = arrSurveys.find(survey => survey.surveyid === strCurrentSurveyID);
 
-    const groupResponses = objCurrentSurvey.groupResponses.find(group => group.groupid === strGroupID);
-
-    if (!groupResponses) {
-        console.error('Group responses not found for the given group ID.');
-        return;
-    }
-
-    // Add a header to the dashboard
-    addHeaderToDashboard(`Responses for ${groupResponses.groupName}`);
-
-    // Iterate over each member's responses
-    groupResponses.memberResponses.forEach(memberResponse => {
-        // Create a response card for each member
-        const memberCard = document.createElement('div');
-        memberCard.className = 'response-card'; // Use the new custom class
-
-        // Add the member's name as the card title
-        const memberName = document.createElement('h3');
-
-
-        memberName.textContent = memberResponse.memberName + " evaluating Frankin Doane";
-
-
-        // This is just a quick fix to prevent "Franklin Doane evaluating Franklin Doane"
-        if (memberResponse.memberName == 'Franklin Doane') {
-            memberName.textContent = 'Franklin Doane evaluating Seth Risner'
+        if (!objCurrentSurvey) {
+            console.error('Survey not found');
+            return;
         }
 
-        memberCard.appendChild(memberName);
+        const groupResponses = objCurrentSurvey.groupResponses.find(group => group.groupid === strGroupID);
 
-        // Iterate over each question in the survey
-        objCurrentSurvey.questions.forEach(question => {
-            const questionContainer = document.createElement('div');
-            questionContainer.className = 'mb-4';
+        if (!groupResponses) {
+            console.error('Group responses not found for the given group ID.');
+            return;
+        }
 
-            // Add the question text
-            const questionText = document.createElement('p');
-            questionText.innerHTML = `<strong>${question.questionText}</strong>`;
-            questionContainer.appendChild(questionText);
+        // Add a header to the dashboard
+        addHeaderToDashboard(`Responses for ${groupResponses.groupName}`);
 
-            // Display options based on question type
-            if (question.questionType === 'likert' || question.questionType === 'multipleChoice') {
-                question.options.forEach(option => {
-                    const optionLabel = document.createElement('div');
-                    optionLabel.classList.add('form-check');
+        // Iterate over each member's responses
+        groupResponses.memberResponses.forEach(memberResponse => {
+            // Create a response card for each member
+            const memberCard = document.createElement('div');
+            memberCard.className = 'response-card'; // Use the new custom class
 
-                    // Check if this option was selected by the member
-                    const isSelected = memberResponse.answers.some(
-                        answer => answer.question === question.questionText && answer.answer === option
-                    );
+            // Add the member's name as the card title
+            const memberName = document.createElement('h3');
 
-                    optionLabel.innerHTML = `
-                        <input class="form-check-input" type="radio" disabled ${isSelected ? 'checked' : ''}>
-                        <label class="form-check-label">${option}</label>
-                    `;
-                    questionContainer.appendChild(optionLabel);
-                });
-            } else if (question.questionType === 'shortAnswer') {
-                // Find the member's answer for the short answer question
-                const memberAnswer = memberResponse.answers.find(
-                    answer => answer.question === question.questionText
-                );
 
-                const shortAnswerInput = document.createElement('input');
-                shortAnswerInput.type = 'text';
-                shortAnswerInput.classList.add('form-control');
-                shortAnswerInput.placeholder = 'Short answer text';
-                shortAnswerInput.value = memberAnswer ? memberAnswer.answer : '';
-                shortAnswerInput.disabled = true;
-                questionContainer.appendChild(shortAnswerInput);
+            memberName.textContent = memberResponse.memberName + " evaluating Frankin Doane";
+
+
+            // This is just a quick fix to prevent "Franklin Doane evaluating Franklin Doane"
+            if (memberResponse.memberName == 'Franklin Doane') {
+                memberName.textContent = 'Franklin Doane evaluating Seth Risner'
             }
 
-            // Append the question container to the member card
-            memberCard.appendChild(questionContainer);
+            memberCard.appendChild(memberName);
 
-            let btnApproveFeedback = document.createElement('button')
-            btnApproveFeedback.innerHTML = "Approve Feedback"
-            memberCard.appendChild(btnApproveFeedback)
+            // Iterate over each question in the survey
+            objCurrentSurvey.questions.forEach(question => {
+                const questionContainer = document.createElement('div');
+                questionContainer.className = 'mb-4';
+
+                // Add the question text
+                const questionText = document.createElement('p');
+                questionText.innerHTML = `<strong>${question.questionText}</strong>`;
+                questionContainer.appendChild(questionText);
+
+                // Display options based on question type
+                if (question.questionType === 'likert' || question.questionType === 'multipleChoice') {
+                    question.options.forEach(option => {
+                        const optionLabel = document.createElement('div');
+                        optionLabel.classList.add('form-check');
+
+                        // Check if this option was selected by the member
+                        const isSelected = memberResponse.answers.some(
+                            answer => answer.question === question.questionText && answer.answer === option
+                        );
+
+                        optionLabel.innerHTML = `
+                            <input class="form-check-input" type="radio" disabled ${isSelected ? 'checked' : ''}>
+                            <label class="form-check-label">${option}</label>
+                        `;
+                        questionContainer.appendChild(optionLabel);
+                    });
+                } else if (question.questionType === 'shortAnswer') {
+                    // Find the member's answer for the short answer question
+                    const memberAnswer = memberResponse.answers.find(
+                        answer => answer.question === question.questionText
+                    );
+
+                    const shortAnswerInput = document.createElement('input');
+                    shortAnswerInput.type = 'text';
+                    shortAnswerInput.classList.add('form-control');
+                    shortAnswerInput.placeholder = 'Short answer text';
+                    shortAnswerInput.value = memberAnswer ? memberAnswer.answer : '';
+                    shortAnswerInput.disabled = true;
+                    questionContainer.appendChild(shortAnswerInput);
+                }
+
+                // Append the question container to the member card
+                memberCard.appendChild(questionContainer);
+
+                let btnApproveFeedback = document.createElement('button')
+                btnApproveFeedback.innerHTML = "Approve Feedback"
+                memberCard.appendChild(btnApproveFeedback)
+            });
+
+            // Append the member card to the dashboard
+            document.querySelector('#divDashboard').appendChild(memberCard);
         });
 
-        // Append the member card to the dashboard
-        document.querySelector('#divDashboard').appendChild(memberCard);
-    });
+    }); 
+    
 }
 

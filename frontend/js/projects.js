@@ -2,8 +2,6 @@
     This file is used for handling logic for the Project Management Page
 */
 
-var strSessionUserEmail = "user@groupup.com";
-
 
 let strCurrentProjectID = '' // Keep track with what project the user clicked on
 
@@ -265,17 +263,22 @@ function onClickBtnMenuPanelViewResponses() {
     addHeaderToDashboard("View survey responses");
 
     // Iterate over every survey and add them to the dashboard
-    const arrSurveys = fetchProjectLeaderSurveys() // Make the API call to get the surveys that the user had made
-    let arrDashboardData = []
-    arrSurveys.forEach(survey => {
-        arrDashboardData.push(
-            {
-                header: survey.title,
-                subheader: survey.description,
-                uid: survey.surveyid
-            }
-        )
+    // Make the API call to get the surveys that the user had made
+    fetchProjectLeaderSurveys(strCurrentProjectID, idType="project_id").then(arrSurveys => {
+
+        let arrDashboardData = []
+        arrSurveys.forEach(survey => {
+            arrDashboardData.push(
+                {
+                    header: survey.title,
+                    subheader: survey.description,
+                    uid: survey.surveyid
+                }
+            )
+        })
+        populateDashboard(arrDashboardData, onClickSurvey)
+
     })
-    populateDashboard(arrDashboardData, onClickSurvey)
+    
 }
 

@@ -56,7 +56,7 @@ function sendSurvey(strScheduledTime) {
             method: 'POST',
             body: JSON.stringify({
                 projectId: strCurrentProjectID,
-                name: "myname",
+                name: document.querySelector('#txtSurveyTitle').value,
                 visibility: boolSurveyIsPublic ? "public" : "private",
                 questions: JSON.stringify(surveyData),
                 scheduledTime: strScheduledTime

@@ -467,95 +467,153 @@ app.post('/GroupUp/survey', (req,res,next) => {
 });
 
 // get surveys to fill out
-app.get('/GroupUp/survey', validateSession, (req,res) => {
+app.get('/GroupUp/survey', validateSession, async (req,res) => {
 
-    // check for group id
+    // Helper function to fetch questions for a survey
+    async function fetchSurveyQuestions(strSurveyId) {
+        const strGetQuestionsCmd = "SELECT * FROM tblSurveyQuestions WHERE survey_id = ?";
+        const arrQuestions = await allDb(strGetQuestionsCmd, [strSurveyId]);
+        return arrQuestions.map(objQuestion => ({
+            questionText: objQuestion.question_narrative,
+            questionType: objQuestion.question_type,
+            options: JSON.parse(objQuestion.options),
+            index: objQuestion.question_order
+        }));
+    }
+
+    // check for ids
     const strGroupId = req.query.group_id;
+    const strProjectId = req.query.project_id;
+    const strSurveyId = req.query.survey_id;
+
+    // if no id was passed
+    if (!strGroupId && !strProjectId && !strSurveyId) {
+
+        res.status(400).json({status: "error", message: "Survey request needs either group_id, project_id, or survey_id in query string."});
+
+    }
     
-    // use database to get project ID
-    const strGetProjIDCmd = "SELECT project_id FROM tblProjectGroups WHERE group_id = ?;";
-    db.get(strGetProjIDCmd, [strGroupId], (err, row) => {
+    // if group Id was passed
+    else if (strGroupId) {
 
-        if (err) {
+        // use database to get project ID
+        const strGetProjIDCmd = "SELECT project_id FROM tblProjectGroups WHERE group_id = ?;";
+        db.get(strGetProjIDCmd, [strGroupId], async (err, row) => {
 
-            console.log("Error finding project ID: ", err);
-            return res.status(400).json({status: "error", message: err});
-
-        }
-        else if (!row.project_id) {
-
-            console.log("Couldn't find project for group ID: ", strGroupId);
-            return res.status(400).json({status: "error", message: "Couldn't find project for group ID: " + strGroupId});
-
-        }
-
-        // grab project id
-        const strProjectID = row.project_id;
-
-        // run command to get survey ID
-        const strGetSurveyIdCmd = "SELECT * FROM tblSurveys WHERE project_id = ?;";
-        db.all(strGetSurveyIdCmd, [strProjectID], (err, results) => {
-    
             if (err) {
-    
-                console.log("Error finding survey ID: ", err);
+
+                console.log("Error finding project ID: ", err);
                 return res.status(400).json({status: "error", message: err});
-    
+
+            }
+            else if (!row.project_id) {
+
+                console.log("Couldn't find project for group ID: ", strGroupId);
+                return res.status(400).json({status: "error", message: "Couldn't find project for group ID: " + strGroupId});
+
             }
 
-            let arrSurveyEntries = results;
+            // grab project id
+            const strProjectId = row.project_id;
+
+            // run command to get survey IDs
+            const strGetSurveyIdCmd = "SELECT * FROM tblSurveys WHERE project_id = ?;";
+            const arrSurveyEntries = await allDb(strGetSurveyIdCmd, [strProjectId]);
+
             let arrSurveys = []
 
-            // create object for each survey
-            arrSurveyEntries.forEach(objInfo => {
+            // iterate through entries
+            for (const objInfo of arrSurveyEntries) {
 
-                const strSurveyId = objInfo.survey_id;
-
-                // new survey object
-                let objNewSurvey = {
-                    surveyid: strSurveyId,
+                // Create a new survey object
+                const objNewSurvey = {
+                    surveyid: objInfo.survey_id,
                     title: objInfo.name,
                     questions: []
                 };
 
-                // iterate through possible survey questions
-                const strGetQuestionsCmd = "SELECT * FROM tblSurveyQuestions WHERE survey_id = ?;";
-                db.all(strGetQuestionsCmd, [strSurveyId], (err, results) => {
+                // Fetch questions for the survey
+                objNewSurvey.questions = await fetchSurveyQuestions(objInfo.survey_id);
 
-                    if (err) {
-    
-                        console.log("Error finding survey questions: ", err);
-                        return res.status(400).json({status: "error", message: err});
-            
-                    }
+                // Sort questions by their order
+                objNewSurvey.questions.sort((a, b) => a.index - b.index);
 
-                    // iterate through results
-                    results.forEach(objQuestion => {
-                        
-                        objNewSurvey.questions.push({
-                            questionText: objQuestion.question_narrative,
-                            questionType: objQuestion.question_type,
-                            options: JSON.parse(objQuestion.options),
-                            index: objQuestion.question_order
-                        });
-
-                    });
-
-                    // sort questions
-                    objNewSurvey.question = objNewSurvey.questions.sort((a, b) => b.index - a.index);
-
-                });
-
+                // Push the survey object to the array
                 arrSurveys.push(objNewSurvey);
 
-            });
+            }
 
-            res.status(200).json(arrSurveys);
+            return res.status(200).json(arrSurveys);
 
         });
 
-    });
+    }
 
+    // if project id was passed
+    else if (strProjectId) {
+
+        // run command to get survey IDs
+        const strGetSurveyIdCmd = "SELECT * FROM tblSurveys WHERE project_id = ?;";
+        const arrSurveyEntries = await allDb(strGetSurveyIdCmd, [strProjectId]);
+
+        let arrSurveys = []
+
+        // iterate through entries
+        for (const objInfo of arrSurveyEntries) {
+
+            // Create a new survey object
+            const objNewSurvey = {
+                surveyid: objInfo.survey_id,
+                title: objInfo.name,
+                questions: []
+            };
+
+            // Fetch questions for the survey
+            objNewSurvey.questions = await fetchSurveyQuestions(objInfo.survey_id);
+
+            // Sort questions by their order
+            objNewSurvey.questions.sort((a, b) => a.index - b.index);
+
+            // Push the survey object to the array
+            arrSurveys.push(objNewSurvey);
+
+        }
+
+        return res.status(200).json(arrSurveys);
+
+    }
+
+    // if survey id was passed
+    else {
+
+        // run command to get survey IDs
+        const strGetSurveyIdCmd = "SELECT * FROM tblSurveys WHERE survey_id = ?;";
+        const arrSurveyEntries = await allDb(strGetSurveyIdCmd, [strSurveyId]);
+
+        // iterate through entries
+        for (const objInfo of arrSurveyEntries) {
+
+            // Create a new survey object
+            const objNewSurvey = {
+                surveyid: objInfo.survey_id,
+                title: objInfo.name,
+                questions: []
+            };
+
+            // Fetch questions for the survey
+            objNewSurvey.questions = await fetchSurveyQuestions(objInfo.survey_id);
+
+            // Sort questions by their order
+            objNewSurvey.questions.sort((a, b) => a.index - b.index);
+
+            // Push the survey object to the array
+            arrSurveys.push(objNewSurvey);
+
+        }
+
+        return res.status(200).json(arrSurveys);
+
+    }
 
 });
 
