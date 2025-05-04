@@ -466,6 +466,99 @@ app.post('/GroupUp/survey', (req,res,next) => {
 
 });
 
+// get surveys to fill out
+app.get('/GroupUp/survey', validateSession, (req,res) => {
+
+    // check for group id
+    const strGroupId = req.query.group_id;
+    
+    // use database to get project ID
+    const strGetProjIDCmd = "SELECT project_id FROM tblProjectGroups WHERE group_id = ?;";
+    db.get(strGetProjIDCmd, [strGroupId], (err, row) => {
+
+        if (err) {
+
+            console.log("Error finding project ID: ", err);
+            return res.status(400).json({status: "error", message: err});
+
+        }
+        else if (!row.project_id) {
+
+            console.log("Couldn't find project for group ID: ", strGroupId);
+            return res.status(400).json({status: "error", message: "Couldn't find project for group ID: " + strGroupId});
+
+        }
+
+        // grab project id
+        const strProjectID = row.project_id;
+
+        // run command to get survey ID
+        const strGetSurveyIdCmd = "SELECT * FROM tblSurveys WHERE project_id = ?;";
+        db.all(strGetSurveyIdCmd, [strProjectID], (err, results) => {
+    
+            if (err) {
+    
+                console.log("Error finding survey ID: ", err);
+                return res.status(400).json({status: "error", message: err});
+    
+            }
+
+            let arrSurveyEntries = results;
+            let arrSurveys = []
+
+            // create object for each survey
+            arrSurveyEntries.forEach(objInfo => {
+
+                const strSurveyId = objInfo.survey_id;
+
+                // new survey object
+                let objNewSurvey = {
+                    surveyid: strSurveyId,
+                    title: objInfo.name,
+                    questions: []
+                };
+
+                // iterate through possible survey questions
+                const strGetQuestionsCmd = "SELECT * FROM tblSurveyQuestions WHERE survey_id = ?;";
+                db.all(strGetQuestionsCmd, [strSurveyId], (err, results) => {
+
+                    if (err) {
+    
+                        console.log("Error finding survey questions: ", err);
+                        return res.status(400).json({status: "error", message: err});
+            
+                    }
+
+                    // iterate through results
+                    results.forEach(objQuestion => {
+                        
+                        objNewSurvey.questions.push({
+                            questionText: objQuestion.question_narrative,
+                            questionType: objQuestion.question_type,
+                            options: JSON.parse(objQuestion.options),
+                            index: objQuestion.question_order
+                        });
+
+                    });
+
+                    // sort questions
+                    objNewSurvey.question = objNewSurvey.questions.sort((a, b) => b.index - a.index);
+
+                });
+
+                arrSurveys.push(objNewSurvey);
+
+            });
+
+            res.status(200).json(arrSurveys);
+
+        });
+
+    });
+
+
+});
+
 
 // Use this function when you want to run a SELECT
 function allDb(strQuery, arrParams) {
