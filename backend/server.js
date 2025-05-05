@@ -142,6 +142,9 @@ app.post("/GroupUp/Project", async (req,res,next) => {
             "username": "@example"
         }
     ]
+
+
+
 */
 app.post('/GroupUp/User', async (req, res, next) => {
     try {
@@ -403,70 +406,227 @@ app.get('/group-member-info', async (req, res) => {
     }
 });
 
-app.post('/GroupUp/survey', (req,res,next) => {
 
-    console.log(req.body);
 
-    // get info from the body
-    const strProjectId = req.body.projectId;
-    const strName = req.body.name;
-    const strVisibility = req.body.visibility;
-    const arrQuestions = JSON.parse(req.body.questions);
-    const strScheduledTime = req.body.scheduledTime;
-
-    // verify questions were passed
-    if (!strProjectId || !strName || !strVisibility || !arrQuestions) {
-        res.status(400).json({status: "error", message: "Survey post must pass a projectId, name, visibility, questions, and scheduledTime."});
-    }
-    else {
-
-        // generate new survey id
-        const strSurveyId = uuidv4();
-
-        // insert survey into database
-        const strSurveyInsertCmd = 'INSERT INTO tblSurveys (survey_id, project_id, scheduled_datetime, name, visibility) VALUES (?, ?, ?, ?, ?)';
-        db.run(strSurveyInsertCmd, [strSurveyId, strProjectId, strScheduledTime, strName, strVisibility], (err, result) => {
-
-            // return error
-            if (err) {
-
-                console.log(err);
-                return res.status(400).json({status: "error", message: err.message});
-
-            }
-
-        });
-
-        // insert survey questions into database
-        const strQuestionInsertCmd = 'INSERT INTO tblSurveyQuestions (question_id, survey_id, question_type, options, question_narrative, question_order) VALUES (?, ?, ?, ?, ?, ?)';
-        let intQuestionOrder = 0;
-        arrQuestions.forEach(({ questionText, questionType, options }) => {
-            
-            // uuid for question key
-            const strQuestionId = uuidv4();
-            intQuestionOrder ++;
-
-            db.run(strQuestionInsertCmd, [strQuestionId, strSurveyId, questionType, JSON.stringify(options), questionText, intQuestionOrder], (err, result) => {
-
-                // return error
-                if (err) {
-
-                    console.log(err);
-                    return res.status(400).json({status: "error", message: err.message});
-
-                }
-
-            });
-
-        });
-
-        res.status(201).json({status: "success", surveyId: strSurveyId});
-
+// ai helped edit errors
+app.get('/GroupUp/SurveyResponses', validateSession, async (req, res) => {
+    const { survey_id, group_id } = req.query;
+    console.log('Fetching responses for survey:', survey_id, 'group:', group_id, 'user:', req.user_id);
+    if (!survey_id) {
+        return res.status(400).json({ status: "error", message: "Missing survey_id" });
     }
 
+    try {
+        let query = `
+            SELECT sr.response_id, sr.survey_id, sr.question_id, sr.user_id, sr.response, 
+                   sq.question_narrative, sq.question_type, sq.options,
+                   u.first_name, u.last_name
+            FROM tblSurveyResponses sr
+            JOIN tblSurveyQuestions sq ON sr.question_id = sq.question_id
+            JOIN tblUsers u ON sr.user_id = u.user_id
+            WHERE sr.survey_id = ?
+        `;
+        let params = [survey_id];
+
+        if (group_id) {
+            query += `
+                AND sr.user_id IN (
+                    SELECT user_id FROM tblGroupMembers WHERE group_id = ?
+                )
+            `;
+            params.push(group_id);
+        }
+
+        const rows = await allDb(query, params);
+        const responses = rows.map(row => ({
+            response_id: row.response_id,
+            question_id: row.question_id,
+            question_text: row.question_narrative,
+            question_type: row.question_type,
+            options: JSON.parse(row.options || '[]'),
+            user_id: row.user_id,
+            response: row.response,
+            user_name: `${row.first_name} ${row.last_name}`
+        }));
+
+        console.log('Fetched responses:', responses.length);
+        res.status(200).json(responses);
+    } catch (err) {
+        console.error('Error fetching survey responses:', err);
+        res.status(500).json({ status: "error", message: "Failed to fetch responses" });
+    }
 });
 
-// get surveys to fill out
+//ai helped edit errors
+app.post('/GroupUp/SurveyResponse', validateSession, async (req, res) => {
+    const { survey_id, responses } = req.body;
+    console.log('Received survey response:', { survey_id, responses, user_id: req.user_id });
+    if (!survey_id || !responses || !Array.isArray(responses)) {
+        return res.status(400).json({ status: "error", message: "Missing survey_id or responses" });
+    }
+
+    // Verify survey_id exists
+    const surveyCheck = await allDb("SELECT survey_id FROM tblSurveys WHERE survey_id = ?", [survey_id]);
+    if (!surveyCheck.length) {
+        return res.status(400).json({ status: "error", message: "Invalid survey_id" });
+    }
+
+    db.serialize(() => {
+        db.run("BEGIN TRANSACTION", (err) => {
+            if (err) {
+                console.error('Error starting transaction:', err);
+                return res.status(500).json({ status: "error", message: "Failed to start transaction" });
+            }
+
+            try {
+                const insertStmt = db.prepare(`
+                    INSERT INTO tblSurveyResponses (response_id, survey_id, question_id, user_id, response, submitted_datetime, visibility)
+                    VALUES (?, ?, ?, ?, ?, datetime('now'), ?)
+                `);
+
+                for (const response of responses) {
+                    if (!response.question_id) {
+                        throw new Error(`Missing question_id in response: ${JSON.stringify(response)}`);
+                    }
+                    const responseValue = response.response || "";
+                    const response_id = uuidv4();
+                    console.log('Inserting response:', { response_id, survey_id, question_id: response.question_id, user_id: req.user_id, response: responseValue, visibility: 'private' });
+                    insertStmt.run([response_id, survey_id, response.question_id, req.user_id, responseValue, 'private'], (err) => {
+                        if (err) {
+                            throw new Error(`Failed to insert response for question_id ${response.question_id}: ${err.message}`);
+                        }
+                    });
+                }
+
+                insertStmt.finalize((err) => {
+                    if (err) {
+                        throw new Error(`Failed to finalize statement: ${err.message}`);
+                    }
+                    db.run("COMMIT", (err) => {
+                        if (err) {
+                            console.error('Error committing transaction:', err);
+                            return res.status(500).json({ status: "error", message: "Failed to commit transaction" });
+                        }
+                        console.log('Survey responses saved:', survey_id);
+                        res.status(200).json({ status: "success", message: "Survey responses saved" });
+                    });
+                });
+            } catch (err) {
+                console.error('Error saving survey responses:', err);
+                db.run("ROLLBACK", (err) => {
+                    if (err) {
+                        console.error('Error rolling back transaction:', err);
+                    }
+                    res.status(500).json({ status: "error", message: `Failed to save responses: ${err.message}` });
+                });
+            }
+        });
+    });
+});
+
+//
+app.get('/GroupUp/survey', validateSession, async (req, res) => {
+    // Helper function to fetch questions for a survey
+    async function fetchSurveyQuestions(strSurveyId) {
+        const strGetQuestionsCmd = "SELECT * FROM tblSurveyQuestions WHERE survey_id = ?";
+        const arrQuestions = await allDb(strGetQuestionsCmd, [strSurveyId]);
+        return arrQuestions.map(objQuestion => ({
+            questionid: objQuestion.question_id, // Include question_id
+            questionText: objQuestion.question_narrative,
+            questionType: objQuestion.question_type,
+            options: JSON.parse(objQuestion.options),
+            index: objQuestion.question_order
+        }));
+    }
+
+    // check for ids
+    const strGroupId = req.query.group_id;
+    const strProjectId = req.query.project_id;
+    const strSurveyId = req.query.survey_id;
+
+    // if no id was passed
+    if (!strGroupId && !strProjectId && !strSurveyId) {
+        res.status(400).json({status: "error", message: "Survey request needs either group_id, project_id, or survey_id in query string."});
+    } else if (strGroupId) {
+        // use database to get project ID
+        const strGetProjIDCmd = "SELECT project_id FROM tblProjectGroups WHERE group_id = ?;";
+        db.get(strGetProjIDCmd, [strGroupId], async (err, row) => {
+            if (err) {
+                console.log("Error finding project ID: ", err);
+                return res.status(400).json({status: "error", message: err});
+            } else if (!row.project_id) {
+                console.log("Couldn't find project for group ID: ", strGroupId);
+                return res.status(400).json({status: "error", message: "Couldn't find project for group ID: " + strGroupId});
+            }
+            // grab project id
+            const strProjectId = row.project_id;
+            // run command to get survey IDs
+            const strGetSurveyIdCmd = "SELECT * FROM tblSurveys WHERE project_id = ?;";
+            const arrSurveyEntries = await allDb(strGetSurveyIdCmd, [strProjectId]);
+            let arrSurveys = [];
+            // iterate through entries
+            for (const objInfo of arrSurveyEntries) {
+                // Create a new survey object
+                const objNewSurvey = {
+                    surveyid: objInfo.survey_id,
+                    title: objInfo.name,
+                    questions: []
+                };
+                // Fetch questions for the survey
+                objNewSurvey.questions = await fetchSurveyQuestions(objInfo.survey_id);
+                // Sort questions by their order
+                objNewSurvey.questions.sort((a, b) => a.index - b.index);
+                // Push the survey object to the array
+                arrSurveys.push(objNewSurvey);
+            }
+            return res.status(200).json(arrSurveys);
+        });
+    } else if (strProjectId) {
+        // run command to get survey IDs
+        const strGetSurveyIdCmd = "SELECT * FROM tblSurveys WHERE project_id = ?;";
+        const arrSurveyEntries = await allDb(strGetSurveyIdCmd, [strProjectId]);
+        let arrSurveys = [];
+        // iterate through entries
+        for (const objInfo of arrSurveyEntries) {
+            // Create a new survey object
+            const objNewSurvey = {
+                surveyid: objInfo.survey_id,
+                title: objInfo.name,
+                questions: []
+            };
+            // Fetch questions for the survey
+            objNewSurvey.questions = await fetchSurveyQuestions(objInfo.survey_id);
+            // Sort questions by their order
+            objNewSurvey.questions.sort((a, b) => a.index - b.index);
+            // Push the survey object to the array
+            arrSurveys.push(objNewSurvey);
+        }
+        return res.status(200).json(arrSurveys);
+    } else {
+        // run command to get survey IDs
+        const strGetSurveyIdCmd = "SELECT * FROM tblSurveys WHERE survey_id = ?;";
+        const arrSurveyEntries = await allDb(strGetSurveyIdCmd, [strSurveyId]);
+        let arrSurveys = [];
+        // iterate through entries
+        for (const objInfo of arrSurveyEntries) {
+            // Create a new survey object
+            const objNewSurvey = {
+                surveyid: objInfo.survey_id,
+                title: objInfo.name,
+                questions: []
+            };
+            // Fetch questions for the survey
+            objNewSurvey.questions = await fetchSurveyQuestions(objInfo.survey_id);
+            // Sort questions by their order
+            objNewSurvey.questions.sort((a, b) => a.index - b.index);
+            // Push the survey object to the array
+            arrSurveys.push(objNewSurvey);
+        }
+        return res.status(200).json(arrSurveys);
+    }
+});
+
+// AI  helped edit
 app.get('/GroupUp/survey', validateSession, async (req,res) => {
 
     // Helper function to fetch questions for a survey
@@ -583,7 +743,6 @@ app.get('/GroupUp/survey', validateSession, async (req,res) => {
 
     }
 
-    // if survey id was passed
     else {
 
         // run command to get survey IDs
@@ -615,7 +774,7 @@ app.get('/GroupUp/survey', validateSession, async (req,res) => {
 
     }
 
-});
+});  // ai helped edit ffor errors
 
 
 // Use this function when you want to run a SELECT
