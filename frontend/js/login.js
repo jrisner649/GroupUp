@@ -132,7 +132,7 @@ document.querySelector('#btnRegister').addEventListener('click', (event) => {
         };
 
         // Send the req body to the server
-        fetch(baseURL + '/user', {
+        fetch(baseURL + '/GroupUp/User', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

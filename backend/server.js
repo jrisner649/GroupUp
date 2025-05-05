@@ -535,66 +535,6 @@ app.get("/GroupUp/Surveys/Responses", validateSession, async (req, res) => {
     res.status(200).json(arrRows);
 });
 
-
-
-
-
-
-
-
-
-
-
-
-
-// "groupResponses": [
-//         {
-//             "groupid": "ABC",
-//             "memberResponses": [
-//                 {
-//                     "memberName": "John Doe",
-//                     "answers": [
-//                         {
-//                             "question": "How well did the team collaborate?",
-//                             "answer": "Good"
-//                         },
-//                         {
-//                             "question": "What could be improved?",
-//                             "answer": "Better communication"
-//                         }
-//                     ]
-//                 },
-//                 {
-//                     "memberName": "Jane Smith",
-//                     "answers": [
-//                         {
-//                             "question": "How well did the team collaborate?",
-//                             "answer": "Excellent"
-//                         },
-//                         {
-//                             "question": "What could be improved?",
-//                             "answer": "More frequent meetings"
-//                         }
-//                     ]
-//                 }
-//             ]
-//         }
-//     ],
-//     "questions": [
-//         {
-//             "questionText": "How well did the team collaborate?",
-//             "questionType": "likert",
-//             "options": ["Poor", "Fair", "Good", "Excellent"]
-//         },
-//         {
-//             "questionText": "What could be improved?",
-//             "questionType": "shortAnswer"
-//         }
-//     ]
-
-
-
-
 app.get("/GroupUp/Groups/Feedback", validateSession, async (req, res) => {
     let arrFeedback = [
         {
@@ -664,45 +604,6 @@ app.get("/GroupUp/Groups/Feedback", validateSession, async (req, res) => {
     console.log(arrFeedback);
     console.log(arrFeedback[0].arrQuestions);
     console.log(arrFeedback[0].arrQuestions[2].arrAnswers);   
-
-    // arrFeedback.arrQuestions.forEach((question) => {
-    //     // Get the answers for the question
-    //     strQuery = "SELECT * FROM tblSurveyResponses WHERE question_id = ? AND survey_id = ?";
-    //     arrParams = [question.question_id, arrSurveys[i].survey_id];
-    //     arrAnswers = await allDb(strQuery, arrParams);
-    //     question.answers = arrAnswers;
-    // });
-
-    // Loop through the surveys and get the survey name, questions, for each one
-    // let arrRows = [];
-    // arrSurveys.forEach(async (survey) => {
-    //     // Get the name
-    //     strQuery = "SELECT name FROM tblSurveys WHERE survey_id = ?";
-    //     arrParams = [survey.survey_id];
-    //     arrRows = await allDb(strQuery, arrParams);
-    //     console.log(arrRows);
-    // });
-
-    // We need to fill out an array of the questions and answers for each survey
-    // arrSurveys.forEach(async (survey) => {
-    //     const strQuery = "SELECT * FROM tblSurveyQuestions WHERE survey_id = ?";
-    //     const arrParams = [survey.survey_id];
-    //     const arrRows = await allDb(strQuery, arrParams);
-    //     console.log(arrRows);
-    //     if (arrRows.length === 0) {
-    //         return res.status(404).json({ error: "No questions found" });
-    //     }
-    //     survey.questions = arrRows; // Add the questions to the survey object
-    // });
-    // console.log(arrSurveys);
-
-    // We need the sender of the survey, the answers they provided, and the survey ID
-    // We can get the sender of the survey from the tblSurveyTargets table, and the answers from the tblSurveyResponses table
-
-
-
-
-
 
     res.status(200).json(arrFeedback);
 });
