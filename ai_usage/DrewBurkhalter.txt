@@ -1,0 +1,246 @@
+ame: '12345',
+    description: 'sgsfsdv',
+    project_leader: '2bf2b1d7-c76c-409b-9f85-50deb1acda1c'
+  }
+]
+[
+  {
+    group_id: '9b2f8a88-fbfb-4c4e-bcb6-8a36e0ebc8ae',
+    name: 'asdf',
+    group_name: "Seth's Group"
+  },
+  { group_id: 'G-8c6d77c7', name: 'asdf', group_name: 'MyGroup' },       
+  { group_id: 'G-9b9b2bc3', name: 'asdf', group_name: 'test' }
+]
+Received survey response: {
+  survey_id: '0b37efa1-d9ac-4277-b377-1551c274e982',
+  responses: [
+    {
+      question_id: '8f5b282c-2d97-46c7-ba8e-7ea2248230d3',
+      response: 'YUP'
+    }
+  ],
+  user_id: '2bf2b1d7-c76c-409b-9f85-50deb1acda1c'
+}
+C:\Users\wildm\OneDrive\Desktop\desktop\FINAL CLASSES\3100\franklins_survey\GroupUp\backend\server.js:490
+                            throw new Error(`Failed to insert response for question_id ${response.question_id}: ${err.message}`);
+                                  ^
+
+ponses.visibility
+    at Statement.<anonymous> (C:\Users\wildm\OneDrive\Desktop\desktop\FINAL CLASSES\3100\franklins_survey\GroupUp\backend\server.js:490:35)
+
+
+
+
+Thank you for sharing the server logs and error details. The error SQLITE_CONSTRAINT: NOT NULL constraint failed: tblSurveyResponses.visibility at server.js line 490 persists, indicating that the tblSurveyResponses table requires a visibility column with a NOT NULL constraint, but the INSERT query in /GroupUp/SurveyResponse is not providing a value for it. The logs confirm that the frontend is sending valid data (survey_id, question_id, response, user_id), so the issue is solely with the backend's database operation.
+
+Log Analysis
+Server Log:
+json
+
+Copy
+Received survey response: {
+  survey_id: '0b37efa1-d9ac-4277-b377-1551c274e982',
+  responses: [
+    {
+      question_id: '8f5b282c-2d97-46c7-ba8e-7ea2248230d3',
+      response: 'YUP'
+    }
+  ],
+  user_id: '2bf2b1d7-c76c-409b-9f85-50deb1acda1c'
+}
+The frontend (groups.js) is correctly sending:
+survey_id: Valid UUID.
+responses: Array with question_id and response (non-empty, "YUP").
+user_id: Matches project_leader from tblProjects.
+This rules out frontend issues or the previous Missing question_id or response error.
+Error:
+javascript
+
+Copy
+C:\Users\wildm\...\server.js:490
+    throw new Error(`Failed to insert response for question_id ${response.question_id}: ${err.message}`);
+Error: Failed to insert response for question_id 8f5b282c-2d97-46c7-ba8e-7ea2248230d3: SQLITE_CONSTRAINT: NOT NULL constraint failed: tblSurveyResponses.visibility
+The INSERT statement in /GroupUp/SurveyResponse is:
+javascript
+
+Copy
+INSERT INTO tblSurveyResponses (response_id, survey_id, question_id, user_id, response, submission_datetime)
+VALUES (?, ?, ?, ?, ?, datetime('now'))
+The tblSurveyResponses table has a visibility column with NOT NULL, but the query omits it.
+Database Context:
+The previous update (artifact_id: 60937a47-a249-4820-a016-1997e315dd7c, version: 8de7ff53-77e5-42bb-a209-9543d1c1a884) attempted to fix this by adding visibility to the INSERT:
+javascript
+
+Copy
+INSERT INTO tblSurveyResponses (response_id, survey_id, question_id, user_id, response, submission_datetime, visibility)
+VALUES (?, ?, ?, ?, ?, datetime('now'), ?)
+with 'private' as the value.
+Issue: It seems you’re still running an older version of server.js (without the visibility fix), as the error matches the original query without visibility.
+Additional Logs:
+Projects:
+json
+
+Copy
+[
+  {
+    project_id: '12345',
+    name: '12345',
+    description: 'sgsfsdv',
+    project_leader: '2bf2b1d7-c76c-409b-9f85-50deb1acda1c'
+  }
+]
+Groups:
+json
+
+Copy
+[
+  {
+    group_id: '9b2f8a88-fbfb-4c4e-bcb6-8a36e0ebc8ae',
+    name: 'asdf',
+    group_name: "Seth's Group"
+  },
+  { group_id: 'G-8c6d77c7', name: 'asdf', group_name: 'MyGroup' },
+  { group_id: 'G-9b9b2bc3', name: 'asdf', group_name: 'test' }
+]
+These confirm valid project_id and group_id values, with the survey likely tied to project_id: '12345' and group_id: '9b2f8a88-fbfb-4c4e-bcb6-8a36e0ebc8ae'.
+Why the Error Persists
+You’re likely using an outdated server.js where /GroupUp/SurveyResponse lacks the visibility column in the INSERT query.
+The tblSurveyResponses schema includes:
+sql
+
+Copy
+CREATE TABLE tblSurveyResponses (
+    response_id TEXT PRIMARY KEY,
+    survey_id TEXT NOT NULL,
+    question_id TEXT NOT NULL,
+    user_id TEXT NOT NULL,
+    response TEXT NOT NULL,
+    submission_datetime DATETIME DEFAULT CURRENT_TIMESTAMP,
+    visibility TEXT NOT NULL,
+    ...
+);
+The visibility column is NOT NULL, and omitting it causes the SQLITE_CONSTRAINT error.
+Plan
+Reapply /GroupUp/SurveyResponse Fix:
+Update the endpoint to include visibility in the INSERT query, using 'private' as the default value.
+Add logging to confirm the query execution.
+Verify Application:
+Ensure you’re using the latest server.js (artifact_id: 60937a47-a249-4820-a016-1997e315dd7c, version: 8de7ff53-77e5-42bb-a209-9543d1c1a884).
+Check that no other code changes reverted the fix.
+Check Schema and Data:
+Confirm tblSurveyResponses schema and tblSurveys.visibility values.
+Verify survey_id exists in tblSurveys.
+Preserve Other Files:
+No changes to groups.js (artifact_id: ba450446-9a40-4fd3-ab32-e7be2d30b4c4, version: 43b15aee-0768-448d-9a98-79f48027d7fa) or fetch.js (artifact_id: 0a4f2416-ce7b-493b-a426-fe5b7be80dbe).
+Updated server.js
+I’ll provide the corrected /GroupUp/SurveyResponse endpoint again, ensuring visibility is included. Only the changed endpoint is shown, as requested.
+
+server.js
+javascript
+Show inline
+Changes:
+
+Reapplied visibility Fix:
+INSERT query includes visibility:
+javascript
+
+Copy
+INSERT INTO tblSurveyResponses (response_id, survey_id, question_id, user_id, response, submission_datetime, visibility)
+VALUES (?, ?, ?, ?, ?, datetime('now'), ?)
+Sets visibility to 'private':
+javascript
+
+Copy
+insertStmt.run([..., 'private'], ...);
+Kept Logging:
+Logs each response before insertion:
+javascript
+
+Copy
+console.log('Inserting response:', { response_id, survey_id, question_id: response.question_id, user_id: req.user_id, response: responseValue, visibility: 'private' });
+Verify Database
+Run these to confirm the schema and data:
+
+sql
+
+Copy
+.schema tblSurveyResponses
+.schema tblSurveys
+SELECT survey_id, visibility FROM tblSurveys WHERE survey_id = '0b37efa1-d9ac-4277-b377-1551c274e982';
+SELECT question_id FROM tblSurveyQuestions WHERE survey_id = '0b37efa1-d9ac-4277-b377-1551c274e982';
+Expected tblSurveyResponses Schema:
+sql
+
+Copy
+CREATE TABLE tblSurveyResponses (
+    response_id TEXT PRIMARY KEY,
+    survey_id TEXT NOT NULL,
+    question_id TEXT NOT NULL,
+    user_id TEXT NOT NULL,
+    response TEXT NOT NULL,
+    submission_datetime DATETIME DEFAULT CURRENT_TIMESTAMP,
+    visibility TEXT NOT NULL,
+    FOREIGN KEY (survey_id) REFERENCES tblSurveys (survey_id),
+    FOREIGN KEY (question_id) REFERENCES tblSurveyQuestions (question_id),
+    FOREIGN KEY (user_id) REFERENCES tblUsers (user_id)
+);
+Check visibility Values:
+Ensure tblSurveys.visibility for survey_id: '0b37efa1-d9ac-4277-b377-1551c274e982' is valid (e.g., "public", "group", "private").
+Confirm question_id: '8f5b282c-2d97-46c7-ba8e-7ea2248230d3' exists in tblSurveyQuestions.
+Testing Instructions
+Setup:
+Replace /GroupUp/SurveyResponse:
+In server.js, replace the /GroupUp/SurveyResponse endpoint with the code above.
+Verify Files:
+Ensure groups.js is version 43b15aee-0768-448d-9a98-79f48027d7fa.
+Ensure fetch.js is artifact_id: 0a4f2416-ce7b-493b-a426-fe5b7be80dbe.
+Check Schema:
+sql
+
+Copy
+.schema tblSurveyResponses
+Restart the server: node server.js.
+Test Submission:
+Navigate to Groups, select “Seth’s Group” (group_id: '9b2f8a88-fbfb-4c4e-bcb6-8a36e0ebc8ae'), open a survey, answer questions (e.g., “YUP” for a shortAnswer).
+Click “Submit Survey”.
+Check client console logs (F12, Console tab):
+Submitting responses: [{ question_id: "<id>", response: "<value>" }, ...]
+Check server logs:
+Received survey response: { survey_id: '0b37efa1-d9ac-4277-b377-1551c274e982', responses: [{ question_id: '8f5b282c-2d97-46c7-ba8e-7ea2248230d3', response: 'YUP' }], ... }
+Inserting response: { response_id: "<uuid>", survey_id: "<id>", question_id: "<id>", user_id: "<id>", response: "YUP", visibility: "private" }
+Survey responses saved: <survey_id>
+Verify tblSurveyResponses:
+sql
+
+Copy
+SELECT * FROM tblSurveyResponses WHERE survey_id = '0b37efa1-d9ac-4277-b377-1551c274e982';
+Debug:
+If the visibility error persists:
+Confirm you’re using the updated /GroupUp/SurveyResponse (check for visibility in the INSERT query).
+Share the full server log, including Inserting response:.
+If a new error appears (e.g., invalid visibility value), share:
+Server log: Received survey response:, Inserting response:, and error.
+tblSurveys data:
+sql
+
+Copy
+SELECT survey_id, visibility FROM tblSurveys;
+Next Steps
+Confirm:
+Does submission complete with a “Survey submitted!” alert?
+Are responses saved in tblSurveyResponses with visibility: 'private'?
+Share Logs:
+Server: Received survey response:, Inserting response:, and any errors.
+Client: Submitting responses:.
+Database:
+sql
+
+Copy
+SELECT survey_id, visibility FROM tblSurveys WHERE survey_id = '0b37efa1-d9ac-4277-b377-1551c274e982';
+SELECT * FROM tblSurveyQuestions WHERE survey_id = '0b37efa1-d9ac-4277-b377-1551c274e982';
+Clarify:
+Should visibility be 'private' by default, or should it match tblSurveys.visibility (e.g., fetch with SELECT visibility FROM tblSurveys WHERE survey_id = ?)?
+What are valid visibility values in tblSurveys (e.g., "public", "group", "private")?
+Any other issues (e.g., strict shortAnswer validation, fetchGroupMemberInfo dummy data)?
+Please replace /GroupUp/SurveyResponse in server.js, test submission, and share the logs. If the error persists, confirm you’re using the updated code and share the server log. If it’s resolved, we can focus on the next priority (e.g., visibility source, other bugs). Let me know your results or preferences!
