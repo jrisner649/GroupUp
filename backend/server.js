@@ -377,9 +377,9 @@ app.get('/GroupUp/Groups', validateSession, async (req, res) => {
 });
 
 //Group member info
-app.get('/group-member-info', async (req, res) => {
+app.get('/GroupUp/groupMembers', async (req, res) => {
     try {
-        const {groupId} = req.query; // Get groupId from query parameters
+        const groupId = req.query.group_id; // Get groupId from query parameters
         if (!groupId) {
             return res.status(400).json({ error: 'Missing groupId in query parameters' });
         }
