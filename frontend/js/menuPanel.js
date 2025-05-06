@@ -224,7 +224,7 @@ window.addEventListener('resize', () => {
 document.querySelector('#btnHamburger').addEventListener('click', () => {
 
     console.log('Hamburger button clicked');
-    $('#divMenuPanel').slideToggle(1000);
+    $('#divMenuPanel').slideToggle(400);
 
 });
 

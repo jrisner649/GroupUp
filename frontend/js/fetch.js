@@ -5,31 +5,24 @@
 
 const baseURL = "http://localhost:8000"
 
-async function fetchProjectSurveys() {
-    try {
-        const response = await fetch(baseURL + `/GroupUp/Surveys?session_id=${strSessionID}&project_id=${strCurrentProjectID}`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
-        if (!response.ok) {
-            const errorData = await response.json();
-            Swal.fire({
-                title: "Oops...",
-                html: `<p>${errorData.error}</p>`,
-                icon: "error"
-            });
-            throw new Error(errorData.error);
+function fetchProjectLeaderSurveys(strId, idType="group_id") {
+
+    // fetch surveys issued to you
+    const result = fetch(`http://localhost:8000/GroupUp/survey?${idType}=${strId}&session_id=${strSessionID}`)
+    .then(response => {
+
+        // catch error
+        if (response.status != 200) {
+            console.log(`Error during fetching surveys: ${JSON.stringify(responseBody)}`);
+            return {};
         }
-        const arrSurveys = await response.json(); // Parse the response body as JSON
-        console.log(arrSurveys); // Log the fetched data
-        return arrSurveys; // Return the fetched data
-    }
-    catch (error) {
-        console.error('Error fetching project leader surveys:', error);
-        return []; // Return an empty array in case of an error
-    }
+
+        return response;
+
+    })
+    .then(response => response.json());
+    
+    return result;
 }
 
 // Function to fetch the projects the user is a leader of
@@ -147,18 +140,18 @@ async function fetchFeedback() {
 
 async function fetchGroupMemberInfo() {
     console.log("Fetching group member info...");
-    // try {
-    //     const response = await fetch(baseURL + '/group-member-info'); // Replace with actual API endpoint
-    //     if (!response.ok) {
-    //         throw new Error('Network response was not ok' + response.statusText);
-    //     }
-    //     const data = await response.json();
-    //     return data;
-    // }
-    // catch (error) {
-    //     console.error('There was a problem with the fetch operation:', error);
-    //     return null;
-    // }
+    try {
+        const response = await fetch(baseURL + '/group-member-info'); // Replace with actual API endpoint
+        if (!response.ok) {
+            throw new Error('Network response was not ok' + response.statusText);
+        }
+        const data = await response.json();
+        return data;
+    }
+    catch (error) {
+        console.error('There was a problem with the fetch operation:', error);
+        return null;
+    }
 }
 
 

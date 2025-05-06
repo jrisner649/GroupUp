@@ -30,7 +30,7 @@ Specific Tasks
         - F> Get | Surveys created
         - D> Get | Surveys received
         - F> Post | Survey create
-        - D> Post |Survey response
+        - D> Post | Survey response
 
 Timeline
     Fri, 25th | Meeting @4

@@ -27,7 +27,6 @@ app.get("/", (req,res,next) => {
 
 })
 
-
 // create new project
 app.post("/GroupUp/Project", async (req,res,next) => {
 
@@ -123,7 +122,6 @@ app.post("/GroupUp/Project", async (req,res,next) => {
     }
 
 })
-
 
 // User account registration
 // req body should be in the following format:
@@ -375,7 +373,6 @@ app.get('/GroupUp/Groups', validateSession, async (req, res) => {
     }
 });
 
-
 //Group member info
 app.get('/group-member-info', async (req, res) => {
     try {
@@ -406,7 +403,219 @@ app.get('/group-member-info', async (req, res) => {
     }
 });
 
+app.post('/GroupUp/survey', (req,res,next) => {
 
+    console.log(req.body);
+
+    // get info from the body
+    const strProjectId = req.body.projectId;
+    const strName = req.body.name;
+    const strVisibility = req.body.visibility;
+    const arrQuestions = JSON.parse(req.body.questions);
+    const strScheduledTime = req.body.scheduledTime;
+
+    // verify questions were passed
+    if (!strProjectId || !strName || !strVisibility || !arrQuestions) {
+        res.status(400).json({status: "error", message: "Survey post must pass a projectId, name, visibility, questions, and scheduledTime."});
+    }
+    else {
+
+        // generate new survey id
+        const strSurveyId = uuidv4();
+
+        // insert survey into database
+        const strSurveyInsertCmd = 'INSERT INTO tblSurveys (survey_id, project_id, scheduled_datetime, name, visibility) VALUES (?, ?, ?, ?, ?)';
+        db.run(strSurveyInsertCmd, [strSurveyId, strProjectId, strScheduledTime, strName, strVisibility], (err, result) => {
+
+            // return error
+            if (err) {
+
+                console.log(err);
+                return res.status(400).json({status: "error", message: err.message});
+
+            }
+
+        });
+
+        // insert survey questions into database
+        const strQuestionInsertCmd = 'INSERT INTO tblSurveyQuestions (question_id, survey_id, question_type, options, question_narrative, question_order) VALUES (?, ?, ?, ?, ?, ?)';
+        let intQuestionOrder = 0;
+        arrQuestions.forEach(({ questionText, questionType, options }) => {
+            
+            // uuid for question key
+            const strQuestionId = uuidv4();
+            intQuestionOrder ++;
+
+            db.run(strQuestionInsertCmd, [strQuestionId, strSurveyId, questionType, JSON.stringify(options), questionText, intQuestionOrder], (err, result) => {
+
+                // return error
+                if (err) {
+
+                    console.log(err);
+                    return res.status(400).json({status: "error", message: err.message});
+
+                }
+
+            });
+
+        });
+
+        res.status(201).json({status: "success", surveyId: strSurveyId});
+
+    }
+
+});
+
+// get surveys to fill out
+app.get('/GroupUp/survey', validateSession, async (req,res) => {
+
+    // Helper function to fetch questions for a survey
+    async function fetchSurveyQuestions(strSurveyId) {
+        const strGetQuestionsCmd = "SELECT * FROM tblSurveyQuestions WHERE survey_id = ?";
+        const arrQuestions = await allDb(strGetQuestionsCmd, [strSurveyId]);
+        return arrQuestions.map(objQuestion => ({
+            questionText: objQuestion.question_narrative,
+            questionType: objQuestion.question_type,
+            options: JSON.parse(objQuestion.options),
+            index: objQuestion.question_order
+        }));
+    }
+
+    // check for ids
+    const strGroupId = req.query.group_id;
+    const strProjectId = req.query.project_id;
+    const strSurveyId = req.query.survey_id;
+
+    // if no id was passed
+    if (!strGroupId && !strProjectId && !strSurveyId) {
+
+        res.status(400).json({status: "error", message: "Survey request needs either group_id, project_id, or survey_id in query string."});
+
+    }
+    
+    // if group Id was passed
+    else if (strGroupId) {
+
+        // use database to get project ID
+        const strGetProjIDCmd = "SELECT project_id FROM tblProjectGroups WHERE group_id = ?;";
+        db.get(strGetProjIDCmd, [strGroupId], async (err, row) => {
+
+            if (err) {
+
+                console.log("Error finding project ID: ", err);
+                return res.status(400).json({status: "error", message: err});
+
+            }
+            else if (!row.project_id) {
+
+                console.log("Couldn't find project for group ID: ", strGroupId);
+                return res.status(400).json({status: "error", message: "Couldn't find project for group ID: " + strGroupId});
+
+            }
+
+            // grab project id
+            const strProjectId = row.project_id;
+
+            // run command to get survey IDs
+            const strGetSurveyIdCmd = "SELECT * FROM tblSurveys WHERE project_id = ?;";
+            const arrSurveyEntries = await allDb(strGetSurveyIdCmd, [strProjectId]);
+
+            let arrSurveys = []
+
+            // iterate through entries
+            for (const objInfo of arrSurveyEntries) {
+
+                // Create a new survey object
+                const objNewSurvey = {
+                    surveyid: objInfo.survey_id,
+                    title: objInfo.name,
+                    questions: []
+                };
+
+                // Fetch questions for the survey
+                objNewSurvey.questions = await fetchSurveyQuestions(objInfo.survey_id);
+
+                // Sort questions by their order
+                objNewSurvey.questions.sort((a, b) => a.index - b.index);
+
+                // Push the survey object to the array
+                arrSurveys.push(objNewSurvey);
+
+            }
+
+            return res.status(200).json(arrSurveys);
+
+        });
+
+    }
+
+    // if project id was passed
+    else if (strProjectId) {
+
+        // run command to get survey IDs
+        const strGetSurveyIdCmd = "SELECT * FROM tblSurveys WHERE project_id = ?;";
+        const arrSurveyEntries = await allDb(strGetSurveyIdCmd, [strProjectId]);
+
+        let arrSurveys = []
+
+        // iterate through entries
+        for (const objInfo of arrSurveyEntries) {
+
+            // Create a new survey object
+            const objNewSurvey = {
+                surveyid: objInfo.survey_id,
+                title: objInfo.name,
+                questions: []
+            };
+
+            // Fetch questions for the survey
+            objNewSurvey.questions = await fetchSurveyQuestions(objInfo.survey_id);
+
+            // Sort questions by their order
+            objNewSurvey.questions.sort((a, b) => a.index - b.index);
+
+            // Push the survey object to the array
+            arrSurveys.push(objNewSurvey);
+
+        }
+
+        return res.status(200).json(arrSurveys);
+
+    }
+
+    // if survey id was passed
+    else {
+
+        // run command to get survey IDs
+        const strGetSurveyIdCmd = "SELECT * FROM tblSurveys WHERE survey_id = ?;";
+        const arrSurveyEntries = await allDb(strGetSurveyIdCmd, [strSurveyId]);
+
+        // iterate through entries
+        for (const objInfo of arrSurveyEntries) {
+
+            // Create a new survey object
+            const objNewSurvey = {
+                surveyid: objInfo.survey_id,
+                title: objInfo.name,
+                questions: []
+            };
+
+            // Fetch questions for the survey
+            objNewSurvey.questions = await fetchSurveyQuestions(objInfo.survey_id);
+
+            // Sort questions by their order
+            objNewSurvey.questions.sort((a, b) => a.index - b.index);
+
+            // Push the survey object to the array
+            arrSurveys.push(objNewSurvey);
+
+        }
+
+        return res.status(200).json(arrSurveys);
+
+    }
+
+});
 
 
 // Use this function when you want to run a SELECT

@@ -161,17 +161,21 @@ function onClickBtnMenuPanelViewResponses() {
     addHeaderToDashboard("View survey responses");
 
     // Iterate over every survey and add them to the dashboard
-    const arrSurveys = fetchProjectLeaderSurveys() // Make the API call to get the surveys that the user had made
-    let arrDashboardData = []
-    arrSurveys.forEach(survey => {
-        arrDashboardData.push(
-            {
-                header: survey.title,
-                subheader: survey.description,
-                uid: survey.surveyid
-            }
-        )
+    fetchProjectLeaderSurveys().then(arrSurveys => {
+
+        let arrDashboardData = []
+        arrSurveys.forEach(survey => {
+            arrDashboardData.push(
+                {
+                    header: survey.title,
+                    subheader: "",
+                    uid: survey.surveyid
+                }
+            )
+        })
+        populateDashboard(arrDashboardData, onClickSurvey)
+
     })
-    populateDashboard(arrDashboardData, onClickSurvey)
+
 }
 

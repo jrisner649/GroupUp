@@ -2,8 +2,6 @@
     This file is used for handling logic for the Project Management Page
 */
 
-var strSessionUserEmail = "user@groupup.com";
-
 
 let strCurrentProjectID = '' // Keep track with what project the user clicked on
 
