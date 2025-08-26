@@ -1,0 +1,30 @@
+<form id="formRegister" class="card bg-dark col-lg-6 col-md-8 col-11 d-none">
+    <div class="card-body d-flex flex-column mx-3 mt-2">
+        <h1 class="text-center light-color">Register</h1>
+        <label id="lblFirstNameRegister" for="txtFirstNameRegister" class="form-label mt-3 light-color">First Name *</label>
+        <input id="txtFirstNameRegister" class="form-control mt-2" type="text" aria-label="input first name">
+        <label id="lblLastNameRegister" for="txtLastNameRegister" class="form-label mt-3 light-color">Last Name *</label>
+        <input id="txtLastNameRegister" class="form-control mt-2" type="text" aria-label="input last name">
+        <label id="lblEmailRegister" for="txtEmailRegister" class="form-label mt-3 light-color">Email *</label>
+        <input id="txtEmailRegister" class="form-control mt-2" type="email" aria-label="input email">
+        <label id="lblPasswordRegister" for="txtPasswordRegister" class="form-label mt-3 light-color">Password (8-64 characters length and at least one lowercase letter, uppercase letter, number, and special character) *</label>
+        <input id="txtPasswordRegister" class="form-control mt-2 mb-3" type="password" aria-label="input password">
+        <label id="lblPasswordConfRegister" for="txtPasswordConfRegister" class="form-label mt-3 light-color">Confirm Password *</label>
+        <input id="txtPasswordConfRegister" class="form-control mt-2 mb-3" type="password" aria-label="input password confirmation">
+        <label id="lblAccountTypeRegister" for="selectAccountTypeRegister" class="form-label mt-3 light-color">I want to... *</label>
+        <select id="selectAccountTypeRegister" class="form-select mt-2" aria-label="select account type">
+            <option value="" selected disabled>Select an option</option>
+            <option value="member">Join projects</option>
+            <option value="leader">Create and manage projects</option>
+        <label id="lblPhoneRegister" for="txtPhoneRegister" class="form-label mt-3 light-color">Phone Number</label>
+        <input id="txtPhoneRegister" class="form-control mt-2 mb-3" type="tel" aria-label="input phone number">
+        <label id="lblTeamsRegister" for="txtTeamsRegister" class="form-label mt-3 light-color">Teams Account</label>
+        <input id="txtTeamsRegister" class="form-control mt-2 mb-3" type="text" aria-label="input teams account">
+        <label id="lblDiscordRegister" for="txtDiscordRegister" class="form-label mt-3 light-color">Discord Account</label>
+        <input id="txtDiscordRegister" class="form-control mt-2 mb-3" type="text" aria-label="input discord account">
+        <p class="required-color">* Required</p>
+        <button id="btnRegister" class="btn btn-primary mt-3 mb-3 col-4" type="button">Register</button>
+        <hr />
+        <button id="btnToLogin" class="btn btn-link mt-1 col-12" type="button">Already have an account? Click to login</button>
+    </div>
+</form>
