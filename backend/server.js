@@ -10,6 +10,7 @@ const { v4: uuidv4 } = require('uuid');
 const DB_FILENAME = "GroupUp.db";
 const HTTP_PORT = 8000;
 const intSalt = 10;
+const path = require('path');
 
 // init db
 const db = new sqlite3.Database(DB_FILENAME);
@@ -18,14 +19,13 @@ const db = new sqlite3.Database(DB_FILENAME);
 var app = express();
 app.use(cors());
 app.use(express.json());
+app.use(express.static(path.join(__dirname, '../frontend')));
 
 
 // naked domain fetch
-app.get("/", (req,res,next) => {
-
-    res.status(200).json({"message": "I am alive!"});
-
-})
+app.get("/", (req, res) => {
+    res.sendFile(path.join(__dirname, 'index.html'));
+});
 
 // create new project
 app.post("/GroupUp/Project", async (req,res,next) => {
