@@ -24,7 +24,11 @@ app.use(express.static(path.join(__dirname, '../frontend')));
 
 // naked domain fetch
 app.get("/", (req, res) => {
-    res.sendFile(path.join(__dirname, 'index.html'));
+    res.sendFile(path.join(__dirname, '../frontend/index.html'));
+});
+
+app.get("/signUp", (req, res) => {
+    res.sendFile(path.join(__dirname, '../frontend/components/signUp.html'));
 });
 
 // create new project

@@ -1,15 +1,18 @@
 
 // sign up button
 document.querySelector('#btnLandingPageSignUp').addEventListener('click', () => {
-    
-    // hide the landing page
-    document.querySelector('#divLandingPage').classList.add('d-none');
+    console.log("sign up button clicked");
+    fetch('http://localhost:8000/signUp')
+    .then(response => response.text())
+    .then(html => {
+        document.querySelector('#divLandingPage').classList.add('d-none');
+        document.querySelector('#divSignUp').innerHTML = html;
+        document.querySelector('#divSignUp').classList.remove('d-none');
 
-    // unhide the login/signup page
-    document.querySelector('#divAccountsPage').classList.remove('d-none');
-    document.querySelector('#formRegister').classList.remove('d-none');
-
-
+    })
+    .catch(error => {
+        console.error('Error fetching the sign-up page:', error);
+    });
 });
 
 // login button
