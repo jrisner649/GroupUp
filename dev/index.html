@@ -3,21 +3,155 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>GroupUp</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" integrity="sha384-tViUnnbYAV00FLIhhi3v/dWt3Jxw4gZQcNoSCxCIFNJVCx7/D55/wXsrNIRANwdD" crossorigin="anonymous">
+    <link href="style.css" rel="stylesheet">
 </head>
-<body>
-    <div id="divLandingPageHeaderBar" class="d-flex align-items-center mb-2 bg-dark-color col-12">
-        <div class="d-flex flex-row col-6">
-            <img id="imgHeaderLogo" class="mx-2" src="Logo-White.png" alt="group up logo">
+<body class="bg-light-color">
+
+    <div id="divLandingPage" class="bg-white">
+        <div id="divLandingPageHeaderBar" class="d-flex align-items-center mb-2 bg-dark-color col-12">
+            <div class="d-flex flex-row col-6">
+                <img id="imgHeaderLogo" class="mx-2" src="Logo-White.png" alt="group up logo">
+            </div>
+            <div class="d-flex flex-sm-row flex-column justify-content-end align-items-end col-6">
+                <button class="btn btn-primary col-sm-4 col-8 mx-sm-0 mx-3 my-sm-0 my-2" id="btnLandingPageLogin" type="button">Login</button>
+                <button class="btn btn-primary col-sm-4 col-8 mx-sm-4 mx-3" id="btnLandingPageSignUp" type="button">Sign Up</button>
+            </div>
         </div>
-        <div class="d-flex flex-sm-row flex-column justify-content-end align-items-end col-6">
-            <button class="btn btn-primary col-sm-4 col-8 mx-sm-0 mx-3 my-sm-0 my-2" id="btnLandingPageLogin" type="button">Login</button>
-            <button class="btn btn-primary col-sm-4 col-8 mx-sm-4 mx-3" id="btnLandingPageSignUp" type="button">Sign Up</button>
+        <div id="divLandingPageBody" class="p-5">
+            <h1>What is GroupUp?</h1>
+            <div class="flex-md-row flex-column d-flex mt-md-5 mt-4 mb-4 align-items-center">
+                <div class="d-flex col-md-7 col-12 align-items-center justify-content-center">
+                    <h3 id="paraGroupUpDescription" class="mx-3 mb-4 col-md-8 col-11 text-center">
+                        GroupUp is a teamwork management system for academics, the workplace, or wherever group projects can be found.
+                    </h3>
+                </div>
+                <img id="imgLandingPage" class="col-md-4 col-10" alt="a diverse team collaborating" src="https://media.istockphoto.com/id/1443245439/photo/business-meeting-businesswoman-woman-office-portrait-job-career-happy-businessman-teamwork.jpg?s=612x612&w=0&k=20&c=1ZR02c1UKfGdBCNWzzKlrwrVZuEiOqnAKcKF4V_t038=">
+            </div>
+            <hr/>
+            <h1>How does it work?</h1>
+            <div class="flex-md-row flex-column d-flex mt-md-5 mt-4 mb-4 align-items-center">
+                <img id="imgLandingPage2" class="col-md-4 col-10" alt="a team collaborating" src="https://fellow.app/wp-content/uploads/2022/01/team-collaboration.jpg">
+                <div class="d-flex col-md-7 col-12 align-items-center justify-content-center">
+                    <h3 id="paraGroupUpDescription" class="mx-3 mb-4 col-md-8 col-11 text-center">
+                        With GroupUp, you can either create a new project or join an existing one. Project leaders have the ability to assign groups to participants, ensuring efficient collaboration and task distribution.
+                    </h3>
+                </div>
+            </div>
+            <hr/>
+            <div class="flex-row d-flex mt-5 mb-4">
+                <div class="d-flex col-12 align-items-center justify-content-center">
+                    <h3 id="paraGroupUpDescription" class="mx-3 col-8 text-center">
+                        Project leaders can issue surveys to gather valuable feedback from group members, enabling insights into individual and team performance.
+                    </h3>
+                </div>
+            </div>
+            <hr/>
+            <h1>Get started today!</h1>
+            <div class="d-flex flex-column align-items-center">
+                <button class="btn btn-primary mt-3 mb-5" type="button" id="btnLandingPageSignUpBottom">Sign Up</button>
+            </div>
+        </div>
+        <footer id="ftLandingPageFooter"class="d-flex align-items-center justify-content-center bg-dark-color">
+            <p style="color: lightgreen">Seth Risner and Franklin Doane</p>
+        </footer>
+    </div>
+    <div id="divAccountsPage" class="d-flex flex-column justify-content-center align-items-center mb-5 d-none">
+        <div id="divAccountsPageHeaderBar" class="d-flex justify-content-space-between align-items-center mb-4 bg-dark-color col-12">
+            <img id="imgAccountHeaderLogo" class="mx-5" src="Logo-White-Inline.png" alt="group up logo">
+        </div>
+        <form id="formLogin" class="card bg-dark col-lg-6 col-md-8 col-11 d-none">
+            <div class="card-body d-flex flex-column mx-3 mt-2">
+                <h1 class="text-center light-color">Login</h1>
+                <label id="lblEmailLogin" for="txtEmailLogin" class="form-label mt-3 light-color">Email</label>
+                <input id="txtEmailLogin" class="form-control mt-2" type="email" aria-label="input email">
+                <label id="lblPasswordLogin" for="txtPasswordLogin" class="form-label mt-3 light-color">Password</label>
+                <input id="txtPasswordLogin" class="form-control mt-2 mb-3" type="password" aria-label="input password">
+                <button id="btnLogin" class="btn btn-primary mt-3 mb-3 col-4" type="button">Login</button>
+                <hr />
+                <button id="btnForgotPassword" class="btn btn-link mt-1 col-12">Forgot password? Click to reset</button>
+                <button id="btnToRegister" class="btn btn-link mt-1 col-12" type="button">Need an account? Click to register</button>
+            </div>
+        </form>
+        <form id="formRegister" class="card bg-dark col-lg-6 col-md-8 col-11 d-none">
+            <div class="card-body d-flex flex-column mx-3 mt-2">
+                <h1 class="text-center light-color">Register</h1>
+                <label id="lblFirstNameRegister" for="txtFirstNameRegister" class="form-label mt-3 light-color">First Name *</label>
+                <input id="txtFirstNameRegister" class="form-control mt-2" type="text" aria-label="input first name">
+                <label id="lblLastNameRegister" for="txtLastNameRegister" class="form-label mt-3 light-color">Last Name *</label>
+                <input id="txtLastNameRegister" class="form-control mt-2" type="text" aria-label="input last name">
+                <label id="lblEmailRegister" for="txtEmailRegister" class="form-label mt-3 light-color">Email *</label>
+                <input id="txtEmailRegister" class="form-control mt-2" type="email" aria-label="input email">
+                <label id="lblPasswordRegister" for="txtPasswordRegister" class="form-label mt-3 light-color">Password (8-64 characters length and at least one lowercase letter, uppercase letter, number, and special character) *</label>
+                <input id="txtPasswordRegister" class="form-control mt-2 mb-3" type="password" aria-label="input password">
+                <label id="lblPasswordConfRegister" for="txtPasswordConfRegister" class="form-label mt-3 light-color">Confirm Password *</label>
+                <input id="txtPasswordConfRegister" class="form-control mt-2 mb-3" type="password" aria-label="input password confirmation">
+                <label id="lblPhoneRegister" for="txtPhoneRegister" class="form-label mt-3 light-color">Phone Number</label>
+                <input id="txtPhoneRegister" class="form-control mt-2 mb-3" type="tel" aria-label="input phone number">
+                <label id="lblTeamsRegister" for="txtTeamsRegister" class="form-label mt-3 light-color">Teams Account</label>
+                <input id="txtTeamsRegister" class="form-control mt-2 mb-3" type="text" aria-label="input teams account">
+                <label id="lblDiscordRegister" for="txtDiscordRegister" class="form-label mt-3 light-color">Discord Account</label>
+                <input id="txtDiscordRegister" class="form-control mt-2 mb-3" type="text" aria-label="input discord account">
+                <p class="required-color">* Required</p>
+                <button id="btnRegister" class="btn btn-primary mt-3 mb-3 col-4" type="button">Register</button>
+                <hr />
+                <button id="btnToLogin" class="btn btn-link mt-1 col-12" type="button">Already have an account? Click to login</button>
+            </div>
+        </form>
+    </div>
+    <div id="divMainContent" class="d-flex flex-column col-12 d-none">
+        <div id="divHeaderBar" class="d-flex flex-column bg-dark-color">
+            <div id="divHeaderBarContent" class="d-flex flex-row justify-content-end align-items-center col-12">
+                <button id="btnHamburger" class="d-md-none d-block mx-3 col-md-0 col-4"><i id="iconHamburger" class="bi bi-list"></i></button>
+                <div class="col-md-2 d-md-block d-none">
+                    <div class="d-flex flex-column justify-content-center align-items-center">
+                        <img id="imgMainPageLogo" class="" src="Logo-White.png" alt="group up logo">
+                    </div>
+                </div>
+                <div class="col-md-8 d-md-block d-none align-items-center justify-content-start">
+                    <h1 id="headerMain" class="header-bar-text mx-4"></h1>
+                </div>
+                <div class="d-flex flex-row justify-content-center col-md-1 col-4">
+                    <button id="btnPlus" class="btn-header d-none text-orange-color" type="button"><i id="iconPlus" class="bi bi-plus"></i></button>
+                </div>
+                <div class="d-flex flex-row justify-content-center col-md-1 col-4 p-5">
+                    <button id="btnSignOut" class="btn-header text-orange-color" type="button"><i id="iconSignOut" class="bi bi-box-arrow-left"></i></button>
+                </div>
+            </div>
+            <div class="col-md-10 col-12 d-md-none d-block align-items-center justify-content-start">
+                <h1 id="headerMainSmall"class="header-bar-text"></h1>
+            </div>
+        </div>
+        <div class="d-flex flex-column flex-md-row align-items-center col-12">
+            
+            <div id="divMenuPanel" class="col-md-2 col-12 bg-green-color">
+                <div id="divMenuPanelContents" class="d-flex flex-column col-12 align-items-center justify-content-center">
+
+                </div>
+            </div>
+            <div id="divDashboard" class="d-flex flex-column col-lg-10 col-12 p-2 bg-white-color">
+                
+            </div>
         </div>
     </div>
-    <h1>header</h1>
-    <main>main</main>
-    <footer>footer</footer>
+    <script scr="js/sessions.js"></script>
+    <script src="js/landing.js"></script>
+    <script src="js/login.js"></script>
+    <script src="js/fetch.js"></script>
+    <script src="js/signOut.js"></script>
+    <script src="js/lib/apexcharts.min.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/viewResponses.js"></script>
+    <script src="js/projects.js"></script>
+    <script src="js/groups.js"></script>
+    <script src="js/surveyBuilder.js"></script>
+    <script src="js/menuPanel.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>    
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 </html>
