@@ -8,7 +8,7 @@ const { v4: uuidv4 } = require('uuid');
 
 // constants
 const DB_FILENAME = "GroupUp.db";
-const HTTP_PORT = 8000;
+const HTTP_PORT = process.env.PORT || 8000;
 const intSalt = 10;
 const path = require('path');
 
@@ -21,6 +21,9 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, '../frontend')));
 
+app.listen(HTTP_PORT, () => {
+    console.log("Listening on", HTTP_PORT);  
+});
 
 // naked domain fetch
 app.get("/", (req, res) => {
@@ -983,7 +986,5 @@ app.get("/GroupUp/Groups/Feedback", validateSession, async (req, res) => {
 
 
 
-app.listen(HTTP_PORT, () => {
-    console.log("Listening on", HTTP_PORT);  
-});
+
 
