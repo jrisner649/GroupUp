@@ -20,6 +20,8 @@ var app = express();
 app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, '../frontend')));
+app.use("/api", require("./routes/api"));
+app.use("/component", require("./routes/components"));
 
 app.listen(HTTP_PORT, () => {
     console.log("Listening on", HTTP_PORT);  
@@ -30,9 +32,9 @@ app.get("/", (req, res) => {
     res.sendFile(path.join(__dirname, '../frontend/index.html'));
 });
 
-app.get("/signUp", (req, res) => {
-    res.sendFile(path.join(__dirname, '../frontend/components/signUp.html'));
-});
+// app.get("/signUp", (req, res) => {
+//     res.sendFile(path.join(__dirname, '../frontend/components/signUp.html'));
+// });
 
 // create new project
 app.post("/GroupUp/Project", async (req,res,next) => {
