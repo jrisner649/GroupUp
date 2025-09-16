@@ -415,8 +415,6 @@ app.get('/GroupUp/groupMembers', async (req, res) => {
     }
 });
 
-
-
 // ai helped edit errors
 app.get('/GroupUp/SurveyResponses', validateSession, async (req, res) => {
     const { survey_id, group_id } = req.query;
